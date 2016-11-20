@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		741A22511DE1A34200FDE960 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 741A22501DE1A34200FDE960 /* main.cpp */; };
+		741CE36C1DE2373C00DA4A31 /* basic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 741CE36B1DE2373C00DA4A31 /* basic.cpp */; };
+		741CE36E1DE237C200DA4A31 /* pointers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 741CE36D1DE237C200DA4A31 /* pointers.cpp */; };
+		741CE3701DE239E100DA4A31 /* classes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 741CE36F1DE239E100DA4A31 /* classes.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +27,10 @@
 
 /* Begin PBXFileReference section */
 		741A224D1DE1A34200FDE960 /* revise-cpp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "revise-cpp"; sourceTree = BUILT_PRODUCTS_DIR; };
-		741A22501DE1A34200FDE960 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		741A22501DE1A34200FDE960 /* main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		741CE36B1DE2373C00DA4A31 /* basic.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = basic.cpp; sourceTree = "<group>"; };
+		741CE36D1DE237C200DA4A31 /* pointers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = pointers.cpp; sourceTree = "<group>"; };
+		741CE36F1DE239E100DA4A31 /* classes.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = classes.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,9 @@
 			isa = PBXGroup;
 			children = (
 				741A22501DE1A34200FDE960 /* main.cpp */,
+				741CE36B1DE2373C00DA4A31 /* basic.cpp */,
+				741CE36D1DE237C200DA4A31 /* pointers.cpp */,
+				741CE36F1DE239E100DA4A31 /* classes.cpp */,
 			);
 			path = "revise-cpp";
 			sourceTree = "<group>";
@@ -118,6 +127,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				741CE36E1DE237C200DA4A31 /* pointers.cpp in Sources */,
+				741CE36C1DE2373C00DA4A31 /* basic.cpp in Sources */,
+				741CE3701DE239E100DA4A31 /* classes.cpp in Sources */,
 				741A22511DE1A34200FDE960 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -239,6 +251,7 @@
 				741A22561DE1A34200FDE960 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
