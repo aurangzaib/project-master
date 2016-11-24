@@ -12,34 +12,34 @@ using namespace std;
 // static storage is by default init to 0 while automatic storage is uninit by default
 
 // using variable by address
-void someFunc (int &a, int &b, int c=3) { // here default value for c is 3
-    a+=b;
-    c+=2;
+void someFunc (int &a, int &b, int c = 3) { // here default value for c is 3
+    a += b;
+    c += 2;
 }
 
 
 // inline functions
-inline void someInlineFunc (int a ){
+inline void someInlineFunc (int a ) {
     // do something here
     // inline tells compiler that put the fn code in main instd of invoking it
     // good for short functions
 }
 
 // fucntion overloading
-void overloaded (int a){
+void overloaded (int a) {
     cout << "int one is called" << endl;
 }
-void overloaded(float a, float b){
+void overloaded(float a, float b) {
     cout << "float one is called" << endl;
 }
 
 // template -- function which allows different types
 template <class T>
-T templateFunc (T a, T b){
-    return a+b;
+T templateFunc (T a, T b) {
+    return a + b;
 }
 
-void playWithStrings (){
+void playWithStrings () {
     string someString  = "go to home with string";
     char someCharString[] = "go to home with char";
     cout << "with string: " << someString
@@ -48,14 +48,14 @@ void playWithStrings (){
     
 }
 
-void playWithArrays (){
+void playWithArrays () {
     // matrix
     int myMatrix[2][3]; // 2x3 matrix
     // number of rows
-    int numberOfRows = sizeof(myMatrix)/sizeof(myMatrix[0]) ;
+    int numberOfRows = sizeof(myMatrix) / sizeof(myMatrix[0]) ;
     // number of columns
-    int numberOfColumns = sizeof(myMatrix[0])/sizeof(int) ;
-
+    int numberOfColumns = sizeof(myMatrix[0]) / sizeof(int) ;
+    
     cout << "rows: " << numberOfRows << endl << "columns: " << numberOfColumns << endl;
     for (int row = 1; row <= numberOfRows; row++) {
         for (int column = 1; column <= numberOfColumns; column++) {
@@ -67,7 +67,7 @@ void playWithArrays (){
 }
 
 void playWithFunctions () {
-    int a=2, b=2, c=2;
+    int a = 2, b = 2, c = 2;
     someFunc(a, b, c);
     cout << "value of a now: " << a << endl;
     cout << "value of c now: " << c << endl;

@@ -15,7 +15,7 @@ void playWithPointers () {
     
     // some thing to keep in mind
     
-    int firstValue=0, secondValue=0;
+    int firstValue = 0, secondValue = 0;
     int *pointToFirstValue, *pointToSecondValue;
     
     pointToFirstValue = &firstValue; // point to address of firstValue
@@ -47,18 +47,24 @@ void playWithPointerAndArray() {
     int *pointToArray;
     pointToArray = anArray; // pointing to array address, note that we didnt use &anArray
     
+    // anArray[3] ; *(pointer+3); *(anArray+3)
+    // anArray[0] *anArray --> address of 0th element
+    // anArray[5] *(anArray+5) --> value of 5th element
+    // pointer+4  anArray+4 &anArray[2]
+    // anArray anArray[0] &anArray[0] --> all giving address of 0th element
+    
     // 1st element address
-    if (anArray+1 == pointToArray+1 && pointToArray+1 == &anArray[1]){
+    if (anArray + 1 == pointToArray + 1 && pointToArray + 1 == &anArray[1]) {
         cout << "1st element address: " << anArray << endl;
     };
     
     // 2nd element value
-    if (*(pointToArray+2) == anArray[2] && *(anArray+2) == anArray[2]){
+    if (*(pointToArray + 2) == anArray[2] && *(anArray + 2) == anArray[2]) {
         cout << "2nd element value: " << anArray[2] << endl;
     };
     
     // 0th element value
-    if (*anArray == *pointToArray && *pointToArray == anArray[0]){
+    if (*anArray == *pointToArray && *pointToArray == anArray[0]) {
         cout << "0th element value: " << anArray[0] << endl;
     };
     
@@ -77,11 +83,24 @@ void playWithPointerAndArray() {
     // so this is possible --> pointToArray = &someVar
     // but this is not     --> anArray = &someVar
     
+    // rvalue --> which is readonly
+    // lvalue --> which is read/write
+    
     // constant pointers can't change value, just can read it.
     // const int *constantPointer = anArray;
-    // constant pointers are not themselves constant, just that they can't variable to which they point
-    // still they change point to new variable
+    
+    // constant pointers are not themselves constant, just that they can't change variable to which they point
+    // still they point to a new variable
 }
+
+int a = 4; // variable
+int *erstePointer = &a; // pointer to variable
+int **zweitePointer = &erstePointer; // pointer to pointer
+
+// a; *erstePointer; **zweitePointer --> value of a
+// &a; erstePointer; *zweitePoiner --> address of a
+// &erstePointer; zweitePointer --> address of erstePointer
+// &zweitePointer --> address of zeitePointer
 
 void playWithPointerToPointer () {
     // pointer to a pointer

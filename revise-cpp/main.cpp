@@ -1,7 +1,10 @@
 #include "basic.cpp"
 #include "pointers.cpp"
 #include "classes.cpp"
-
+#include "classes-pointers.cpp"
+#include "classes-operator-overload.cpp"
+#include "sobel-canny-threshold.cpp"
+#include "blob-detections.cpp"
 using namespace std;
 
 int main () {
@@ -26,24 +29,25 @@ int main () {
     playWithPointerToPointer();
 #endif
     
-#if true
-    
-    // functional form of ctor calling
-    someClass anInstance; // 5,5,5
-    someClass secondInstance(8);// 8,5,5
-    someClass thirdInstance(2, 4, 8);
-    
-    // uniform form of ctor calling
-    someClass anInstance2 = {};
-    someClass secondInstance2 = {8};
-    someClass thirdInstance2 = {6, 7, 8};
-    
-    // someClass anInstance(); --> invalid, () shouldn't be used for default ctor
-    anInstance.setProperties(1,2,3);
-    
-    cout << "1st instance property: " << anInstance.getProperties() << endl
-         << "2nd instance property: " << secondInstance.getProperties() << endl
-         << "3rd instance property: " << thirdInstance.getProperties() << endl;
+#if false
+    playWithClass();
 #endif
+    
+#if false
+    playWithClassPointer();
+#endif
+
+#if false
+    playWithClassOverloading();
+#endif
+
+#if false
+    sobelCannyThreshold();
+#endif
+
+#if true
+    blobDetection();
+#endif
+
     return 0;
 }
