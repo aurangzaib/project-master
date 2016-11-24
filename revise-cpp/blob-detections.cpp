@@ -13,48 +13,54 @@ void blobDetection (){
     string prjdir = "/Users/aurangzaib/Documents/Hochschule/Winter 2016/Projects/Master Project/";
     
     // image
-    Mat src = imread( prjdir+"/Meeting-3/blob.jpg", IMREAD_GRAYSCALE );
+    Mat img = imread( prjdir+"/Meeting-5/sequence-1.bmp", CV_LOAD_IMAGE_COLOR );
     
-    // Setup SimpleBlobDetector parameters.
-    SimpleBlobDetector::Params params;
+    // gray scale conversion
+    Mat gray;
+    cvtColor(img, gray, COLOR_BGR2GRAY);
     
-    // Change thresholds
-    params.minThreshold = 0;
-    params.maxThreshold = 250;
+    // median filter to reduce noise
+    medianBlur(gray, gray, 5);
     
-    // Filter by Area.
-    params.filterByArea = false;
-    params.minArea = 200;
+    // threshold to make image binary
+    // ! will not work in each scenario !
+    threshold(gray, gray, 20, 255, THRESH_BINARY); // --> diable for cap.jpg
+    cout << "gray rows: " << gray.rows << endl;
     
-    // Filter by Circularity
-    params.filterByCircularity = true;
-    params.minCircularity = 0.9; // circle
+    // hough circles
+    vector<Vec3f> circles;
+    HoughCircles(gray, circles, CV_HOUGH_GRADIENT, 1,
+                 // change this value to detect circles with different distances to each other
+                 gray.rows/8,
+                 // canny parameters
+                 200, 10,
+                 // min_radius & max_radius
+                 20, 40
+                 );
     
-    // Filter by Convexity
-    params.filterByConvexity = false;
-    params.minConvexity = 0.87;
+    /* radius params:
+            multicolor-bottle-caps.jpeg -- 40, 45
+            blob.jpg -- 30, 32
+            cap.jpg -- gray.rows/4, 82, 90
+            3-light-vertical.jpg -- gray.rows/8, 20, 40
+            4-light-angled.bmp -- 15, 25
+            transparent-glass-bottle.jpg -- gray.rows/4, 50, 60
+            glass-bottle.jpg -- 70, 75
+            cap-top-view.jpg -- threshold(gray, gray, 200, 255, THRESH_BINARY_INV); 30, 50
+            Wine-bottle.jpg -- threshold(gray, gray, 50, 255, THRESH_BINARY); 30, 40
+    */
     
-    // Filter by Inertia
-    // low inertia -> ellipse
-    // high inertia -> circle
-    params.filterByInertia = true;
-    params.minInertiaRatio = 0.01;
+    // draw the caps
+    for( size_t i = 0; i < circles.size(); i++ )
+    {
+        Vec3i c = circles[i];
+        circle( img, Point(c[0], c[1]), c[2], Scalar(0,0,255), 3, 8, 0);
+        circle( img, Point(c[0], c[1]), 2, Scalar(0,255,0), 3, 8, 0);
+    }
     
-    // vector to store the blob
-    vector<KeyPoint> keypoints;
+    // draw both images
+    imshow("gray image: ", gray);
+    imshow("detected circles", img);
     
-    // Set up detector with params
-    SimpleBlobDetector detector(params);
-    
-    // You can use the detector this way
-    detector.detect(src, keypoints);
-    
-    Mat image_with_keypoints;
-    drawKeypoints( src, keypoints, image_with_keypoints, Scalar(0,0,255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-    
-    // Show blobs
-    imshow("keypoints", image_with_keypoints );
-    
-    // keep window open until enter is pressed
-    waitKey (0);
+    waitKey();
 }
