@@ -8,7 +8,7 @@
 using namespace std;
 using namespace cv;
 
-void blobDetection () {
+void bottleCapDetection () {
     
     // project directory
     string prjdir = "/Users/aurangzaib/Documents/Hochschule/Winter 2016/Projects/Master Project/";
@@ -21,7 +21,7 @@ void blobDetection () {
     // reference the images in array
     for (int loopVar = 0; loopVar < arraySize; loopVar++) {
         *(img + loopVar) =
-        imread(prjdir + "/Meeting-5/sequence-" + to_string(loopVar + 1) + ".bmp", CV_LOAD_IMAGE_COLOR);
+        imread(prjdir + "/Meeting-4/sequence-" + to_string(loopVar + 1) + ".bmp", CV_LOAD_IMAGE_COLOR);
     }
     
     // apply medianBlur, thresholding and houghcircle on each image

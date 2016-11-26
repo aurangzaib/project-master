@@ -31,8 +31,9 @@
 		746200721DE753CF00A687D2 /* libopencv_superres.2.4.13.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 746200601DE753CF00A687D2 /* libopencv_superres.2.4.13.dylib */; };
 		746200731DE753CF00A687D2 /* libopencv_video.2.4.13.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 746200611DE753CF00A687D2 /* libopencv_video.2.4.13.dylib */; };
 		746200741DE753CF00A687D2 /* libopencv_videostab.2.4.13.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 746200621DE753CF00A687D2 /* libopencv_videostab.2.4.13.dylib */; };
-		746200761DE7542700A687D2 /* blob-detections.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 746200751DE7542700A687D2 /* blob-detections.cpp */; };
+		746200761DE7542700A687D2 /* bottle-cap-detection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 746200751DE7542700A687D2 /* bottle-cap-detection.cpp */; };
 		746200781DE7547D00A687D2 /* sobel-canny-threshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */; };
+		74F7BA331DE9FC8D002BC046 /* lane-detection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74F7BA321DE9FC8D002BC046 /* lane-detection.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -73,8 +74,9 @@
 		746200601DE753CF00A687D2 /* libopencv_superres.2.4.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_superres.2.4.13.dylib; path = ../../../../../usr/local/Cellar/opencv/2.4.13.1/lib/libopencv_superres.2.4.13.dylib; sourceTree = "<group>"; };
 		746200611DE753CF00A687D2 /* libopencv_video.2.4.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_video.2.4.13.dylib; path = ../../../../../usr/local/Cellar/opencv/2.4.13.1/lib/libopencv_video.2.4.13.dylib; sourceTree = "<group>"; };
 		746200621DE753CF00A687D2 /* libopencv_videostab.2.4.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_videostab.2.4.13.dylib; path = ../../../../../usr/local/Cellar/opencv/2.4.13.1/lib/libopencv_videostab.2.4.13.dylib; sourceTree = "<group>"; };
-		746200751DE7542700A687D2 /* blob-detections.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "blob-detections.cpp"; sourceTree = "<group>"; };
+		746200751DE7542700A687D2 /* bottle-cap-detection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "bottle-cap-detection.cpp"; sourceTree = "<group>"; };
 		746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "sobel-canny-threshold.cpp"; sourceTree = "<group>"; };
+		74F7BA321DE9FC8D002BC046 /* lane-detection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "lane-detection.cpp"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,8 +151,9 @@
 				741CE36F1DE239E100DA4A31 /* classes.cpp */,
 				74078EFE1DE6128200E77921 /* classes-pointers.cpp */,
 				74078F001DE619F900E77921 /* classes-operator-overload.cpp */,
-				746200751DE7542700A687D2 /* blob-detections.cpp */,
+				746200751DE7542700A687D2 /* bottle-cap-detection.cpp */,
 				746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */,
+				74F7BA321DE9FC8D002BC046 /* lane-detection.cpp */,
 			);
 			path = "revise-cpp";
 			sourceTree = "<group>";
@@ -216,8 +219,9 @@
 				74078F011DE619F900E77921 /* classes-operator-overload.cpp in Sources */,
 				741CE3701DE239E100DA4A31 /* classes.cpp in Sources */,
 				74078EFF1DE6128200E77921 /* classes-pointers.cpp in Sources */,
+				74F7BA331DE9FC8D002BC046 /* lane-detection.cpp in Sources */,
 				741A22511DE1A34200FDE960 /* main.cpp in Sources */,
-				746200761DE7542700A687D2 /* blob-detections.cpp in Sources */,
+				746200761DE7542700A687D2 /* bottle-cap-detection.cpp in Sources */,
 				746200781DE7547D00A687D2 /* sobel-canny-threshold.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

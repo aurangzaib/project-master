@@ -4,7 +4,9 @@
 #include "classes-pointers.cpp"
 #include "classes-operator-overload.cpp"
 #include "sobel-canny-threshold.cpp"
-#include "blob-detections.cpp"
+#include "bottle-cap-detection.cpp"
+#include "lane-detection.cpp"
+
 using namespace std;
 
 int main () {
@@ -46,8 +48,12 @@ int main () {
 #endif
 
 #if true
-    blobDetection();
+    bottleCapDetection();
 #endif
-
+    
+#if false
+    laneDetection();
+#endif
+    
     return 0;
 }

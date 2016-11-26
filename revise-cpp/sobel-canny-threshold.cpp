@@ -12,7 +12,7 @@ void sobelCannyThreshold () {
     Mat src, grey, sobelx, canny, thresholdImage, draw;
     double minValue, maxValue;
     
-    src = imread( prjdir+"/Meeting-3/3-light-vertical.jpg", CV_LOAD_IMAGE_COLOR );
+    src = imread( prjdir+"/Meeting-2/3-light-vertical.jpg", CV_LOAD_IMAGE_COLOR );
     // reduce noise with 3x3 kernel
     blur(src, src, Size(3, 3)) ;
     // transform image from 1 color system to another
@@ -26,7 +26,7 @@ void sobelCannyThreshold () {
     // perform thresholding
     threshold(grey, thresholdImage, 80, 255, THRESH_BINARY);
     // perform canny edge detector
-    Canny(grey, canny, 1, 50, 3);
+    Canny(grey, canny, 0, 150, 3);
     
     // max and min values of grey scale image
     cout << "min value: " << minValue
