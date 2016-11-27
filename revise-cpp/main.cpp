@@ -6,6 +6,7 @@
 #include "sobel-canny-threshold.cpp"
 #include "bottle-cap-detection.cpp"
 #include "lane-detection.cpp"
+#include "discrete-fourier-transform.cpp"
 
 using namespace std;
 
@@ -47,12 +48,16 @@ int main () {
     sobelCannyThreshold();
 #endif
 
-#if true
+#if false
     bottleCapDetection();
 #endif
     
 #if false
     laneDetection();
+#endif
+    
+#if true
+    discreteFourierTransform();
 #endif
     
     return 0;

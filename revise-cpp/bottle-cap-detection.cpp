@@ -40,14 +40,15 @@ void bottleCapDetection () {
         
         // hough circles
         vector<Vec3f> circles;
-        HoughCircles(gray, circles, CV_HOUGH_GRADIENT, 1,
-                     // change this value to detect circles with different distances to each other
-                     gray.rows / 8,
-                     // canny parameters
-                     200, 10,
-                     // min_radius & max_radius
-                     20, 40
-                     );
+        HoughCircles(
+                gray,
+                circles,
+                CV_HOUGH_GRADIENT,
+                1,
+                gray.rows / 8, // change this value to detect circles with different distances to each other
+                200, 10,       // canny parameters
+                20, 40         // min_radius & max_radius
+        );
         
         /* radius params:
          multicolor-bottle-caps.jpeg -- 40, 45

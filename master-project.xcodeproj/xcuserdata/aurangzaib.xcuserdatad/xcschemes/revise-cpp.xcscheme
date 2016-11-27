@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "741A224C1DE1A34200FDE960"
-               BuildableName = "revise-cpp"
-               BlueprintName = "revise-cpp"
-               ReferencedContainer = "container:revise-cpp.xcodeproj">
+               BuildableName = "master-project"
+               BlueprintName = "master-project"
+               ReferencedContainer = "container:master-project.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "741A224C1DE1A34200FDE960"
-            BuildableName = "revise-cpp"
-            BlueprintName = "revise-cpp"
-            ReferencedContainer = "container:revise-cpp.xcodeproj">
+            BuildableName = "master-project"
+            BlueprintName = "master-project"
+            ReferencedContainer = "container:master-project.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "741A224C1DE1A34200FDE960"
-            BuildableName = "revise-cpp"
-            BlueprintName = "revise-cpp"
-            ReferencedContainer = "container:revise-cpp.xcodeproj">
+            BuildableName = "master-project"
+            BlueprintName = "master-project"
+            ReferencedContainer = "container:master-project.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "741A224C1DE1A34200FDE960"
-            BuildableName = "revise-cpp"
-            BlueprintName = "revise-cpp"
-            ReferencedContainer = "container:revise-cpp.xcodeproj">
+            BuildableName = "master-project"
+            BlueprintName = "master-project"
+            ReferencedContainer = "container:master-project.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
