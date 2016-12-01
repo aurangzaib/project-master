@@ -1,4 +1,6 @@
+#include "stdafx.h"
 #include <iostream>
+
 using namespace std;
 
 // http://www.cplusplus.com/doc/tutorial/classes/

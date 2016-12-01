@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <iostream>
 #include "opencv2/core/core.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
@@ -8,7 +9,7 @@ using namespace cv;
 
 void sobelCannyThreshold () {
     
-    string prjdir = "/Users/aurangzaib/Documents/Hochschule/Winter 2016/Projects/Master Project/";
+	string prjdir = "C:/Users/aurangzaib/Documents/Master-Project";
     Mat src, grey, sobelx, canny, thresholdImage, draw;
     double minValue, maxValue;
     
@@ -29,7 +30,7 @@ void sobelCannyThreshold () {
     Canny(grey, canny, 0, 150, 3);
     
     // max and min values of grey scale image
-    cout << "min value: " << minValue
+    std::cout << "min value: " << minValue
     << " max value: " << maxValue
     << endl ;
     

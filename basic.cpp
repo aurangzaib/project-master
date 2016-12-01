@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <iostream>
 using namespace std;
 
@@ -42,9 +43,7 @@ T templateFunc (T a, T b) {
 void playWithStrings () {
     string someString  = "go to home with string";
     char someCharString[] = "go to home with char";
-    cout << "with string: " << someString
-    << endl
-    << "with char: " << someCharString << endl;
+    // cout << "with string: " << someString << endl << "with char: " << someCharString << endl;
     
 }
 

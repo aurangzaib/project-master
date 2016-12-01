@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <iostream>
 using namespace std;
 
@@ -111,8 +112,7 @@ void playWithPointerToPointer () {
     cout << "value of a: " << a  << " | address of a is: " << &a << endl;
     cout << "value of b: " << b << " | address of b is: "  << &b << endl;
     cout << "value of c: " << c << " | address of c is: "  << &c << endl;
-    cout << "value of variable to which b points: " << *b
-    << " | value of b: " << b << " | address of b: " << &b << endl;
+    cout << "value of variable to which b points: " << *b << " | value of b: " << b << " | address of b: " << &b << endl;
     cout << "value of a through b: " << *b << endl;
     cout << "value of a through c: " << **c << endl;
     
@@ -122,8 +122,7 @@ void playWithPointerToPointer () {
     // all null pointers are equal
     int *nullPointer = nullptr;
     
-    cout << "null pointer value: " << nullPointer
-    << " | null pointer address: " << &nullPointer << endl;
+    cout << "null pointer value: " << nullPointer << " | null pointer address: " << &nullPointer << endl;
     
     // nullPointer is 0x0, &nullPointer is address, *nullPointer is exception error.
 }
