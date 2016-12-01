@@ -5,6 +5,8 @@ class discreteFourierTransform {
   private:
     Mat spatialImage, frequencyImage;
   public:
+    // ctor default
+    discreteFourierTransform();
     // ctor declaration
     discreteFourierTransform(const Mat, const Mat);
     // method to perform the DFT
@@ -12,6 +14,13 @@ class discreteFourierTransform {
     // method to show the DFT
     void showDFTResult();
 };
+
+// ctor default
+discreteFourierTransform::discreteFourierTransform(){
+    Mat a, b;
+    spatialImage = a;
+    frequencyImage = b;
+}
 
 // ctor definition
 discreteFourierTransform::discreteFourierTransform(const Mat spatialImage, const Mat frequencyImage)
@@ -29,26 +38,26 @@ void discreteFourierTransform::performDFT() {
 
     // create a new image with optmizied borders
     Mat optimizedImage;
-    copyMakeBorder(spatialImage,                      // source
-                   optimizedImage,           // destination
-                   0,                        // top
-                   optimizedRows - spatialImage.rows, // bottom
-                   0,                        // left
-                   optimizedCols - spatialImage.cols, // right
+    copyMakeBorder(spatialImage,                        // source
+                   optimizedImage,                      // destination
+                   0,                                   // top
+                   optimizedRows - spatialImage.rows,   // bottom
+                   0,                                   // left
+                   optimizedCols - spatialImage.cols,   // right
                    BORDER_CONSTANT);
 
     // DFT results real and imaginary results
     // which have larger size than spatial coordinates
     Mat plane[] = {
-        Mat_<float>(optimizedImage),              // element 1
-        Mat::zeros(optimizedImage.size(), CV_32F) // element 2
+        Mat_<float>(optimizedImage),                    // element 1
+        Mat::zeros(optimizedImage.size(), CV_32F)       // element 2
     };
 
     // create 1 multichannel array from several single channel array
     Mat dftImage;
-    merge(plane,   // input arrays or matrices
-          2,       // # of input arrays when input is plain array
-          dftImage // result
+    merge(plane,                                        // input arrays or matrices
+          2,                                            // # of input arrays when input is plain array
+          dftImage                                      // result
           );
 
     // apply dft
@@ -57,9 +66,9 @@ void discreteFourierTransform::performDFT() {
     // split real and complex parts
     split(dftImage, plane);
 
-    magnitude(plane[0], // real part in  freq domain
-              plane[1], // imaginary part in freq domain
-              plane[0]  // save magnitude in plane[0]
+    magnitude(plane[0],                                 // real part in  freq domain
+              plane[1],                                 // imaginary part in freq domain
+              plane[0]                                  // save magnitude in plane[0]
               );
 
     // save the magnitude of the image in Freq domain
@@ -78,41 +87,31 @@ void discreteFourierTransform::performDFT() {
     int cy = frequencyImage.rows / 2;
 
     Mat q0(frequencyImage,
-           Rect(0, 0, cx, cy)); // Top-Left - Create a ROI per quadrant
-    Mat q1(frequencyImage, Rect(cx, 0, cx, cy));  // Top-Right
-    Mat q2(frequencyImage, Rect(0, cy, cx, cy));  // Bottom-Left
-    Mat q3(frequencyImage, Rect(cx, cy, cx, cy)); // Bottom-Right
+           Rect(0, 0, cx, cy));                         // Top-Left - Create a ROI per quadrant
+    Mat q1(frequencyImage, Rect(cx, 0, cx, cy));        // Top-Right
+    Mat q2(frequencyImage, Rect(0, cy, cx, cy));        // Bottom-Left
+    Mat q3(frequencyImage, Rect(cx, cy, cx, cy));       // Bottom-Right
 
-    Mat tmp; // swap quadrants (Top-Left with Bottom-Right)
+    Mat tmp;                                            // swap quadrants (Top-Left with Bottom-Right)
     q0.copyTo(tmp);
     q3.copyTo(q0);
     tmp.copyTo(q3);
 
-    q1.copyTo(tmp); // swap quadrant (Top-Right with Bottom-Left)
+    q1.copyTo(tmp);                                     // swap quadrant (Top-Right with Bottom-Left)
     q2.copyTo(q1);
     tmp.copyTo(q2);
 
     // now we can normalize the image between 0 and 1
-    normalize(frequencyImage, // source
-              frequencyImage, // destination
-              0,              // min range
-              1,              // max range
-              CV_MINMAX       // type of normalization
+    normalize(frequencyImage,                           // source
+              frequencyImage,                           // destination
+              0,                                        // min range
+              1,                                        // max range
+              CV_MINMAX                                 // type of normalization
               );
 }
 
 void discreteFourierTransform::showDFTResult() {
-    // spatial domain image
-    imshow("Image in spatial domain", spatialImage);
-    // freq domain image
-    imshow("Image in Freq domain", frequencyImage);
-    // wait till key press to dismiss the window
-    waitKey();
-}
-
-void performDFT() {
-    Mat a, b;
-    discreteFourierTransform DFTInstance(a, b);
-    DFTInstance.performDFT();
-    DFTInstance.showDFTResult();
+    imshow("Image in spatial domain", spatialImage);    // spatial domain image
+    imshow("Image in Freq domain", frequencyImage);     // freq domain image
+    waitKey();                                          // wait till key press to dismiss the window
 }

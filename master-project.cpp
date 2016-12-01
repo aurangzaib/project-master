@@ -26,6 +26,11 @@ int main() {
 //	sobelCannyThreshold();
 //	bottleCapDetection();
 //	laneDetection();
-    performDFT();
+
+    // dft on the image
+    discreteFourierTransform DFTInstance;
+    DFTInstance.performDFT();
+    DFTInstance.showDFTResult();
+    
     return 0;
 }
