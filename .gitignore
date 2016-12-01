@@ -31,3 +31,9 @@ C++ How to program - 8E.pdf
 Effective and More Effective C++.pdf
 Effective C++ 3E.pdf
 .vs/
+x64/
+master-project.VC.VC.opendb
+Debug/
+ipch/
+master-project.vcxproj.user
+master-project.VC.db
