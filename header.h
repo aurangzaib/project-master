@@ -22,6 +22,9 @@ void sobelCannyThreshold(void);
 // project directory - windows
 // string prjdir = "C:/Users/aurangzaib/Documents/Master-Project";
 // project directory - osx
-string prjdir = "/Users/aurangzaib/Documents/Hochschule/Winter 2016/Projects/Master Project";
+
+namespace masterproject {
+    extern string prjdir;
+}
 
 #endif /* header_h */

@@ -4,7 +4,7 @@
 void laneDetection () {
     
     // input image
-    Mat img  = imread(prjdir + "/Meeting-4/road-0.jpg", CV_LOAD_IMAGE_COLOR);
+    Mat img  = imread(masterproject::prjdir + "/Meeting-4/road-0.jpg", CV_LOAD_IMAGE_COLOR);
     
     // grayscale conversion
     Mat gray;

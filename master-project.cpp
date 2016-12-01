@@ -8,6 +8,11 @@
 #include "lane-detection.cpp"
 #include "bottle-cap-detection.cpp"
 
+// for osx
+string masterproject::prjdir = "/Users/aurangzaib/Documents/Hochschule/Winter 2016/Projects/Master Project";
+// for windows
+// string masterproject::prjdir = "C:/Users/aurangzaib/Documents/Master-Project";
+
 int main() {
 
 #if false
@@ -46,11 +51,11 @@ int main() {
 	sobelCannyThreshold();
 #endif
 
-#if true
+#if false
 	bottleCapDetection();
 #endif
 
-#if false
+#if true
 	laneDetection();
 #endif
 

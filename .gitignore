@@ -37,8 +37,6 @@ Debug/
 ipch/
 master-project.vcxproj.user
 master-project.VC.db
-stdafx.h
-targetver.h
 master-project.xcodeproj/project.xcworkspace/contents.xcworkspacedata
 master-project.xcodeproj/project.xcworkspace/xcuserdata/aurangzaib.xcuserdatad/UserInterfaceState.xcuserstate
 master-project.xcodeproj/xcuserdata/aurangzaib.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist

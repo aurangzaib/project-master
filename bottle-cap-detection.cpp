@@ -3,7 +3,6 @@
 
 using namespace std;
 using namespace cv;
-
 void bottleCapDetection(void) {
 
 	// array for images
@@ -13,7 +12,7 @@ void bottleCapDetection(void) {
 
 	// reference the images in array
 	for (int loopVar = 0; loopVar < arraySize; loopVar++) {
-		*(img + loopVar) = imread(prjdir + "/Meeting-4/sequence-" + to_string(loopVar) + ".bmp", CV_LOAD_IMAGE_COLOR);
+        *(img + loopVar) = imread(masterproject::prjdir + "/Meeting-4/sequence-" + to_string(loopVar) + ".bmp", CV_LOAD_IMAGE_COLOR);
 	}
 
 	// apply medianBlur, thresholding and houghcircle on each image
@@ -65,7 +64,7 @@ void bottleCapDetection(void) {
 	for (int loopVar = 0; loopVar < arraySize; loopVar++) {
 
 		// save the detected images
-	    imwrite(prjdir + "/Meeting-5/detected-sequence-" + to_string(loopVar + 1) + ".bmp", *(img + loopVar));
+	    imwrite(masterproject::prjdir + "/Meeting-5/detected-sequence-" + to_string(loopVar + 1) + ".bmp", *(img + loopVar));
 		// show the detected images
 		imshow("detected circles - " + to_string(loopVar), *(img + loopVar));
 	}
