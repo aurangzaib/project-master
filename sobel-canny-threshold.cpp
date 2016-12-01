@@ -6,7 +6,7 @@ void sobelCannyThreshold () {
 	Mat src, grey, sobelx, canny, thresholdImage, draw;
     double minValue, maxValue;
     
-    src = imread( prjdir+"/Meeting-2/3-light-vertical.jpg", CV_LOAD_IMAGE_COLOR );
+    src = imread(masterproject::prjdir+"/Meeting-2/3-light-vertical.jpg", CV_LOAD_IMAGE_COLOR );
     // reduce noise with 3x3 kernel
     blur(src, src, Size(3, 3)) ;
     // transform image from 1 color system to another
@@ -35,9 +35,9 @@ void sobelCannyThreshold () {
     imshow( "threshold image", thresholdImage);
     
     // write to disk
-    imwrite( prjdir+"/Meeting-4/profilepic-grey.bmp", grey); // save as grey image
-    imwrite( prjdir+"/Meeting-4/profilepic-sobel.bmp", sobelx); // save as grey image
-    imwrite( prjdir+"/Meeting-4/profilepic-canny.bmp", canny); // save as grey image
+    imwrite(masterproject::prjdir+"/Meeting-4/profilepic-grey.bmp", grey); // save as grey image
+    imwrite(masterproject::prjdir+"/Meeting-4/profilepic-sobel.bmp", sobelx); // save as grey image
+    imwrite(masterproject::prjdir+"/Meeting-4/profilepic-canny.bmp", canny); // save as grey image
     
     // keep window open until enter is pressed
     waitKey (0);

@@ -42,7 +42,6 @@ T templateFunc (T a, T b) {
 
 void playWithStrings () {
     string someString  = "go to home with string";
-    char someCharString[] = "go to home with char";
     // cout << "with string: " << someString << endl << "with char: " << someCharString << endl;
     
 }
@@ -51,13 +50,14 @@ void playWithArrays () {
     // matrix
     int myMatrix[2][3]; // 2x3 matrix
     // number of rows
-    int numberOfRows = sizeof(myMatrix) / sizeof(myMatrix[0]) ;
+    int numberOfRows = sizeof(myMatrix) / sizeof(*myMatrix) ;
     // number of columns
-    int numberOfColumns = sizeof(myMatrix[0]) / sizeof(int) ;
+    int numberOfColumns = sizeof(*myMatrix) / sizeof(int) ;
     
     cout << "rows: " << numberOfRows << endl << "columns: " << numberOfColumns << endl;
-    for (int row = 1; row <= numberOfRows; row++) {
-        for (int column = 1; column <= numberOfColumns; column++) {
+    
+    for (int row = 0; row < numberOfRows; row++) {
+        for (int column = 0; column < numberOfColumns; column++) {
             myMatrix[row][column] = row * column;
             cout << myMatrix[row][column] << "  " ;
         }

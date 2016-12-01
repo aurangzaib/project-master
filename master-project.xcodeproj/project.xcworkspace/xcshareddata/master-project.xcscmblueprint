@@ -1,0 +1,28 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "0180085C5CE9CA7FDA805F8E9D207F9EE2142275",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "0180085C5CE9CA7FDA805F8E9D207F9EE2142275" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "6A818C03-15C5-4962-8D22-1C3D0EF00C06",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "0180085C5CE9CA7FDA805F8E9D207F9EE2142275" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "master-project",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "master-project.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/aurangzaib\/master-project.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0180085C5CE9CA7FDA805F8E9D207F9EE2142275"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/aurangzaib\/revise-cpp",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0180085C5CE9CA7FDA805F8E9D207F9EE2142275"
+    }
+  ]
+}

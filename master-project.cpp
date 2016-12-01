@@ -7,7 +7,7 @@
 #include "classes-operator-overload.cpp"
 #include "lane-detection.cpp"
 #include "bottle-cap-detection.cpp"
-
+#include "sobel-canny-threshold.cpp"
 // for osx
 string masterproject::prjdir = "/Users/aurangzaib/Documents/Hochschule/Winter 2016/Projects/Master Project";
 // for windows
@@ -15,43 +15,43 @@ string masterproject::prjdir = "/Users/aurangzaib/Documents/Hochschule/Winter 20
 
 int main() {
 
-#if false
+#if true
 	playWithStrings();
 #endif
 
-#if false
+#if true
 	playWithArrays();
 #endif
 
-#if false
+#if true
 	playWithFunctions();
 #endif
 
-#if false
+#if true
 	playWithPointers();
 #endif
 
-#if false
+#if true
 	playWithPointerToPointer();
 #endif
 
-#if false
+#if true
 	playWithClass();
 #endif
 
-#if false
+#if true
 	playWithClassPointer();
 #endif
 
-#if false
+#if true
 	playWithClassOverloading();
 #endif
 
-#if false
+#if true
 	sobelCannyThreshold();
 #endif
 
-#if false
+#if true
 	bottleCapDetection();
 #endif
 
