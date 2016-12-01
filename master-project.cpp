@@ -1,19 +1,12 @@
-#include <iostream>
-#include <string>
+#include "stdafx.h"
+#include "header.h"
 #include "basic.cpp"
 #include "pointers.cpp"
 #include "classes.cpp"
 #include "classes-pointers.cpp"
 #include "classes-operator-overload.cpp"
 #include "lane-detection.cpp"
-#include "stdafx.h"
-using namespace std;
-
-void laneDetection(void);
-void bottleCapDetection(void);
-void playWithArrays(void);
-void playWithPointerToPointer(void);
-void sobelCannyThreshold(void);
+#include "bottle-cap-detection.cpp"
 
 int main() {
 
@@ -53,11 +46,11 @@ int main() {
 	sobelCannyThreshold();
 #endif
 
-#if false
+#if true
 	bottleCapDetection();
 #endif
 
-#if true
+#if false
 	laneDetection();
 #endif
 

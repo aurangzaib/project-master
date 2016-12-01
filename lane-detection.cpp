@@ -1,18 +1,7 @@
 #include "stdafx.h"
-#include <iostream>
-#include <string>
-#include <opencv2/opencv.hpp>
-#include <opencv2/core/core.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/features2d.hpp>
+#include "header.h"
 
-using namespace std;
-using namespace cv;
 void laneDetection () {
-
-    // project directory
-	string prjdir = "C:/Users/aurangzaib/Documents/Master-Project";
     
     // input image
     Mat img  = imread(prjdir + "/Meeting-4/road-0.jpg", CV_LOAD_IMAGE_COLOR);

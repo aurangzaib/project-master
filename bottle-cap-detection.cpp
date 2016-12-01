@@ -1,18 +1,10 @@
 #include "stdafx.h"
-#include <iostream>
-#include <string>
-#include "opencv2/core/core.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/features2d.hpp"
+#include "header.h"
 
 using namespace std;
 using namespace cv;
 
 void bottleCapDetection(void) {
-
-	// project directory
-	string prjdir = "C:/Users/aurangzaib/Documents/Master-Project";
 
 	// array for images
 	Mat img[5];
@@ -21,7 +13,7 @@ void bottleCapDetection(void) {
 
 	// reference the images in array
 	for (int loopVar = 0; loopVar < arraySize; loopVar++) {
-		*(img + loopVar) = imread(prjdir + "/Meeting-4/road-" + to_string(loopVar + 1) + ".jpg", CV_LOAD_IMAGE_COLOR);
+		*(img + loopVar) = imread(prjdir + "/Meeting-4/sequence-" + to_string(loopVar) + ".bmp", CV_LOAD_IMAGE_COLOR);
 	}
 
 	// apply medianBlur, thresholding and houghcircle on each image

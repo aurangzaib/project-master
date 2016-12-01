@@ -1,16 +1,9 @@
 #include "stdafx.h"
-#include <iostream>
-#include "opencv2/core/core.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/highgui/highgui.hpp"
-
-using namespace std;
-using namespace cv;
+#include "header.h"
 
 void sobelCannyThreshold () {
     
-	string prjdir = "C:/Users/aurangzaib/Documents/Master-Project";
-    Mat src, grey, sobelx, canny, thresholdImage, draw;
+	Mat src, grey, sobelx, canny, thresholdImage, draw;
     double minValue, maxValue;
     
     src = imread( prjdir+"/Meeting-2/3-light-vertical.jpg", CV_LOAD_IMAGE_COLOR );
