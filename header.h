@@ -19,11 +19,7 @@ void bottleCapDetection(void);
 void playWithArrays(void);
 void playWithPointerToPointer(void);
 void sobelCannyThreshold(void);
-
-// project directory - windows
-// string prjdir = "C:/Users/aurangzaib/Documents/Master-Project";
-// project directory - osx
-
+// namespace
 namespace masterproject {
     extern string prjdir;
 }

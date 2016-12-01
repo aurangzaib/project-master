@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "header.h"
 
-using namespace std;
-using namespace cv;
 void bottleCapDetection(void) {
 
 	// array for images

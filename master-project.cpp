@@ -8,56 +8,24 @@
 #include "lane-detection.cpp"
 #include "bottle-cap-detection.cpp"
 #include "sobel-canny-threshold.cpp"
+#include "discrete-fourier-transform.cpp"
 // for osx
 string masterproject::prjdir = "/Users/aurangzaib/Documents/Hochschule/Winter 2016/Projects/Master Project";
 // for windows
 // string masterproject::prjdir = "C:/Users/aurangzaib/Documents/Master-Project";
 
 int main() {
-
-#if true
-	playWithStrings();
-#endif
-
-#if true
-	playWithArrays();
-#endif
-
-#if true
-	playWithFunctions();
-#endif
-
-#if true
-	playWithPointers();
-#endif
-
-#if true
-	playWithPointerToPointer();
-#endif
-
-#if true
-	playWithClass();
-#endif
-
-#if true
-	playWithClassPointer();
-#endif
-
-#if true
-	playWithClassOverloading();
-#endif
-
-#if true
-	sobelCannyThreshold();
-#endif
-
-#if true
-	bottleCapDetection();
-#endif
-
-#if true
-	laneDetection();
-#endif
-
-	return 0;
+//	playWithStrings();
+//	playWithArrays();
+//	playWithFunctions();
+//	playWithPointers();
+//	playWithPointerToPointer();
+//	playWithClass();
+//	playWithClassPointer();
+//	playWithClassOverloading();
+//	sobelCannyThreshold();
+//	bottleCapDetection();
+//	laneDetection();
+    performDFT();
+    return 0;
 }
