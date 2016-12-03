@@ -37,7 +37,7 @@
         $(function () {
           $.get("https://api.listnride.com/v2/featured", function (a) {
             var id_lnr = $("#listnride");
-            id_lnr.append('<div class="mdl-grid" id="lnr-grid"></div>');
+            id_lnr.html('<div class="mdl-grid" id="lnr-grid"></div>');
             var grid = $("#lnr-grid");
             a.forEach(function (a) {
               grid.append(
