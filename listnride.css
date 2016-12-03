@@ -1,29 +1,29 @@
 <style>
-  @media screen and (min-width:1200px) {
-    .mdl-grid {
-      margin: 0 100px
+    @media screen and (min-width:1200px) {
+      .mdl-grid {
+        margin: 0 100px !important
+      }
     }
-  }
-  
-  .mdl-card__media {
-    background-color: #fff
-  }
-  
-  .lnr-card-wide.mdl-card {
-    width: 100%
-  }
-  
-  .lnr-card-wide>.mdl-card__menu {
-    color: #fff
-  }
-  
-  .lnr-card-event>.mdl-card__actions {
-    display: flex;
-    box-sizing: border-box;
-    align-items: center
-  }
-  
-  .lnr-card-event>.mdl-card__actions>.material-icons {
-    padding-right: 10px
-  }
+    
+    .mdl-card__media {
+      background-color: #fff  !important
+    }
+    
+    .lnr-card-wide.mdl-card {
+      width: 100% 
+    }
+    
+    .lnr-card-wide>.mdl-card__menu {
+      color: #fff
+    }
+    
+    .lnr-card-event>.mdl-card__actions {
+      display: flex;
+      box-sizing: border-box;
+      align-items: center
+    }
+    
+    .lnr-card-event>.mdl-card__actions>.material-icons {
+      padding-right: 10px
+    }
 </style>
