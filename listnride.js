@@ -1,27 +1,52 @@
-!function () {
-  var a = document.createElement("SCRIPT");
-  a.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js", a.type = "text/javascript";
-  var b = document.createElement("LINK");
-  b.href = "https://rawgit.com/aurangzaib/master-project/master/listnride.css", b.rel = "stylesheet";
-  var c = document.createElement("LINK");
-  c.href = "https://code.getmdl.io/1.2.1/material.blue_grey-blue.min.css", c.rel = "stylesheet";
-  var d = document.createElement("LINK");
-  d.href = "https://fonts.googleapis.com/icon?family=Material+Icons", d.rel = "stylesheet";
-  var e = document.getElementsByTagName("head")[0];
-  e.appendChild(d), e.appendChild(c), e.appendChild(b), e.appendChild(a);
-  var f = function (a) {
-    window.jQuery ? a(jQuery) : window.setTimeout(function () {
-      f(a)
-    }, 100)
-  };
-  f(function (a) {
-    a(function () {
-      a.get("https://api.listnride.com/v2/featured", function (b) {
-        var c = a("#listnride");
-        b.forEach(function (a) {
-          c.append('<div class="mdl-cell mdl-cell--4-col mdl-cell--middle"><div class="lnr-card-wide mdl-card mdl-shadow--2dp"><div class="mdl-card__media"><img src="' + a.image_file_1.image_file_1.small.url + '" width="100%" height="80%"></div><div class="mdl-card__supporting-text">' + a.brand + ", " + a.category + "</div></div></div>")
-        })
-      })
-    })
-  })
-}();
+    (function () {
+
+      var scr_lnr = document.createElement("SCRIPT");
+      scr_lnr.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js';
+      scr_lnr.type = 'text/javascript';
+
+      var css_lnr = document.createElement("LINK");
+      css_lnr.href = "https://rawgit.com/aurangzaib/master-project/master/listnride.css";
+      css_lnr.rel = "stylesheet";
+
+      var css_mdl = document.createElement("LINK");
+      css_mdl.href = "https://code.getmdl.io/1.2.1/material.blue_grey-blue.min.css";
+      css_mdl.rel = "stylesheet";
+
+      var fonts_mdl = document.createElement("LINK");
+      fonts_mdl.href = "https://fonts.googleapis.com/icon?family=Material+Icons";
+      fonts_mdl.rel = "stylesheet";
+
+      var head = document.getElementsByTagName("head")[0];
+      head.appendChild(fonts_mdl);
+      head.appendChild(css_mdl);
+      head.appendChild(css_lnr);
+      head.appendChild(scr_lnr);
+
+      var checkReady = function (callback) {
+        if (window.jQuery) {
+          callback(jQuery);
+        } else {
+          window.setTimeout(function () {
+            checkReady(callback);
+          }, 100);
+        }
+      };
+
+      // Start polling...
+      checkReady(function ($) {
+        $(function () {
+          $.get("https://api.listnride.com/v2/featured", function (a) {
+            var id_lnr = $("#listnride");
+            id_lnr.append('<div class="mdl-grid" id="lnr-grid"></div>');
+            var grid = $("#lnr-grid");
+            a.forEach(function (a) {
+              grid.append(
+                '<div class="mdl-cell mdl-cell--4-col mdl-cell--middle"><div class="lnr-card-wide mdl-card mdl-shadow--2dp"><div class="mdl-card__media"><img src="' +
+                a.image_file_1.image_file_1.small.url +
+                '" width="100%" height="80%"></div><div class="mdl-card__supporting-text">' + a.brand +
+                ", " + a.category + "</div></div></div>");
+            });
+          });
+        });
+      });
+    })();
