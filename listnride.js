@@ -2,8 +2,7 @@
 
 // this script will render the bikes of listnride in any site.
 // the site has to include this js file in their html.
-// and add `<div>
-<link rel="stylesheet" href="https://rawgit.com/aurangzaib/master-project/master/listnride.css">    
+// and add `<div>   
 $(function () {
     $.get("https://api.listnride.com/v2/featured", function (a) {
       a.forEach(function (a) {
