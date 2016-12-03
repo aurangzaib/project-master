@@ -1,4 +1,7 @@
-    // this script has nothing to do w/ master project. its just testing script for my company work.
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.blue_grey-blue.min.css">
+<link rel="stylesheet" href="https://rawgit.com/aurangzaib/master-project/master/listnride.css">
+// this script has nothing to do w/ master project. its just testing script for my company work.
 
     // this script will render the bikes of listnride in any site.
     // the site has to include this js file in their html.
