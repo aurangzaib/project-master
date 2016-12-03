@@ -1,5 +1,4 @@
     $(function () {
-      $.get("https://rawgit.com/aurangzaib/master-project/master/listnride.css", function (listnrideCss) {
         $.get("https://api.listnride.com/v2/featured", function (a) {
           var listnride = $("#listnride");
           a.forEach(function (a) {
@@ -10,6 +9,5 @@
               ", " +
               a.category + "</div></div></div>");
           });
-        });
       });
     });
