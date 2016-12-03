@@ -1,13 +1,1 @@
-    $(function () {
-        $.get("https://api.listnride.com/v2/featured", function (a) {
-          var listnride = $("#listnride");
-          a.forEach(function (a) {
-            listnride.append(
-              '<div class="mdl-cell mdl-cell--4-col mdl-cell--middle"><div class="lnr-card-wide mdl-card mdl-shadow--2dp"><div class="mdl-card__media"><img src="' +
-              a.image_file_1.image_file_1.small.url +
-              '" width="100%" height="80%"></div><div class="mdl-card__supporting-text">' + a.brand +
-              ", " +
-              a.category + "</div></div></div>");
-          });
-      });
-    });
+!function(){var a=document.createElement("SCRIPT");a.src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js",a.type="text/javascript",document.getElementsByTagName("head")[0].appendChild(a);var b=function(a){window.jQuery?a(jQuery):window.setTimeout(function(){b(a)},100)};b(function(a){a(function(){a.get("https://api.listnride.com/v2/featured",function(b){var c=a("#listnride");b.forEach(function(a){c.append('<div class="mdl-cell mdl-cell--4-col mdl-cell--middle"><div class="lnr-card-wide mdl-card mdl-shadow--2dp"><div class="mdl-card__media"><img src="'+a.image_file_1.image_file_1.small.url+'" width="100%" height="80%"></div><div class="mdl-card__supporting-text">'+a.brand+", "+a.category+"</div></div></div>")})})})})}();
