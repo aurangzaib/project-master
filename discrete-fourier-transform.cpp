@@ -3,12 +3,15 @@
 
 class discreteFourierTransform {
   private:
+    string imagePath;
     Mat spatialImage, frequencyImage;
   public:
     // ctor default
     discreteFourierTransform();
+    // ctor with image path
+    discreteFourierTransform(const string);
     // ctor declaration
-    discreteFourierTransform(const Mat, const Mat);
+    discreteFourierTransform(const string, const Mat, const Mat);
     // method to perform the DFT
     void performDFT();
     // method to show the DFT
@@ -18,19 +21,26 @@ class discreteFourierTransform {
 // ctor default
 discreteFourierTransform::discreteFourierTransform(){
     Mat a, b;
+    imagePath = "";
+    spatialImage = a;
+    frequencyImage = b;
+}
+
+// ctor default
+discreteFourierTransform::discreteFourierTransform(const string imagePath): imagePath(imagePath) {
+    Mat a, b;
     spatialImage = a;
     frequencyImage = b;
 }
 
 // ctor definition
-discreteFourierTransform::discreteFourierTransform(const Mat spatialImage, const Mat frequencyImage)
-    : spatialImage(spatialImage), frequencyImage(frequencyImage) {}
+discreteFourierTransform::discreteFourierTransform(const string imagePath, const Mat spatialImage, const Mat frequencyImage)
+    : imagePath(imagePath), spatialImage(spatialImage), frequencyImage(frequencyImage) {}
 
 // perform method definition
 void discreteFourierTransform::performDFT() {
     // input image
-    spatialImage = imread(masterproject::prjdir + "/Meeting-4/road-6.jpg",
-                              IMREAD_GRAYSCALE);
+    spatialImage = imread(masterproject::prjdir + imagePath, IMREAD_GRAYSCALE);
     cout << "original image size: " << spatialImage.size() << endl;
     // padding the border to optimize DFT
     int optimizedRows = getOptimalDFTSize(spatialImage.rows),
@@ -38,13 +48,16 @@ void discreteFourierTransform::performDFT() {
 
     // create a new image with optmizied borders
     Mat optimizedImage;
-    copyMakeBorder(spatialImage,                        // source
+    copyMakeBorder(
+                   spatialImage,                        // source
                    optimizedImage,                      // destination
                    0,                                   // top
                    optimizedRows - spatialImage.rows,   // bottom
                    0,                                   // left
                    optimizedCols - spatialImage.cols,   // right
-                   BORDER_CONSTANT);
+                   BORDER_CONSTANT,
+                   Scalar::all(0)
+                   );
 
     // DFT results real and imaginary results
     // which have larger size than spatial coordinates
@@ -55,28 +68,29 @@ void discreteFourierTransform::performDFT() {
 
     // create 1 multichannel array from several single channel array
     Mat dftImage;
-    merge(plane,                                        // input arrays or matrices
+    merge(
+          plane,                                        // input arrays or matrices
           2,                                            // # of input arrays when input is plain array
           dftImage                                      // result
           );
 
     // apply dft
     dft(dftImage, dftImage);
-
+    
     // split real and complex parts
     split(dftImage, plane);
-
-    magnitude(plane[0],                                 // real part in  freq domain
-              plane[1],                                 // imaginary part in freq domain
-              plane[0]                                  // save magnitude in plane[0]
-              );
+//    magnitude(
+//              plane[0],                                 // real part in  freq domain
+//              plane[1],                                 // imaginary part in freq domain
+//              plane[0]                                  // save magnitude in plane[0]
+//              );
+//
 
     // save the magnitude of the image in Freq domain
     frequencyImage = plane[0];
 
     // save the result in log scale to better visualize it
     frequencyImage += Scalar::all(1);
-
     // crop odd rows or columns
     frequencyImage = frequencyImage(
         Rect(0, 0, frequencyImage.cols & -2, frequencyImage.rows & -2));
@@ -86,8 +100,7 @@ void discreteFourierTransform::performDFT() {
     int cx = frequencyImage.cols / 2;
     int cy = frequencyImage.rows / 2;
 
-    Mat q0(frequencyImage,
-           Rect(0, 0, cx, cy));                         // Top-Left - Create a ROI per quadrant
+    Mat q0(frequencyImage, Rect(0, 0, cx, cy));         // Top-Left - Create a ROI per quadrant
     Mat q1(frequencyImage, Rect(cx, 0, cx, cy));        // Top-Right
     Mat q2(frequencyImage, Rect(0, cy, cx, cy));        // Bottom-Left
     Mat q3(frequencyImage, Rect(cx, cy, cx, cy));       // Bottom-Right
@@ -101,17 +114,20 @@ void discreteFourierTransform::performDFT() {
     q2.copyTo(q1);
     tmp.copyTo(q2);
 
-    // now we can normalize the image between 0 and 1
+//    // now we can normalize the image between 0 and 1
     normalize(frequencyImage,                           // source
               frequencyImage,                           // destination
               0,                                        // min range
-              1,                                        // max range
+              3,                                        // max range
               CV_MINMAX                                 // type of normalization
               );
+
+    imshow ("fft image"+imagePath, frequencyImage);
+    waitKey();
 }
 
 void discreteFourierTransform::showDFTResult() {
-    imshow("Image in spatial domain", spatialImage);    // spatial domain image
-    imshow("Image in Freq domain", frequencyImage);     // freq domain image
+    imshow ("Image in spatial domain", spatialImage);    // spatial domain image
+    imshow ("Image in Freq domain", frequencyImage);     // freq domain image
     waitKey();                                          // wait till key press to dismiss the window
 }

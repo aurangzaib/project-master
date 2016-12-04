@@ -28,9 +28,12 @@ int main() {
 //	laneDetection();
 
     // dft on the image
-    discreteFourierTransform DFTInstance;
-    DFTInstance.performDFT();
-    DFTInstance.showDFTResult();
+    discreteFourierTransform DFTInstance("/Meeting-4/sequence-1.bmp");
+    discreteFourierTransform DFTInstance2("/Meeting-4/sequence-3.bmp");
     
+    DFTInstance.performDFT();
+    DFTInstance2.performDFT();
+    
+    // DFTInstance.showDFTResult();
     return 0;
 }
