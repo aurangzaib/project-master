@@ -62,7 +62,7 @@ void bottleCapDetection(void) {
 	for (int loopVar = 0; loopVar < arraySize; loopVar++) {
 
 		// save the detected images
-	    imwrite(masterproject::prjdir + "/Meeting-5/detected-sequence-" + to_string(loopVar + 1) + ".bmp", *(img + loopVar));
+	    imwrite(masterproject::prjdir + "/Meeting-4/detected-sequence-" + to_string(loopVar + 1) + ".bmp", *(img + loopVar));
 		// show the detected images
 		imshow("detected circles - " + to_string(loopVar), *(img + loopVar));
 	}
