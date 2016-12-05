@@ -28,12 +28,18 @@ int main() {
 //	laneDetection();
 
     // dft on the image
-    discreteFourierTransform DFTInstance("/Meeting-4/sequence-1.bmp");
-    discreteFourierTransform DFTInstance2("/Meeting-4/sequence-3.bmp");
+    discreteFourierTransform
+        DFTInstance0("/Meeting-4/road-0"),
+        DFTInstance1("/Meeting-4/road-1"),
+        DFTInstance2("/Meeting-4/road-2"),
+        DFTInstance3("/Meeting-4/road-3"),
+        DFTInstance4("/Meeting-4/road-4");
     
-    DFTInstance.performDFT();
+    DFTInstance0.performDFT();
+    DFTInstance1.performDFT();
     DFTInstance2.performDFT();
-    
-    // DFTInstance.showDFTResult();
+    DFTInstance3.performDFT();
+    DFTInstance4.performDFT();
+    waitKey();
     return 0;
 }

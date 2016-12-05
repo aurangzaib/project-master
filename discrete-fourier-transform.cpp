@@ -40,7 +40,7 @@ discreteFourierTransform::discreteFourierTransform(const string imagePath, const
 // perform method definition
 void discreteFourierTransform::performDFT() {
     // input image
-    spatialImage = imread(masterproject::prjdir + imagePath, IMREAD_GRAYSCALE);
+    spatialImage = imread(masterproject::prjdir + imagePath + ".jpg", IMREAD_GRAYSCALE);
     cout << "original image size: " << spatialImage.size() << endl;
     // padding the border to optimize DFT
     int optimizedRows = getOptimalDFTSize(spatialImage.rows),
@@ -79,12 +79,11 @@ void discreteFourierTransform::performDFT() {
     
     // split real and complex parts
     split(dftImage, plane);
-//    magnitude(
-//              plane[0],                                 // real part in  freq domain
-//              plane[1],                                 // imaginary part in freq domain
-//              plane[0]                                  // save magnitude in plane[0]
-//              );
-//
+    magnitude(
+              plane[0],                                 // real part in  freq domain
+              plane[1],                                 // imaginary part in freq domain
+              plane[0]                                  // save magnitude in plane[0]
+              );
 
     // save the magnitude of the image in Freq domain
     frequencyImage = plane[0];
@@ -118,12 +117,12 @@ void discreteFourierTransform::performDFT() {
     normalize(frequencyImage,                           // source
               frequencyImage,                           // destination
               0,                                        // min range
-              3,                                        // max range
+              255,                                        // max range
               CV_MINMAX                                 // type of normalization
               );
-
-    imshow ("fft image"+imagePath, frequencyImage);
-    waitKey();
+    Mat resultImage = frequencyImage;
+    imwrite(masterproject::prjdir + imagePath + "-DFT.jpg", resultImage); // save as grey image
+    imshow ("fft image - " + imagePath, resultImage);
 }
 
 void discreteFourierTransform::showDFTResult() {
