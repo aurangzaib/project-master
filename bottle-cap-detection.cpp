@@ -10,7 +10,7 @@ void bottleCapDetection(void) {
 
 	// reference the images in array
 	for (int loopVar = 0; loopVar < arraySize; loopVar++) {
-        *(img + loopVar) = imread(masterproject::prjdir + "/Meeting-4/sequence-" + to_string(loopVar) + ".bmp", CV_LOAD_IMAGE_COLOR);
+		*(img + loopVar) = imread(masterproject::prjdir + "/Meeting-4/sequence-" + to_string(loopVar) + ".bmp", CV_LOAD_IMAGE_COLOR);
 	}
 
 	// apply medianBlur, thresholding and houghcircle on each image
@@ -51,18 +51,26 @@ void bottleCapDetection(void) {
 		 */
 
 		 // draw the caps
-		
+
 		for (size_t i = 0; i < circles.size(); i++) {
 			Vec3i c = circles[i];
-			 circle(*(img + loopVar), Point(c[0], c[1]), c[2], Scalar(0, 0, 255), 3, 8, 0);
-		 	 circle(*(img + loopVar), Point(c[0], c[1]), 2, Scalar(0, 255, 0), 3, 8, 0);
+			circle(
+				*(img + loopVar),					// image
+				Point(c[0], c[1]),					// x, y of circle (to be drawn)
+				c[2],								// radius of the circle (to be drawn)
+				Scalar(0, 0, 255),					// red color
+				3,									// thickness of the point
+				8, 0
+			);
+
+			circle(*(img + loopVar), Point(c[0], c[1]), 2, Scalar(0, 255, 0), 3, 8, 0);
 		}
 	}
 
 	for (int loopVar = 0; loopVar < arraySize; loopVar++) {
 
 		// save the detected images
-	    imwrite(masterproject::prjdir + "/Meeting-4/detected-sequence-" + to_string(loopVar + 1) + ".bmp", *(img + loopVar));
+		imwrite(masterproject::prjdir + "/Meeting-4/detected-sequence-" + to_string(loopVar + 1) + ".bmp", *(img + loopVar));
 		// show the detected images
 		imshow("detected circles - " + to_string(loopVar), *(img + loopVar));
 	}

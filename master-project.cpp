@@ -10,7 +10,7 @@
 #include "sobel-canny-threshold.cpp"
 #include "discrete-fourier-transform.cpp"
 // for osx
-string masterproject::prjdir = "/Users/aurangzaib/Documents/Hochschule/Winter 2016/Projects/Master Project";
+string masterproject::prjdir = "C:/Users/aurangzaib/Documents/master-project";
 // for windows
 // string masterproject::prjdir = "C:/Users/aurangzaib/Documents/Master-Project";
 
@@ -28,18 +28,13 @@ int main() {
 //	laneDetection();
 
     // dft on the image
-    discreteFourierTransform
-        DFTInstance0("/Meeting-4/road-0"),
-        DFTInstance1("/Meeting-4/road-1"),
-        DFTInstance2("/Meeting-4/road-2"),
-        DFTInstance3("/Meeting-4/road-3"),
-        DFTInstance4("/Meeting-4/road-4");
-    
+	discreteFourierTransform
+		DFTInstance0("/Meeting-4/bg-black-white-stripes-horizontal"),
+		DFTInstance1("/Meeting-4/bg-black-white-stripes");
+
     DFTInstance0.performDFT();
-    DFTInstance1.performDFT();
-    DFTInstance2.performDFT();
-    DFTInstance3.performDFT();
-    DFTInstance4.performDFT();
+	DFTInstance1.performDFT();
     waitKey();
-    return 0;
+    
+	return 0;
 }

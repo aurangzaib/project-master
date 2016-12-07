@@ -40,8 +40,22 @@ discreteFourierTransform::discreteFourierTransform(const string imagePath, const
 // perform method definition
 void discreteFourierTransform::performDFT() {
     // input image
-    spatialImage = imread(masterproject::prjdir + imagePath + ".jpg", IMREAD_GRAYSCALE);
-    cout << "original image size: " << spatialImage.size() << endl;
+	spatialImage = imread(masterproject::prjdir + imagePath + ".jpg", CV_LOAD_IMAGE_COLOR);
+	cout << "original image size: " << spatialImage.size() << endl;
+	
+	Mat gray;
+	spatialImage.copyTo(gray);
+	
+	// reduce the noise
+	blur(gray, gray, Size(3, 3));
+	
+	// transform image from 1 color system to another
+	cvtColor(gray, gray, CV_BGR2GRAY);
+	
+	// perform thresholding
+	// threshold(gray, gray, 20, 170, THRESH_BINARY);
+	
+	spatialImage = gray;
     // padding the border to optimize DFT
     int optimizedRows = getOptimalDFTSize(spatialImage.rows),
         optimizedCols = getOptimalDFTSize(spatialImage.cols);

@@ -10,9 +10,13 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d.hpp>
+#include <opencv2/core/opengl.hpp>
+
 // namespace
 using namespace std;
 using namespace cv;
+using namespace cv::ogl;
+using namespace cv::ocl;
 // declarations
 void laneDetection(void);
 void bottleCapDetection(void);
