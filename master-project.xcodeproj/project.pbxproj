@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		74078EFF1DE6128200E77921 /* classes-pointers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74078EFE1DE6128200E77921 /* classes-pointers.cpp */; };
 		74078F011DE619F900E77921 /* classes-operator-overload.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74078F001DE619F900E77921 /* classes-operator-overload.cpp */; };
-		741A22511DE1A34200FDE960 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 741A22501DE1A34200FDE960 /* main.cpp */; };
 		741CE36C1DE2373C00DA4A31 /* basic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 741CE36B1DE2373C00DA4A31 /* basic.cpp */; };
 		741CE36E1DE237C200DA4A31 /* pointers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 741CE36D1DE237C200DA4A31 /* pointers.cpp */; };
 		741CE3701DE239E100DA4A31 /* classes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 741CE36F1DE239E100DA4A31 /* classes.cpp */; };
@@ -34,6 +33,7 @@
 		746200741DE753CF00A687D2 /* libopencv_videostab.2.4.13.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 746200621DE753CF00A687D2 /* libopencv_videostab.2.4.13.dylib */; };
 		746200761DE7542700A687D2 /* bottle-cap-detection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 746200751DE7542700A687D2 /* bottle-cap-detection.cpp */; };
 		746200781DE7547D00A687D2 /* sobel-canny-threshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */; };
+		748A7CF01DF05CD400DDFE20 /* master-project.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 748A7CEF1DF05CD400DDFE20 /* master-project.cpp */; };
 		74F7BA331DE9FC8D002BC046 /* lane-detection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74F7BA321DE9FC8D002BC046 /* lane-detection.cpp */; };
 /* End PBXBuildFile section */
 
@@ -53,7 +53,6 @@
 		74078EFE1DE6128200E77921 /* classes-pointers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "classes-pointers.cpp"; sourceTree = "<group>"; };
 		74078F001DE619F900E77921 /* classes-operator-overload.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "classes-operator-overload.cpp"; sourceTree = "<group>"; };
 		741A224D1DE1A34200FDE960 /* master-project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "master-project"; sourceTree = BUILT_PRODUCTS_DIR; };
-		741A22501DE1A34200FDE960 /* main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		741CE36B1DE2373C00DA4A31 /* basic.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = basic.cpp; sourceTree = "<group>"; };
 		741CE36D1DE237C200DA4A31 /* pointers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = pointers.cpp; sourceTree = "<group>"; };
 		741CE36F1DE239E100DA4A31 /* classes.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = classes.cpp; sourceTree = "<group>"; };
@@ -78,6 +77,8 @@
 		746200621DE753CF00A687D2 /* libopencv_videostab.2.4.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_videostab.2.4.13.dylib; path = /usr/local/Cellar/opencv/2.4.13.1/lib/libopencv_videostab.2.4.13.dylib; sourceTree = "<absolute>"; };
 		746200751DE7542700A687D2 /* bottle-cap-detection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "bottle-cap-detection.cpp"; sourceTree = "<group>"; };
 		746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "sobel-canny-threshold.cpp"; sourceTree = "<group>"; };
+		748A7CEF1DF05CD400DDFE20 /* master-project.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "master-project.cpp"; sourceTree = SOURCE_ROOT; };
+		748A7CF11DF05E2100DDFE20 /* header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = header.h; sourceTree = SOURCE_ROOT; };
 		74F7BA321DE9FC8D002BC046 /* lane-detection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "lane-detection.cpp"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,7 +131,7 @@
 		741A224F1DE1A34200FDE960 /* master-project */ = {
 			isa = PBXGroup;
 			children = (
-				741A22501DE1A34200FDE960 /* main.cpp */,
+				748A7CEF1DF05CD400DDFE20 /* master-project.cpp */,
 				745B48921DEB6E150085FFAC /* basics */,
 				745B48931DEB6E280085FFAC /* algorithms */,
 			);
@@ -171,6 +172,7 @@
 				741CE36F1DE239E100DA4A31 /* classes.cpp */,
 				74078EFE1DE6128200E77921 /* classes-pointers.cpp */,
 				74078F001DE619F900E77921 /* classes-operator-overload.cpp */,
+				748A7CF11DF05E2100DDFE20 /* header.h */,
 			);
 			name = basics;
 			sourceTree = "<group>";
@@ -247,9 +249,9 @@
 				745B488F1DEB62A00085FFAC /* discrete-fourier-transform.cpp in Sources */,
 				74078F011DE619F900E77921 /* classes-operator-overload.cpp in Sources */,
 				741CE3701DE239E100DA4A31 /* classes.cpp in Sources */,
+				748A7CF01DF05CD400DDFE20 /* master-project.cpp in Sources */,
 				74078EFF1DE6128200E77921 /* classes-pointers.cpp in Sources */,
 				74F7BA331DE9FC8D002BC046 /* lane-detection.cpp in Sources */,
-				741A22511DE1A34200FDE960 /* main.cpp in Sources */,
 				746200761DE7542700A687D2 /* bottle-cap-detection.cpp in Sources */,
 				746200781DE7547D00A687D2 /* sobel-canny-threshold.cpp in Sources */,
 			);

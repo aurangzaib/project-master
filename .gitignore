@@ -30,3 +30,18 @@
 C++ How to program - 8E.pdf
 Effective and More Effective C++.pdf
 Effective C++ 3E.pdf
+.vs/
+x64/
+master-project.VC.VC.opendb
+Debug/
+ipch/
+master-project.vcxproj.user
+master-project.VC.db
+master-project.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+master-project.xcodeproj/project.xcworkspace/xcuserdata/aurangzaib.xcuserdatad/UserInterfaceState.xcuserstate
+master-project.xcodeproj/xcuserdata/aurangzaib.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+master-project.xcodeproj/xcuserdata/aurangzaib.xcuserdatad/xcschemes/revise-cpp.xcscheme
+master-project.xcodeproj/xcuserdata/aurangzaib.xcuserdatad/xcschemes/xcschememanagement.plist
+master-project.xcodeproj/xcuserdata/aurangzaib.xcuserdatad/xcschemes
+Theory/
+Release/
