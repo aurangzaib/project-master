@@ -4,6 +4,7 @@
 // cpp
 #include <iostream>
 #include <string>
+#include <fstream>
 // opencv
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
