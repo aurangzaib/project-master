@@ -2,7 +2,7 @@
 #include "header.h"
 
 void bottleHorizVertDetection(void) {
-
+    
 	// input image
 	Mat img = imread(masterproject::prjdir + "/Meeting-7/original-1.bmp", CV_LOAD_IMAGE_COLOR);
 
@@ -84,31 +84,25 @@ void bottleHorizVertDetection(void) {
 	sort(lineCoordinates.begin(), lineCoordinates.end(), greater<int>());  // sort in descending order
 
 	vector<int> condensedArray;
-
-	for (const auto& lineCoordinate: lineCoordinates) {
-		cout << "value: " << lineCoordinate << endl;
-	}
-
-	if (lineCoordinates.size() < 3) {
-		condensedArray = lineCoordinates;
-	}
-
+    
+	for (const auto& coord: lineCoordinates) cout << "value: " << coord << endl;
+	if (lineCoordinates.size() < 3) condensedArray = lineCoordinates;
 	else {
-		int valueRange = lineCoordinates.front() - lineCoordinates.back();
-		cout << endl;
-		condensedArray.push_back(lineCoordinates.front());
+		int valueRange = lineCoordinates.front() - lineCoordinates.back();      // first - last
+		condensedArray.push_back(lineCoordinates.front());                      // push first element
 		
 		for (const auto& lineCoordinate: lineCoordinates) {
-			cout << endl << "comparing " << lineCoordinate << " with " << *(&lineCoordinate + 1);
-			if ((lineCoordinate - *(&lineCoordinate + 1)) > (valueRange/2) )
+			cout << endl << "comparing "
+                 << lineCoordinate << " with "
+                 << *(&lineCoordinate + 1);
+			
+            if ((lineCoordinate - *(&lineCoordinate + 1)) > (valueRange/2) )
 				condensedArray.push_back(*(&lineCoordinate + 1));
 		}
 	}
 
 	cout << endl << endl << "value selected" << endl;
-	for (const auto& condensed: condensedArray) {
-		cout << condensed  << " ";
-	}
+	for (const auto& condensed: condensedArray) cout << condensed  << " ";
 
 	if (condensedArray.size() > 1) {
 		int width = abs(condensedArray.front() - condensedArray.at(1));
