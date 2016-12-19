@@ -5,12 +5,12 @@
 #include "classes.cpp"
 #include "classes-pointers.cpp"
 #include "classes-operator-overload.cpp"
-#include "lane-detection.cpp"
+#include "bottle-horiz-vert-detection.cpp"
 #include "bottle-cap-detection.cpp"
 #include "sobel-canny-threshold.cpp"
 #include "discrete-fourier-transform.cpp"
 // for osx
-string masterproject::prjdir = "C:/Users/aurangzaib/Documents/Master-Project";
+string masterproject::prjdir = "/Users/aurangzaib/Documents/Projects/master-project/master-project";
 // for windows
 // string masterproject::prjdir = "C:/Users/aurangzaib/Documents/Master-Project";
 

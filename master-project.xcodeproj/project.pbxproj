@@ -34,7 +34,7 @@
 		746200761DE7542700A687D2 /* bottle-cap-detection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 746200751DE7542700A687D2 /* bottle-cap-detection.cpp */; };
 		746200781DE7547D00A687D2 /* sobel-canny-threshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */; };
 		748A7CF01DF05CD400DDFE20 /* master-project.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 748A7CEF1DF05CD400DDFE20 /* master-project.cpp */; };
-		74F7BA331DE9FC8D002BC046 /* lane-detection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74F7BA321DE9FC8D002BC046 /* lane-detection.cpp */; };
+		74F7BA331DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74F7BA321DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -79,7 +79,7 @@
 		746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "sobel-canny-threshold.cpp"; sourceTree = "<group>"; };
 		748A7CEF1DF05CD400DDFE20 /* master-project.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "master-project.cpp"; sourceTree = SOURCE_ROOT; };
 		748A7CF11DF05E2100DDFE20 /* header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = header.h; sourceTree = SOURCE_ROOT; };
-		74F7BA321DE9FC8D002BC046 /* lane-detection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "lane-detection.cpp"; sourceTree = "<group>"; };
+		74F7BA321DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "bottle-horiz-vert-detection.cpp"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,7 +182,7 @@
 			children = (
 				746200751DE7542700A687D2 /* bottle-cap-detection.cpp */,
 				746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */,
-				74F7BA321DE9FC8D002BC046 /* lane-detection.cpp */,
+				74F7BA321DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp */,
 				745B488E1DEB62A00085FFAC /* discrete-fourier-transform.cpp */,
 			);
 			name = algorithms;
@@ -251,7 +251,7 @@
 				741CE3701DE239E100DA4A31 /* classes.cpp in Sources */,
 				748A7CF01DF05CD400DDFE20 /* master-project.cpp in Sources */,
 				74078EFF1DE6128200E77921 /* classes-pointers.cpp in Sources */,
-				74F7BA331DE9FC8D002BC046 /* lane-detection.cpp in Sources */,
+				74F7BA331DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp in Sources */,
 				746200761DE7542700A687D2 /* bottle-cap-detection.cpp in Sources */,
 				746200781DE7547D00A687D2 /* sobel-canny-threshold.cpp in Sources */,
 			);

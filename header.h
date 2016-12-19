@@ -17,7 +17,7 @@
 using namespace std;
 using namespace cv;
 // declarations
-void laneDetection(void);
+void bottleHorizVertDetection(void);
 void bottleCapDetection(void);
 void playWithArrays(void);
 void playWithPointerToPointer(void);
