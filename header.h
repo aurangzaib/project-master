@@ -1,11 +1,20 @@
 #ifndef header_h
 #define header_h
 #include "stdafx.h"
+#define WINDOWS  /* uncomment this line to use it for windows.*/ 
+#ifdef WINDOWS
+#include <direct.h>
+#define GetCurrentDir _getcwd
+#else
+#include <unistd.h>
+#define GetCurrentDir getcwd
+#endif
 // cpp
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <algorithm>
+#include <functional> 
 // opencv
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>

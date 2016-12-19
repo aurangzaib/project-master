@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "header.h"
 
-void bottleHorizVertDetection() {
+void bottleHorizVertDetection(void) {
 
     // input image
-	Mat img = imread(masterproject::prjdir + "/Meeting-7/teach-small-original-3.bmp", CV_LOAD_IMAGE_COLOR);
+	Mat img = imread(masterproject::prjdir + "/Meeting-7/original-2.bmp", CV_LOAD_IMAGE_COLOR);
 
 	// grayscale conversion
 	Mat gray;
@@ -81,7 +81,7 @@ void bottleHorizVertDetection() {
         line(detection, pt1, pt2, Scalar(0, 0, 255), 1, CV_AA);                 // draw line using point1 and point2. red color
 	}
 
-	std::sort(lineCoordinates.begin(), lineCoordinates.end(), greater<int>());  // sort in descending order
+	std::sort(lineCoordinates.begin(), lineCoordinates.end(), std::greater<int>());  // sort in descending order
 	
 	vector<int> condensedArray;
 	

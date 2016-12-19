@@ -9,10 +9,15 @@
 #include "bottle-cap-detection.cpp"
 #include "sobel-canny-threshold.cpp"
 #include "discrete-fourier-transform.cpp"
-// for osx
-string masterproject::prjdir = "/Users/aurangzaib/Documents/Projects/master-project/master-project";
-// for windows
-// string masterproject::prjdir = "C:/Users/aurangzaib/Documents/Master-Project";
+
+string GetCurrentWorkingDir(void) {
+	char buff[FILENAME_MAX];
+	GetCurrentDir(buff, FILENAME_MAX);
+	string current_working_dir(buff);
+	return current_working_dir;
+}
+
+string masterproject::prjdir = GetCurrentWorkingDir();
 
 int main() {
 //	playWithStrings();

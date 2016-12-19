@@ -166,7 +166,7 @@
     <ClInclude Include="classes-pointers.cpp" />
     <ClInclude Include="classes.cpp" />
     <ClInclude Include="discrete-fourier-transform.cpp" />
-    <ClInclude Include="lane-detection.cpp" />
+    <ClInclude Include="bottle-horiz-vert-detection.cpp" />
     <ClCompile Include="master-project.cpp" />
     <ClInclude Include="pointers.cpp" />
     <ClInclude Include="sobel-canny-threshold.cpp" />
