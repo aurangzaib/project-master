@@ -25,7 +25,7 @@ int main() {
 //	playWithClassOverloading();
 //	sobelCannyThreshold();
 //	bottleCapDetection();
-	laneDetection();
+	bottleHorizVertDetection();
 
     // dft on the image
 //	discreteFourierTransform

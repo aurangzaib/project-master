@@ -4,7 +4,7 @@
 void bottleHorizVertDetection() {
 
     // input image
-	Mat img = imread(masterproject::prjdir + "/Meeting-7/teach-small-1.bmp", CV_LOAD_IMAGE_COLOR);
+	Mat img = imread(masterproject::prjdir + "/Meeting-7/teach-small-original-3.bmp", CV_LOAD_IMAGE_COLOR);
 
 	// grayscale conversion
 	Mat gray;
@@ -112,13 +112,13 @@ void bottleHorizVertDetection() {
     int width = abs(condensedArray.at(0) - condensedArray.at(1));
 	cout << endl << endl << "width is found: " << width << endl;
 
-	if (width < 25) {
+	if (width < 5) {
 		cout << "there is no bottle" << endl;
 	}
-	else if (width > 25 && width < 50) {
+	else if (width > 5 && width < 80) {
 		cout << "bottle is horizontal" << endl;
 	}
-	else if (width > 180 && width < 255) {
+	else if (width >= 80 && width < 255) {
 		cout << "bottle is vertical" << endl;
 	}
 	else {
