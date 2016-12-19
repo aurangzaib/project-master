@@ -10,14 +10,14 @@
 #include "sobel-canny-threshold.cpp"
 #include "discrete-fourier-transform.cpp"
 
-string GetCurrentWorkingDir(void) {
+string GetCWD(void) {
 	char buff[FILENAME_MAX];
 	GetCurrentDir(buff, FILENAME_MAX);
-	string current_working_dir(buff);
-	return current_working_dir;
+	string cwd(buff);
+	return cwd;
 }
 
-string masterproject::prjdir = GetCurrentWorkingDir();
+string masterproject::prjdir = GetCWD();
 
 int main() {
 //	playWithStrings();

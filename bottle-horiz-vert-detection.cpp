@@ -4,7 +4,7 @@
 void bottleHorizVertDetection(void) {
 
 	// input image
-	Mat img = imread(masterproject::prjdir + "/Meeting-7/teach-small-1.bmp", CV_LOAD_IMAGE_COLOR);
+	Mat img = imread(masterproject::prjdir + "/Meeting-7/original-1.bmp", CV_LOAD_IMAGE_COLOR);
 
 	// grayscale conversion
 	Mat gray;
@@ -57,7 +57,7 @@ void bottleHorizVertDetection(void) {
 
 	vector<int> lineCoordinates;
 
-	for (size_t loopVar = 0; loopVar < lines.size(); loopVar++) {
+	for (int loopVar = 0; loopVar < lines.size(); loopVar++) {
 
 		// hough coordinates [row, theta]
 		float rho = lines[loopVar][0];                                          // first row
@@ -81,12 +81,12 @@ void bottleHorizVertDetection(void) {
 		line(detection, pt1, pt2, Scalar(0, 0, 255), 1, CV_AA);                 // draw line using point1 and point2. red color
 	}
 
-	std::sort(lineCoordinates.begin(), lineCoordinates.end(), std::greater<int>());  // sort in descending order
+	sort(lineCoordinates.begin(), lineCoordinates.end(), greater<int>());  // sort in descending order
 
 	vector<int> condensedArray;
 
-	for (int loopVar = 0; loopVar < lineCoordinates.size(); loopVar++) {
-		cout << "value: " << lineCoordinates.at(loopVar) << endl;
+	for (const auto& lineCoordinate: lineCoordinates) {
+		cout << "value: " << lineCoordinate << endl;
 	}
 
 	if (lineCoordinates.size() < 3) {
@@ -94,22 +94,24 @@ void bottleHorizVertDetection(void) {
 	}
 
 	else {
-		size_t valueRange = lineCoordinates.at(0) - lineCoordinates.at(lineCoordinates.size() - 1);
+		int valueRange = lineCoordinates.front() - lineCoordinates.back();
 		cout << endl;
-		condensedArray.push_back(lineCoordinates.at(0));
-		for (int loopVar = 0; loopVar < lineCoordinates.size() - 1; loopVar++) {
-			cout << endl << "comparing " << lineCoordinates.at(loopVar) << " with " << lineCoordinates.at(loopVar + 1);
-			if ((lineCoordinates.at(loopVar) - lineCoordinates.at(loopVar + 1)) > valueRange / 2)
-				condensedArray.push_back(lineCoordinates.at(loopVar + 1));
+		condensedArray.push_back(lineCoordinates.front());
+		
+		for (const auto& lineCoordinate: lineCoordinates) {
+			cout << endl << "comparing " << lineCoordinate << " with " << *(&lineCoordinate + 1);
+			if ((lineCoordinate - *(&lineCoordinate + 1)) > (valueRange/2) )
+				condensedArray.push_back(*(&lineCoordinate + 1));
 		}
 	}
 
 	cout << endl << endl << "value selected" << endl;
-	for (int loopVar = 0; loopVar < condensedArray.size(); loopVar++) {
-		cout << condensedArray.at(loopVar) << " ";
+	for (const auto& condensed: condensedArray) {
+		cout << condensed  << " ";
 	}
+
 	if (condensedArray.size() > 1) {
-		int width = abs(condensedArray.at(0) - condensedArray.at(1));
+		int width = abs(condensedArray.front() - condensedArray.at(1));
 		cout << endl << endl << "width is found: " << width << endl;
 
 		if (width < 5) {
@@ -129,6 +131,7 @@ void bottleHorizVertDetection(void) {
 	else {
 		cout << "there is no bottle" << endl;
 	}
+
 	imshow("1-original image: ", img);
 	//imshow("2-gray image", gray);
 	//imshow("3-median blur image", median);
