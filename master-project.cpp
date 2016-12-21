@@ -30,7 +30,8 @@ int main() {
 //	playWithClassOverloading();
 //	sobelCannyThreshold();
 //	bottleCapDetection();
-	bottleHorizVertDetection();
+    BottleDetection bottle("/Meeting-7/original-4.bmp");
+    bottle.computeResults();
 
     // dft on the image
 //	discreteFourierTransform
