@@ -1,7 +1,7 @@
 #ifndef header_h
 #define header_h
 #include "stdafx.h"
-#define WINDOWS  /* uncomment this line to use it for windows.*/ 
+#define WINDOWS
 #ifdef WINDOWS
 #include <direct.h>
 #define GetCurrentDir _getcwd
@@ -26,8 +26,6 @@
 using namespace std;
 using namespace cv;
 // declarations
-void bottleHorizVertDetection(void);
-void bottleCapDetection(void);
 void playWithArrays(void);
 void playWithPointerToPointer(void);
 void sobelCannyThreshold(void);
