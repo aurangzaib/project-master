@@ -1,7 +1,7 @@
 #ifndef header_h
 #define header_h
 #include "stdafx.h"
-#define WINDOWS
+//#define WINDOWS
 #ifdef WINDOWS
 #include <direct.h>
 #define GetCurrentDir _getcwd
@@ -14,7 +14,7 @@
 #include <string>
 #include <fstream>
 #include <algorithm>
-#include <functional> 
+#include <functional>
 // opencv
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
@@ -31,7 +31,7 @@ void playWithPointerToPointer(void);
 void sobelCannyThreshold(void);
 // namespace
 namespace masterproject {
-    extern string prjdir;
+extern string prjdir;
 }
 
 #endif /* header_h */
