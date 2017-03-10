@@ -1,6 +1,20 @@
 #include "header.h"
 #include "stdafx.h"
 
+
+void performBottleCapDetection(Mat frame) {
+    // array for images
+    Mat img[12];
+    img[0] = frame;
+    
+    bottleCapDetection(img);
+}
+
+void performBottlePositionDetection(Mat frame) {
+    BottleDetection detect;
+    detect.computeResults(frame, true);
+}
+
 unsigned videoFrames(const string videoPath) {
   // open the video file for reading
   VideoCapture cap(videoPath);
@@ -33,12 +47,9 @@ unsigned videoFrames(const string videoPath) {
       cout << "Cannot read the frame from video file" << endl;
       break;
     }
-    
-    // array for images
-    Mat img[12];
-    img[0] = frame;
 
-    bottleCapDetection(img);
+     performBottlePositionDetection(frame);
+//    performBottleCapDetection(frame);
     if (waitKey(30) == 27)  // wait for 'esc' key press for 30 ms. If 'esc' key
                             // is pressed, break loop
     {

@@ -22,6 +22,9 @@ string masterproject::prjdir =
     "/Users/siddiqui/Documents/Projects/master-project";
 
 int main() {
-  videoFrames("/Users/siddiqui/Documents/Projects/master-project/Meeting-5/""cap-teach-video.mp4");
+  // detection of positions
+   videoFrames(masterproject::prjdir + "/meeting-7/position-teach-video.mp4");
+  // detection of caps
+//  videoFrames(masterproject::prjdir + "/meeting-5/cap-teach-video.mp4");
   return 0;
 }
