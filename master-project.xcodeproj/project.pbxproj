@@ -17,6 +17,7 @@
 		746200781DE7547D00A687D2 /* sobel-canny-threshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */; };
 		748A7CF01DF05CD400DDFE20 /* master-project.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 748A7CEF1DF05CD400DDFE20 /* master-project.cpp */; };
 		74F7BA331DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74F7BA321DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp */; };
+		7B43B37B1E727FB20065B525 /* video-frames.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B43B37A1E727FB20065B525 /* video-frames.cpp */; };
 		7BB0AEDE1E0A72950029CC78 /* libopencv_calib3d.2.4.13.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB0AEDD1E0A72950029CC78 /* libopencv_calib3d.2.4.13.dylib */; };
 		7BB0AEF01E0A72BF0029CC78 /* libopencv_contrib.2.4.13.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB0AEDF1E0A72BF0029CC78 /* libopencv_contrib.2.4.13.dylib */; };
 		7BB0AEF11E0A72BF0029CC78 /* libopencv_core.2.4.13.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB0AEE01E0A72BF0029CC78 /* libopencv_core.2.4.13.dylib */; };
@@ -63,6 +64,7 @@
 		748A7CEF1DF05CD400DDFE20 /* master-project.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "master-project.cpp"; sourceTree = SOURCE_ROOT; };
 		748A7CF11DF05E2100DDFE20 /* header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = header.h; sourceTree = SOURCE_ROOT; };
 		74F7BA321DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "bottle-horiz-vert-detection.cpp"; sourceTree = "<group>"; };
+		7B43B37A1E727FB20065B525 /* video-frames.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "video-frames.cpp"; sourceTree = SOURCE_ROOT; };
 		7BB0AEDD1E0A72950029CC78 /* libopencv_calib3d.2.4.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.2.4.13.dylib; path = "../../../../../usr/local/Cellar/opencv/HEAD-6ed571b/lib/libopencv_calib3d.2.4.13.dylib"; sourceTree = "<group>"; };
 		7BB0AEDF1E0A72BF0029CC78 /* libopencv_contrib.2.4.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_contrib.2.4.13.dylib; path = "../../../../../usr/local/Cellar/opencv/HEAD-6ed571b/lib/libopencv_contrib.2.4.13.dylib"; sourceTree = "<group>"; };
 		7BB0AEE01E0A72BF0029CC78 /* libopencv_core.2.4.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.2.4.13.dylib; path = "../../../../../usr/local/Cellar/opencv/HEAD-6ed571b/lib/libopencv_core.2.4.13.dylib"; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */,
 				74F7BA321DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp */,
 				745B488E1DEB62A00085FFAC /* discrete-fourier-transform.cpp */,
+				7B43B37A1E727FB20065B525 /* video-frames.cpp */,
 			);
 			name = algorithms;
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 				74078F011DE619F900E77921 /* classes-operator-overload.cpp in Sources */,
 				741CE3701DE239E100DA4A31 /* classes.cpp in Sources */,
 				748A7CF01DF05CD400DDFE20 /* master-project.cpp in Sources */,
+				7B43B37B1E727FB20065B525 /* video-frames.cpp in Sources */,
 				74078EFF1DE6128200E77921 /* classes-pointers.cpp in Sources */,
 				74F7BA331DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp in Sources */,
 				746200761DE7542700A687D2 /* bottle-cap-detection.cpp in Sources */,
