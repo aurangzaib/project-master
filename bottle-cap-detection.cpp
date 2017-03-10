@@ -1,17 +1,20 @@
-#include "stdafx.h"
 #include "header.h"
+#include "stdafx.h"
 
-void bottleCapDetection(void) {
+void bottleCapDetection(Mat img[]) {
   // array for images
-  Mat img[12];
+  //  Mat img[12];
 
   int arraySize = 1;  // sizeof(img) / sizeof(*img); // img/img[0]
 
-  // reference the images in array
-  for (int loopVar = 0; loopVar < arraySize; loopVar++) {
-    *(img + loopVar) =
-        imread(masterproject::prjdir + "/Meeting-5/cap-teach-2.bmp",
-               CV_LOAD_IMAGE_COLOR);
+  //   reference the images in array
+  // not required when acquiring from different sources
+  if (false) {
+    for (int loopVar = 0; loopVar < arraySize; loopVar++) {
+      *(img + loopVar) =
+          imread(masterproject::prjdir + "/Meeting-5/cap-teach-1.bmp",
+                 CV_LOAD_IMAGE_COLOR);
+    }
   }
 
   // apply medianBlur, thresholding and houghcircle on each image
@@ -32,10 +35,10 @@ void bottleCapDetection(void) {
                       THRESH_BINARY, 3, 1);
     adaptiveThreshold(thresh, threshAdapt3, 255, ADAPTIVE_THRESH_GAUSSIAN_C,
                       THRESH_BINARY, 7, 1);
-    imshow("thesho: ", thresh);
-    imshow("thesho adapt guass: ", threshAdapt);
-    imshow("thesho adapt mean: ", threshAdapt2);
-    imshow("thesho adapt 5 thresh: ", threshAdapt3);
+    // imshow("thesho: ", thresh);
+    // imshow("thesho adapt guass: ", threshAdapt);
+    // imshow("thesho adapt mean: ", threshAdapt2);
+    // imshow("thesho adapt 5 thresh: ", threshAdapt3);
     int morph_size = 2;
     Mat element = getStructuringElement(
         MORPH_RECT, Size(2 * morph_size + 1, 2 * morph_size + 1),
@@ -46,7 +49,7 @@ void bottleCapDetection(void) {
               // Apply the specified morphology operation
     cv::erode(threshAdapt, dst, element);
     // morphologyEx( src, dst, MORPH_TOPHAT, element ); // here iteration=1
-    imshow("result", dst);
+    //    imshow("result", dst);
 
     // hough circle to determine bottle caps
     vector<Vec3f> bottleCaps;
@@ -136,27 +139,22 @@ void bottleCapDetection(void) {
       }
     }
     // draw the bottle radius
-    /*
-    for (size_t i = 0; i < bottleRadius.size(); i++) {
-            Vec3i c = bottleRadius[i];
-            // draw the circle for bottle cap
-            circle(
-                    *(img + loopVar),					// image
-                    Point(c[0], c[1]),					// x, y of circle (to
-    be drawn)
-                    c[2],								// radius of the circle
-    (to be drawn)
-                    Scalar(255, 255, 255),					// red
-    color
-                    3,									// thickness of the
-    point
-                    8, 0
-            );
-            // draw the center of bottle cap
-            circle(*(img + loopVar), Point(c[0], c[1]), 1, Scalar(255, 255,
-    255), 3, 8, 0);
+
+    if (false) {
+      for (size_t i = 0; i < bottleRadius.size(); i++) {
+        Vec3i c = bottleRadius[i];
+        // draw the circle for bottle cap
+        circle(*(img + loopVar),       // image
+               Point(c[0], c[1]),      // x, y of circle (to be drawn)
+               c[2],                   // radius of the circle (to be drawn)
+               Scalar(255, 255, 255),  // red color
+               3,                      // thickness of the point
+               8, 0);
+        // draw the center of bottle cap
+        circle(*(img + loopVar), Point(c[0], c[1]), 1, Scalar(255, 255, 255), 3,
+               8, 0);
+      }
     }
-    */
   }
 
   for (int loopVar = 0; loopVar < arraySize; loopVar++) {
@@ -167,5 +165,5 @@ void bottleCapDetection(void) {
     imshow("detected circles - " + to_string(loopVar), *(img + loopVar));
   }
 
-  waitKey();
+  //  waitKey();
 }
