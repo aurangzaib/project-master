@@ -11,10 +11,11 @@ class discreteFourierTransform {
   discreteFourierTransform();
   // ctor with image path
   discreteFourierTransform(const string);
+  discreteFourierTransform(const Mat spatialImage);
   // ctor declaration
   discreteFourierTransform(const string, const Mat, const Mat);
   // method to perform the DFT
-  void performDFT();
+  void performDFT(const bool acquireImage);
   // method to show the DFT
   void showDFTResult();
 };
@@ -35,6 +36,14 @@ discreteFourierTransform::discreteFourierTransform(const string imagePath)
   frequencyImage = b;
 }
 
+// ctor default
+discreteFourierTransform::discreteFourierTransform(const Mat spatialImage)
+: spatialImage(spatialImage) {
+    Mat b;
+    imagePath = "";
+    frequencyImage = b;
+}
+
 // ctor definition
 discreteFourierTransform::discreteFourierTransform(const string imagePath,
                                                    const Mat spatialImage,
@@ -44,10 +53,9 @@ discreteFourierTransform::discreteFourierTransform(const string imagePath,
       frequencyImage(frequencyImage) {}
 
 // perform method definition
-void discreteFourierTransform::performDFT() {
+void discreteFourierTransform::performDFT(const bool acquireImage) {
   // input image
-  spatialImage =
-      imread(masterproject::prjdir + imagePath + ".jpg", CV_LOAD_IMAGE_COLOR);
+  if (acquireImage == true) spatialImage = imread(masterproject::prjdir + imagePath + ".jpg", CV_LOAD_IMAGE_COLOR);
   cout << "original image size: " << spatialImage.size() << endl;
 
   Mat gray;

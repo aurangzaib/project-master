@@ -37,7 +37,7 @@ void BottleDetection::findLinePoints(const Mat image, const bool useImage) {
   Mat median;
   medianBlur(gray,    // source
              median,  // destination
-             3        // aperture size (odd and >1)
+             9        // aperture size (odd and >1)
              );
   // canny contour detection
   Mat canny;
@@ -58,7 +58,7 @@ void BottleDetection::findLinePoints(const Mat image, const bool useImage) {
              lines,              // destination
              1,                  // rho resolution
              180 * CV_PI / 180,  // theta resolution (1 degree here)
-             10,                 // min # of intersection to detect a line
+             100,                 // min # of intersection to detect a line
              0, 0                // srn and stn
              );
   // save a copy of inputImage in outputImage
@@ -93,6 +93,12 @@ void BottleDetection::findLinePoints(const Mat image, const bool useImage) {
   sort(lineCoordinates.begin(), lineCoordinates.end(),
        greater<int>());  // sort in descending order
   linePoints = lineCoordinates;
+    
+    imshow("1-original image: ", inputImage);
+    imshow("2-gray image", gray);
+    imshow("3-median blur image", median);
+    imshow("4-canny contour image", canny);
+    imshow("5-threshold image", thresh);
 }
 
 void BottleDetection::findLineUniquePoints() {
@@ -146,12 +152,6 @@ void BottleDetection::computeResults(const Mat image, const bool useImage) {
   else {
     cout << "there is no bottle" << endl;
   }
-
-  // imshow("1-original image: ", inputImage);
-  // imshow("2-gray image", gray);
-  // imshow("3-median blur image", median);
-  // imshow("4-canny contour image", canny);
-  // imshow("5-threshold image", thresh);
   imshow("6-hough line transform ", outputImage);
   // waitKey();
 }

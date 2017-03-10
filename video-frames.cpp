@@ -1,21 +1,20 @@
 #include "header.h"
 #include "stdafx.h"
 
-
-void performBottleCapDetection(Mat frame) {
-    // array for images
-    Mat img[12];
-    img[0] = frame;
-    
-    bottleCapDetection(img);
+void performBottleCapDetection(Mat frame, const unsigned radiusMin, const unsigned radiusMax) {
+  // array for images
+  Mat img[12];
+  img[0] = frame;
+  // frame and min, max radii
+  bottleCapDetection(img, radiusMin, radiusMax);
 }
 
 void performBottlePositionDetection(Mat frame) {
-    BottleDetection detect;
-    detect.computeResults(frame, true);
+  BottleDetection detect;
+  detect.computeResults(frame, true);
 }
 
-unsigned videoFrames(const string videoPath) {
+unsigned videoFrames(const string videoPath, const bool which, const unsigned radiusMin, const unsigned radiusMax) {
   // open the video file for reading
   VideoCapture cap(videoPath);
 
@@ -34,11 +33,7 @@ unsigned videoFrames(const string videoPath) {
   cout << "Frame per seconds : " << fps << endl;
   cout << "Number of Frame : " << framesLength << endl;
 
-//  namedWindow("myFrames",
-//              CV_WINDOW_AUTOSIZE);  // create a window called "MyVideo"
-//  namedWindow("oldFrames", CV_WINDOW_AUTOSIZE);
-
-    for (int loop=0; loop < framesLength; loop++) {
+  for (int loop = 0; loop < framesLength; loop++) {
     Mat frame;
 
     bool bSuccess = cap.read(frame);  // read a new frame from video
@@ -48,11 +43,23 @@ unsigned videoFrames(const string videoPath) {
       break;
     }
 
-     performBottlePositionDetection(frame);
-//    performBottleCapDetection(frame);
-    if (waitKey(30) == 27)  // wait for 'esc' key press for 30 ms. If 'esc' key
-                            // is pressed, break loop
-    {
+    if (which == true)
+    // find position of the bottle (horizontal/vertical)
+      performBottlePositionDetection(frame);
+    
+    else if (which == false)
+    // find position of the cap
+      performBottleCapDetection(frame, radiusMin, radiusMax);
+      
+    // perform DFT on the frame
+    if (false){
+      discreteFourierTransform obj(frame);
+      obj.performDFT(false);
+    }
+      
+    // wait for 'esc' key press for 30 ms. If 'esc' key
+    // is pressed, break loop
+    if (waitKey(30) == 27) {
       cout << "esc key is pressed by user" << endl;
       break;
     }

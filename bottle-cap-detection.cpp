@@ -1,7 +1,8 @@
 #include "header.h"
 #include "stdafx.h"
 
-void bottleCapDetection(Mat img[]) {
+void bottleCapDetection(Mat img[], const unsigned radiusMin,
+                        const unsigned radiusMax) {
   // array for images
   //  Mat img[12];
 
@@ -24,21 +25,28 @@ void bottleCapDetection(Mat img[]) {
     cvtColor(*(img + loopVar), gray, COLOR_BGR2GRAY);
 
     // median filter to reduce noise
-    medianBlur(gray, gray, 7);
+    // reduce unwanted objects from the image
+    medianBlur(
+        // source
+        gray,
+        // destination
+        gray,
+        // kernel size (square)
+        15);
 
     // threshold to make image binary
     // ! will not work in each scenario !
-    threshold(gray, thresh, 25, 255, THRESH_BINARY);  // --> diable for cap.jpg
+    threshold(gray, thresh, 22, 255, THRESH_BINARY);  // --> disable for cap.jpg
     adaptiveThreshold(thresh, threshAdapt, 255, ADAPTIVE_THRESH_GAUSSIAN_C,
                       THRESH_BINARY, 5, 3);
     adaptiveThreshold(thresh, threshAdapt2, 255, ADAPTIVE_THRESH_MEAN_C,
                       THRESH_BINARY, 3, 1);
     adaptiveThreshold(thresh, threshAdapt3, 255, ADAPTIVE_THRESH_GAUSSIAN_C,
                       THRESH_BINARY, 7, 1);
-    // imshow("thesho: ", thresh);
-    // imshow("thesho adapt guass: ", threshAdapt);
-    // imshow("thesho adapt mean: ", threshAdapt2);
-    // imshow("thesho adapt 5 thresh: ", threshAdapt3);
+    imshow("thesho: ", thresh);
+    imshow("thesho adapt guass: ", threshAdapt);
+    imshow("thesho adapt mean: ", threshAdapt2);
+    imshow("thesho adapt 5 thresh: ", threshAdapt3);
     int morph_size = 2;
     Mat element = getStructuringElement(
         MORPH_RECT, Size(2 * morph_size + 1, 2 * morph_size + 1),
@@ -66,7 +74,7 @@ void bottleCapDetection(Mat img[]) {
                  // canny parameters
                  200, 10,
                  // min_radius & max_radius
-                 20, 32);
+                 radiusMin, radiusMax);
 
     // find the bottle
     HoughCircles(gray, bottleRadius, CV_HOUGH_GRADIENT, 1,

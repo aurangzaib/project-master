@@ -59,7 +59,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "18"
             endingLineNumber = "18"
-            landmarkName = "videoFrames(const string videoPath)"
+            landmarkName = "videoFrames(const string videoPath, const bool which, const unsigned radiusMin, const unsigned radiusMax)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -75,7 +75,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "32"
             endingLineNumber = "32"
-            landmarkName = "videoFrames(const string videoPath)"
+            landmarkName = "videoFrames(const string videoPath, const bool which, const unsigned radiusMin, const unsigned radiusMax)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -102,7 +102,7 @@
                   moduleName = "master-project"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/siddiqui/Documents/Projects/master-project/classes-operator-overload.cpp"
-                  timestampString = "510832425.679713"
+                  timestampString = "510840718.116681"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "15"
@@ -117,7 +117,7 @@
                   moduleName = "master-project"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/siddiqui/Documents/Projects/master-project/classes-operator-overload.cpp"
-                  timestampString = "510832425.68187"
+                  timestampString = "510840718.11924"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "15"
