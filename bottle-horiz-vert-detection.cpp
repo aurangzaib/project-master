@@ -58,7 +58,7 @@ void BottleDetection::findLinePoints(const Mat image, const bool useImage) {
              lines,              // destination
              1,                  // rho resolution
              180 * CV_PI / 180,  // theta resolution (1 degree here)
-             100,                 // min # of intersection to detect a line
+             10,                 // min # of intersection to detect a line
              0, 0                // srn and stn
              );
   // save a copy of inputImage in outputImage
