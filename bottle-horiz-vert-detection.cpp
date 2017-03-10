@@ -11,9 +11,9 @@ class BottleDetection {
  public:
   BottleDetection();
   BottleDetection(const string);
-  void findLinePoints();
+  void findLinePoints(const Mat image, const bool useImage);
   void findLineUniquePoints();
-  void computeResults();
+  void computeResults(const Mat image, const bool useImage);
 };
 
 // default ctor
@@ -22,10 +22,15 @@ BottleDetection::BottleDetection() { imagePath = "/Meeting-7/original-1.bmp"; }
 BottleDetection::BottleDetection(const string imagePath)
     : imagePath(imagePath) {}
 // find the hough line
-void BottleDetection::findLinePoints() {
+void BottleDetection::findLinePoints(const Mat image, const bool useImage) {
   // input image
-  inputImage = imread(masterproject::prjdir + imagePath, CV_LOAD_IMAGE_COLOR);
-  // grayscale conversion
+  // if no image provide then fetch the image
+  inputImage =
+      (useImage == true) 
+      ? image 
+      : imread(masterproject::prjdir + imagePath, CV_LOAD_IMAGE_COLOR);
+  
+    // grayscale conversion
   Mat gray;
   cvtColor(inputImage, gray, COLOR_BGR2GRAY);  // src, output, option
   // median blur to reduce the noise
@@ -117,8 +122,8 @@ void BottleDetection::findLineUniquePoints() {
   lineUniquePoints = condensedArray;
 }
 
-void BottleDetection::computeResults() {
-  findLinePoints();
+void BottleDetection::computeResults(const Mat image, const bool useImage) {
+  findLinePoints(image, useImage);
   findLineUniquePoints();
   cout << endl << endl << "values selected are: " << endl;
   for (const auto &point : lineUniquePoints) cout << point << " ";
@@ -142,11 +147,11 @@ void BottleDetection::computeResults() {
     cout << "there is no bottle" << endl;
   }
 
-  imshow("1-original image: ", inputImage);
+  // imshow("1-original image: ", inputImage);
   // imshow("2-gray image", gray);
   // imshow("3-median blur image", median);
   // imshow("4-canny contour image", canny);
   // imshow("5-threshold image", thresh);
   imshow("6-hough line transform ", outputImage);
-  waitKey();
+  // waitKey();
 }
