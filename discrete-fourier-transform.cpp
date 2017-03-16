@@ -1,5 +1,5 @@
-#include "stdafx.h"
 #include "header.h"
+#include "stdafx.h"
 
 class discreteFourierTransform {
  private:
@@ -11,6 +11,7 @@ class discreteFourierTransform {
   discreteFourierTransform();
   // ctor with image path
   discreteFourierTransform(const string);
+  // ctor with image matrix
   discreteFourierTransform(const Mat spatialImage);
   // ctor declaration
   discreteFourierTransform(const string, const Mat, const Mat);
@@ -38,10 +39,10 @@ discreteFourierTransform::discreteFourierTransform(const string imagePath)
 
 // ctor default
 discreteFourierTransform::discreteFourierTransform(const Mat spatialImage)
-: spatialImage(spatialImage) {
-    Mat b;
-    imagePath = "";
-    frequencyImage = b;
+    : spatialImage(spatialImage) {
+  Mat b;
+  imagePath = "";
+  frequencyImage = b;
 }
 
 // ctor definition
@@ -55,7 +56,9 @@ discreteFourierTransform::discreteFourierTransform(const string imagePath,
 // perform method definition
 void discreteFourierTransform::performDFT(const bool acquireImage) {
   // input image
-  if (acquireImage == true) spatialImage = imread(masterproject::prjdir + imagePath + ".jpg", CV_LOAD_IMAGE_COLOR);
+  if (acquireImage == true)
+    spatialImage =
+        imread(masterproject::prjdir + imagePath + ".png", CV_LOAD_IMAGE_COLOR);
   cout << "original image size: " << spatialImage.size() << endl;
 
   Mat gray;
@@ -65,6 +68,7 @@ void discreteFourierTransform::performDFT(const bool acquireImage) {
   blur(gray, gray, Size(3, 3));
 
   // transform image from 1 color system to another
+  // transform from color to gray scale
   cvtColor(gray, gray, CV_BGR2GRAY);
 
   // perform thresholding
@@ -75,7 +79,7 @@ void discreteFourierTransform::performDFT(const bool acquireImage) {
   int optimizedRows = getOptimalDFTSize(spatialImage.rows),
       optimizedCols = getOptimalDFTSize(spatialImage.cols);
 
-  // create a new image with optmizied borders
+  // create a new image with optimized borders
   Mat optimizedImage;
   copyMakeBorder(spatialImage,                       // source
                  optimizedImage,                     // destination
@@ -119,7 +123,7 @@ void discreteFourierTransform::performDFT(const bool acquireImage) {
       Rect(0, 0, frequencyImage.cols & -2, frequencyImage.rows & -2));
 
   // now we do dft shift to make center of image 0,0
-  // in matlab its fftshift command
+  // in matlab its fft shift command
   int cx = frequencyImage.cols / 2;
   int cy = frequencyImage.rows / 2;
 
@@ -138,17 +142,22 @@ void discreteFourierTransform::performDFT(const bool acquireImage) {
   q2.copyTo(q1);
   tmp.copyTo(q2);
 
-  //    // now we can normalize the image between 0 and 1
+  // now we can normalize the image between 0 and 1
   normalize(frequencyImage,  // source
             frequencyImage,  // destination
             0,               // min range
-            255,             // max range
+            50,              // max range
             CV_MINMAX        // type of normalization
             );
   Mat resultImage = frequencyImage;
-  imwrite(masterproject::prjdir + imagePath + "-DFT.jpg",
-          resultImage);  // save as grey image
-  imshow("fft image - " + imagePath, resultImage);
+  if (false) {
+    imwrite(masterproject::prjdir + imagePath + "-DFT.png",
+            resultImage);  // save as grey image
+  }
+
+  namedWindow(imagePath, WINDOW_NORMAL);
+  imshow(imagePath, resultImage);
+  //  waitKey();  // wait till key press to dismiss the window
 }
 
 void discreteFourierTransform::showDFTResult() {

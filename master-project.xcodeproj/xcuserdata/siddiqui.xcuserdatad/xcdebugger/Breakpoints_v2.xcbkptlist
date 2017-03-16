@@ -15,8 +15,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "26"
             endingLineNumber = "26"
-            landmarkName = "BottleDetection::findLinePoints(const Mat image, const bool useImage)"
-            landmarkType = "7">
+            landmarkName = "removeDuplicate(vector&lt;int&gt; numbers)"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -102,7 +102,7 @@
                   moduleName = "master-project"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/siddiqui/Documents/Projects/master-project/classes-operator-overload.cpp"
-                  timestampString = "510840718.116681"
+                  timestampString = "511390227.449158"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "15"
@@ -117,7 +117,7 @@
                   moduleName = "master-project"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/siddiqui/Documents/Projects/master-project/classes-operator-overload.cpp"
-                  timestampString = "510840718.11924"
+                  timestampString = "511390227.451679"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "15"
@@ -125,6 +125,22 @@
                   offsetFromSymbolStart = "22">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "master-project.cpp"
+            timestampString = "511383606.92801"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "main()"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

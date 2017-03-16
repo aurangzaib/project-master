@@ -32,7 +32,7 @@ void bottleCapDetection(Mat img[], const unsigned radiusMin,
         // destination
         gray,
         // kernel size (square)
-        15);
+        7);
 
     // threshold to make image binary
     // ! will not work in each scenario !
@@ -43,10 +43,10 @@ void bottleCapDetection(Mat img[], const unsigned radiusMin,
                       THRESH_BINARY, 3, 1);
     adaptiveThreshold(thresh, threshAdapt3, 255, ADAPTIVE_THRESH_GAUSSIAN_C,
                       THRESH_BINARY, 7, 1);
-    imshow("thesho: ", thresh);
-    imshow("thesho adapt guass: ", threshAdapt);
-    imshow("thesho adapt mean: ", threshAdapt2);
-    imshow("thesho adapt 5 thresh: ", threshAdapt3);
+//    imshow("thesho: ", thresh);
+//    imshow("thesho adapt guass: ", threshAdapt);
+//    imshow("thesho adapt mean: ", threshAdapt2);
+//    imshow("thesho adapt 5 thresh: ", threshAdapt3);
     int morph_size = 2;
     Mat element = getStructuringElement(
         MORPH_RECT, Size(2 * morph_size + 1, 2 * morph_size + 1),
@@ -167,8 +167,8 @@ void bottleCapDetection(Mat img[], const unsigned radiusMin,
 
   for (int loopVar = 0; loopVar < arraySize; loopVar++) {
     // save the detected images
-    // imwrite(masterproject::prjdir + "/Meeting-4/detected-sequence-" +
-    // to_string(loopVar + 1) + ".bmp", *(img + loopVar));
+     imwrite(masterproject::prjdir + "/Meeting-5/cap-teach-dft-" +
+     to_string(loopVar + 1) + ".bmp", *(img + loopVar));
     // show the detected images
     imshow("detected circles - " + to_string(loopVar), *(img + loopVar));
   }

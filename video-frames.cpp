@@ -52,10 +52,9 @@ unsigned videoFrames(const string videoPath, const bool which, const unsigned ra
       performBottleCapDetection(frame, radiusMin, radiusMax);
       
     // perform DFT on the frame
-    if (false){
+
       discreteFourierTransform obj(frame);
       obj.performDFT(false);
-    }
       
     // wait for 'esc' key press for 30 ms. If 'esc' key
     // is pressed, break loop
