@@ -1,7 +1,7 @@
 #ifndef header_h
 #define header_h
 #include "stdafx.h"
-//#define WINDOWS
+#define WINDOWS
 #ifdef WINDOWS
 #include <direct.h>
 #define GetCurrentDir _getcwd
@@ -29,10 +29,10 @@ using namespace cv;
 void playWithArrays(void);
 void playWithPointerToPointer(void);
 void sobelCannyThreshold(void);
-void MatchingMethod(int, void*);
+void bottleCapDetection(Mat [], const unsigned, const unsigned);
 // namespace
 namespace masterproject {
-extern string prjdir;
+    extern string prjdir;
 }
 
 #endif /* header_h */

@@ -60,6 +60,7 @@ BottleDetection::BottleDetection() { imagePath = "/Meeting-7/original-1.bmp"; }
 // ctor with image path as string
 BottleDetection::BottleDetection(const string imagePath)
     : imagePath(imagePath) {
+  cout << "image path: " << imagePath << endl;
   inputImage = imread(imagePath);
 }
 
@@ -255,5 +256,5 @@ void BottleDetection::computeResults() {
   }
 
   imshow("6-hough line transform ", outputImage);
-  // waitKey();
+  waitKey();
 }
