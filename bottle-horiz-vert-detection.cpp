@@ -25,6 +25,17 @@ void removeDuplicate(vector<int> numbers) {
   }
 }
 
+// helper function to save
+// image with appending the path
+void saveImage(const string imagePath, const Mat image) {
+  size_t position = imagePath.find('.');
+  cout << "position: " << position << endl;
+  string resultPath = imagePath;
+  string toReplace = "-CANNY";
+  resultPath.replace(position, 0, toReplace);
+  imwrite(resultPath, image);
+}
+
 class BottleDetection {
  private:
   string imagePath;
@@ -36,9 +47,9 @@ class BottleDetection {
   BottleDetection();
   BottleDetection(const string);
   BottleDetection(const Mat);
-  const Mat applyFilters(const Mat, const bool);
+  const Mat applyFilters(const Mat);
   void findLineUniquePoints();
-  void computeResults(const Mat, const bool);
+  void computeResults();
   void applyHoughTransform(const Mat);
   void applyProbabilisticHoughTransform(const Mat);
 };
@@ -48,7 +59,9 @@ BottleDetection::BottleDetection() { imagePath = "/Meeting-7/original-1.bmp"; }
 
 // ctor with image path as string
 BottleDetection::BottleDetection(const string imagePath)
-    : imagePath(imagePath) {}
+    : imagePath(imagePath) {
+  inputImage = imread(imagePath);
+}
 
 // ctor with image as matrix
 BottleDetection::BottleDetection(const Mat inputImage)
@@ -59,10 +72,11 @@ void BottleDetection::applyHoughTransform(const Mat thresh) {
   // to save lines from hough transform
   // Vector<Vec4i> is used for probabilistic hough transform
   vector<Vec2f> lines;
-
+  // save a copy of inputImage in outputImage
+  inputImage.copyTo(outputImage);
   // it will generate the accumulator cell
   // which is a 2xn matrix containing r->firstrow and theta->secondrow
-  HoughLines(inputImage,           // source
+  HoughLines(thresh,               // source
              lines,                // destination
              1,                    // rho resolution (0...2pi)
              180 * (CV_PI / 180),  // theta resolution (1 degree here)
@@ -70,9 +84,6 @@ void BottleDetection::applyHoughTransform(const Mat thresh) {
              0,   // min. # of points to form a line
              0    // max gap b/w 2 points to be consider as 1 line.
              );
-
-  // save a copy of inputImage in outputImage
-  inputImage.copyTo(outputImage);
 
   vector<int> lineCoordinates;
   for (int loopVar = 0; loopVar < lines.size(); loopVar++) {
@@ -97,7 +108,7 @@ void BottleDetection::applyHoughTransform(const Mat thresh) {
     pt2.x = cvRound(x0 - inputImage.rows * (-b));
     pt2.y = cvRound(y0 - inputImage.rows * (a));
 
-    cout << "x: " << x0 << endl;
+    //    cout << "x: " << x0 << endl;
 
     // save x coordinates
     lineCoordinates.push_back(x0);  // push point1 x coords
@@ -154,31 +165,27 @@ void BottleDetection::applyProbabilisticHoughTransform(const Mat thresh) {
        lineCoordinates.end(),    // last element
        greater<int>());          // sort in descending order
 
-  removeDuplicate(lineCoordinates);
+  // removeDuplicate(lineCoordinates);
   linePoints = lineCoordinates;
 }
 
 // find the hough line
-const Mat BottleDetection::applyFilters(const Mat image, const bool useImage) {
-  // input image
-  // if no image provide then fetch the image
-  inputImage =
-      (useImage == true) ? image : imread(masterproject::prjdir + imagePath,
-                                          CV_LOAD_IMAGE_COLOR);
-
+const Mat BottleDetection::applyFilters(const Mat image) {
   // grayscale conversion
   Mat gray;
   cvtColor(inputImage,     // source
            gray,           // destination
            COLOR_BGR2GRAY  // src, output, option
            );
+  imshow("gray: ", gray);
 
   // median blur to reduce the noise
   Mat median;
   medianBlur(gray,    // source
              median,  // destination
-             15       // aperture size (odd and >1)
+             7       // aperture size (odd and >1)
              );
+  imshow("median: ", median);
 
   // canny contour detection
   Mat canny;
@@ -191,8 +198,11 @@ const Mat BottleDetection::applyFilters(const Mat image, const bool useImage) {
 
   // thresholding
   Mat thresh;
-  threshold(gray, thresh, 100, 255, THRESH_BINARY);
-
+  threshold(median, thresh, 100, 255, THRESH_BINARY);
+  imshow("thresh", thresh);
+  if (false /*!imagePath.empty()*/) {
+    saveImage(imagePath, canny);
+  }
   return thresh;
 }
 
@@ -200,16 +210,14 @@ void BottleDetection::findLineUniquePoints() {
   vector<int> condensedArray;
   if (linePoints.size() < 3) {
     condensedArray = linePoints;
-  }
-
-  else {
+  } else {
     size_t valueRange = linePoints.at(0) - linePoints.at(linePoints.size() - 1);
     cout << "range is: " << valueRange << endl;
     condensedArray.push_back(linePoints.at(0));
     for (int loopVar = 0; loopVar < linePoints.size() - 1; loopVar++) {
-      cout << endl
-           << "comparing " << linePoints.at(loopVar) << " with "
-           << linePoints.at(loopVar + 1);
+      //      cout << endl
+      //           << "comparing " << linePoints.at(loopVar) << " with "
+      //           << linePoints.at(loopVar + 1) << endl;
       if ((linePoints.at(loopVar) - linePoints.at(loopVar + 1)) >
           (valueRange / 2))
         condensedArray.push_back(linePoints.at(loopVar + 1));
@@ -218,36 +226,34 @@ void BottleDetection::findLineUniquePoints() {
   lineUniquePoints = condensedArray;
 }
 
-void BottleDetection::computeResults(const Mat image, const bool useImage) {
-  // apply filters on the input image
-  Mat thresh = applyFilters(image, useImage);
-
-  // apply hough transform on the threshold image
+void BottleDetection::computeResults() {
+  Mat thresh = applyFilters(inputImage);
   applyProbabilisticHoughTransform(thresh);
 
   // find unique points
-  // findLineUniquePoints();
-  cout << endl << endl << "values selected are: " << endl;
-  for (const auto &point : linePoints) cout << point << endl;
+  findLineUniquePoints();
+  // cout << endl << endl << "values selected are: " << endl;
+  // for (const auto &point : linePoints) cout << point << endl;
 
-  // if (lineUniquePoints.size() > 1) {
-  //   int width = abs(lineUniquePoints.front() - lineUniquePoints.at(1));
-  //   cout << endl << endl << "width is found: " << width << endl;
+  if (lineUniquePoints.size() > 1) {
+    int width = abs(lineUniquePoints.front() - lineUniquePoints.at(1));
+    //    cout << endl << endl << "width is found: " << width << endl;
 
-  //   if (width < 5) {
-  //     cout << "there is no bottle" << endl;
-  //   } else if (width > 5 && width < 80) {
-  //     cout << "bottle is horizontal" << endl;
-  //   } else if (width >= 80 && width < 255) {
-  //     cout << "bottle is vertical" << endl;
-  //   } else {
-  //     cout << "system could not found the situation" << endl;
-  //   }
-  // }
+    if (width < 5) {
+      cout << "there is no bottle" << endl;
+    } else if (width > 5 && width < 80) {
+      cout << "bottle is horizontal" << endl;
+    } else if (width >= 80 && width < 255) {
+      cout << "bottle is vertical" << endl;
+    } else {
+      cout << "system could not found the situation" << endl;
+    }
+  }
 
-  // else {
-  //   cout << "there is no bottle" << endl;
-  // }
+  else {
+    cout << "there is no bottle" << endl;
+  }
+
   imshow("6-hough line transform ", outputImage);
   // waitKey();
 }

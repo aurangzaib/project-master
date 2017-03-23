@@ -1,8 +1,7 @@
 #include "header.h"
 #include "stdafx.h"
 
-void bottleCapDetection(Mat img[], const unsigned radiusMin,
-                        const unsigned radiusMax) {
+void bottleCapDetection(Mat img[], const unsigned radiusMin, const unsigned radiusMax) {
   // array for images
   //  Mat img[12];
 
@@ -13,8 +12,7 @@ void bottleCapDetection(Mat img[], const unsigned radiusMin,
   if (false) {
     for (int loopVar = 0; loopVar < arraySize; loopVar++) {
       *(img + loopVar) =
-          imread(masterproject::prjdir + "/Meeting-5/cap-teach-1.bmp",
-                 CV_LOAD_IMAGE_COLOR);
+          imread(masterproject::prjdir + "/Meeting-5/cap-teach-1.bmp", CV_LOAD_IMAGE_COLOR);
     }
   }
 

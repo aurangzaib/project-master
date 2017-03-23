@@ -10,17 +10,17 @@
 #define GetCurrentDir getcwd
 #endif
 // cpp
+#include <algorithm>
+#include <fstream>
+#include <functional>
 #include <iostream>
 #include <string>
-#include <fstream>
-#include <algorithm>
-#include <functional>
 // opencv
-#include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/opencv.hpp>
 
 // namespace
 using namespace std;
@@ -29,6 +29,7 @@ using namespace cv;
 void playWithArrays(void);
 void playWithPointerToPointer(void);
 void sobelCannyThreshold(void);
+void MatchingMethod(int, void*);
 // namespace
 namespace masterproject {
 extern string prjdir;

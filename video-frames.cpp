@@ -1,7 +1,8 @@
 #include "header.h"
 #include "stdafx.h"
 
-void performBottleCapDetection(Mat frame, const unsigned radiusMin, const unsigned radiusMax) {
+void performBottleCapDetection(Mat frame, const unsigned radiusMin,
+                               const unsigned radiusMax) {
   // array for images
   Mat img[12];
   img[0] = frame;
@@ -10,14 +11,14 @@ void performBottleCapDetection(Mat frame, const unsigned radiusMin, const unsign
 }
 
 void performBottlePositionDetection(Mat frame) {
-  BottleDetection detect;
-  detect.computeResults(frame, true);
+  BottleDetection detect(frame);
+  detect.computeResults();
 }
 
-unsigned videoFrames(const string videoPath, const bool which, const unsigned radiusMin, const unsigned radiusMax) {
+unsigned videoFrames(const string videoPath, const bool which,
+                     const unsigned radiusMin, const unsigned radiusMax) {
   // open the video file for reading
   VideoCapture cap(videoPath);
-
   // if not success, exit program
   if (!cap.isOpened()) {
     cout << "Cannot open the video file" << endl;
@@ -44,18 +45,18 @@ unsigned videoFrames(const string videoPath, const bool which, const unsigned ra
     }
 
     if (which == true)
-    // find position of the bottle (horizontal/vertical)
+      // find position of the bottle (horizontal/vertical)
       performBottlePositionDetection(frame);
-    
+
     else if (which == false)
-    // find position of the cap
+      // find position of the cap
       performBottleCapDetection(frame, radiusMin, radiusMax);
-      
+
     // perform DFT on the frame
 
-      discreteFourierTransform obj(frame);
-      obj.performDFT(false);
-      
+    discreteFourierTransform obj(frame);
+    //  obj.performDFT(false);
+
     // wait for 'esc' key press for 30 ms. If 'esc' key
     // is pressed, break loop
     if (waitKey(30) == 27) {
