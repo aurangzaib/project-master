@@ -28,12 +28,33 @@ void removeDuplicate(vector<int> numbers) {
 // helper function to save
 // image with appending the path
 void saveImage(const string imagePath, const Mat image) {
+  time_t timev;
+  time(&timev);
   size_t position = imagePath.find('.');
   cout << "position: " << position << endl;
   string resultPath = imagePath;
-  string toReplace = "-CANNY";
+  string toReplace = "-" + to_string(time(&timev));
   resultPath.replace(position, 0, toReplace);
   imwrite(resultPath, image);
+}
+
+struct region {
+  static const int x = 100;
+  static const int y = 70;
+  static const int width = 200;
+  static const int height = 350;
+} roi;
+
+Mat getRegionOfInterest(const Mat referenceImage, const int x, const int y,
+                        const int width, const int height) {
+  // rectangular mask
+  Rect Rec(x,      // x coordinate
+           y,      // y coordinate
+           width,  // width
+           height  // height
+           );
+  // region of interest
+  return referenceImage(Rec);
 }
 
 class BottleDetection {
@@ -52,6 +73,7 @@ class BottleDetection {
   void computeResults();
   void applyHoughTransform(const Mat);
   void applyProbabilisticHoughTransform(const Mat);
+  void getPSNR(const Mat&, const Mat&);
 };
 
 // default ctor
@@ -67,6 +89,48 @@ BottleDetection::BottleDetection(const string imagePath)
 // ctor with image as matrix
 BottleDetection::BottleDetection(const Mat inputImage)
     : inputImage(inputImage) {}
+
+// find the hough line
+const Mat BottleDetection::applyFilters(const Mat image) {
+  // grayscale conversion
+  Mat gray;
+  cvtColor(inputImage,     // source
+           gray,           // destination
+           COLOR_BGR2GRAY  // src, output, option
+           );
+  imshow("gray: ", gray);
+
+  // median blur to reduce the noise
+  Mat median;
+  medianBlur(gray,    // source
+             median,  // destination
+             7        // aperture size (odd and >1)
+             );
+  imshow("median: ", median);
+
+  // canny contour detection
+  Mat canny;
+  Canny(median,  // source
+        canny,   // destination
+        120,     // low threshold
+        200,     // high threshold
+        3        // kernel size 3x3
+        );
+
+  // thresholding
+  Mat thresh;
+  threshold(median, thresh, 170, 255, THRESH_BINARY);
+  imshow("thresh", thresh);
+  if (false /*!imagePath.empty()*/) {
+    saveImage(imagePath, canny);
+  }
+
+  // Mat regionOfInterest =
+  //     getRegionOfInterest(thresh, roi.x, roi.y, roi.width, roi.height);
+  // imshow("region of interest", regionOfInterest);
+
+  return thresh;
+}
 
 // draw a line using results of hough line transform
 void BottleDetection::applyHoughTransform(const Mat thresh) {
@@ -142,8 +206,10 @@ void BottleDetection::applyProbabilisticHoughTransform(const Mat thresh) {
               10   // max gap b/w 2 points to be consider as 1 line.
               );
 
+  Mat inputImageMask =
+      getRegionOfInterest(inputImage, roi.x, roi.y, roi.width, roi.height);
   // save a copy of inputImage in outputImage
-  inputImage.copyTo(outputImage);
+  inputImageMask.copyTo(outputImage);
   vector<int> lineCoordinates;
 
   for (size_t i = 0; i < lines.size(); i++) {
@@ -168,43 +234,6 @@ void BottleDetection::applyProbabilisticHoughTransform(const Mat thresh) {
 
   // removeDuplicate(lineCoordinates);
   linePoints = lineCoordinates;
-}
-
-// find the hough line
-const Mat BottleDetection::applyFilters(const Mat image) {
-  // grayscale conversion
-  Mat gray;
-  cvtColor(inputImage,     // source
-           gray,           // destination
-           COLOR_BGR2GRAY  // src, output, option
-           );
-  imshow("gray: ", gray);
-
-  // median blur to reduce the noise
-  Mat median;
-  medianBlur(gray,    // source
-             median,  // destination
-             7       // aperture size (odd and >1)
-             );
-  imshow("median: ", median);
-
-  // canny contour detection
-  Mat canny;
-  Canny(median,  // source
-        canny,   // destination
-        120,     // low threshold
-        200,     // high threshold
-        3        // kernel size 3x3
-        );
-
-  // thresholding
-  Mat thresh;
-  threshold(median, thresh, 100, 255, THRESH_BINARY);
-  imshow("thresh", thresh);
-  if (false /*!imagePath.empty()*/) {
-    saveImage(imagePath, canny);
-  }
-  return thresh;
 }
 
 void BottleDetection::findLineUniquePoints() {
@@ -257,4 +286,31 @@ void BottleDetection::computeResults() {
 
   imshow("6-hough line transform ", outputImage);
   waitKey();
+}
+
+void BottleDetection::getPSNR(const Mat& I1, const Mat& I2) {
+  Mat im1 = getRegionOfInterest(I1, roi.x, roi.y, roi.width, roi.height);
+  Mat im2 = getRegionOfInterest(I2, roi.x, roi.y + 10, roi.width, roi.height);
+  threshold(im1, im1, 150, 255, THRESH_BINARY);
+  threshold(im2, im2, 150, 255, THRESH_BINARY);
+  saveImage(masterproject::prjdir + "/image-1.bmp", im1);
+  saveImage(masterproject::prjdir + "/image-2.bmp", im2);
+  imshow("1st", im1);
+  imshow("2nd", im2);
+  Mat s1;
+  absdiff(im1, im2, s1);     // |I1 - I2|
+  s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits
+  s1 = s1.mul(s1);           // |I1 - I2|^2
+  Scalar s = sum(s1);        // sum elements per channel
+  double sse = s.val[0] + s.val[1] + s.val[2];  // sum channels
+
+  // for small values return zero
+  if (sse <= 1e-10) {
+    cout << "sse: " << sse << endl;
+  } else {
+    double mse = sse / (double)(im1.channels() * im1.total());
+    double psnr = 10.0 * log10((255 * 255) / mse);
+    cout << "SNR: " << psnr << endl;
+  }
+  waitKey(0);
 }

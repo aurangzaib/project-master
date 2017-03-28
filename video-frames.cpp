@@ -55,7 +55,7 @@ unsigned videoFrames(const string videoPath, const bool which,
     // perform DFT on the frame
 
     discreteFourierTransform obj(frame);
-    //  obj.performDFT(false);
+    obj.performDFT(false);
 
     // wait for 'esc' key press for 30 ms. If 'esc' key
     // is pressed, break loop

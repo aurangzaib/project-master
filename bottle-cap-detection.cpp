@@ -7,7 +7,7 @@ void bottleCapDetection(Mat img[], const unsigned radiusMin, const unsigned radi
 
   int arraySize = 1;  // sizeof(img) / sizeof(*img); // img/img[0]
 
-  //   reference the images in array
+  // reference the images in array
   // not required when acquiring from different sources
   if (false) {
     for (int loopVar = 0; loopVar < arraySize; loopVar++) {
