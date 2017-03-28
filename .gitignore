@@ -52,3 +52,4 @@ Release/
 .idea/workspace.xml
 .idea/dictionaries/siddiqui.xml
 .vscode
+*.pyc
