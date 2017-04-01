@@ -1,7 +1,7 @@
 #ifndef header_h
 #define header_h
 #include "stdafx.h"
-//#define WINDOWS
+#define WINDOWS
 #ifdef WINDOWS
 #include <direct.h>
 #define GetCurrentDir _getcwd
@@ -32,5 +32,6 @@ void sobelCannyThreshold(void);
 // namespace
 namespace masterproject {
     extern string cwd;
+	extern Mat reduceImageDensity(Mat, int minThreshValue, int filterKernelSize);
 }
 #endif /* header_h */
