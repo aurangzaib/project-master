@@ -19,7 +19,7 @@ string GetCWD(void) {
 string masterproject::cwd =
     "/Users/siddiqui/Documents/Projects/master-project/meetings/";
 int main() {
-  for (int loop = 1; loop <= 18; loop++) {
+  for (int loop = 1; loop <= 31; loop++) {
     // get image in sequence
     Mat inputImage =
         imread(masterproject::cwd + "meeting-12-2/" + to_string(loop) + ".bmp");
