@@ -10,10 +10,10 @@ class ParseFile {
       : inputFilePath(i), outputFilePath(o){};
   void parseFile() {
     string line;
-    ifstream localInputFile(masterproject::prjdir +
+    ifstream localInputFile(masterproject::cwd +
                             "/Meeting-7/teach-1-maxima.txt");
     ofstream localOutputFile(
-        masterproject::prjdir + "/Meeting-7/teach-1-maxima-parsed-cpp.txt",
+           + "/Meeting-7/teach-1-maxima-parsed-cpp.txt",
         ofstream::binary);
 
     std::vector<string> arr;

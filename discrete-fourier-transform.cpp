@@ -58,7 +58,7 @@ void discreteFourierTransform::performDFT(const bool acquireImage) {
   // input image
   if (acquireImage == true)
     spatialImage =
-        imread(masterproject::prjdir + imagePath + ".png", CV_LOAD_IMAGE_COLOR);
+        imread(masterproject::cwd + imagePath + ".png", CV_LOAD_IMAGE_COLOR);
   cout << "original image size: " << spatialImage.size() << endl;
 
   Mat gray;
@@ -138,7 +138,7 @@ void discreteFourierTransform::performDFT(const bool acquireImage) {
   q3.copyTo(q0);
   tmp.copyTo(q3);
 
-  q1.copyTo(tmp);  // swap quadrant (Top-Right with Bottom-Left)
+  q1.copyTo(tmp);  // swap qua  drant (Top-Right with Bottom-Left)
   q2.copyTo(q1);
   tmp.copyTo(q2);
 
@@ -151,7 +151,7 @@ void discreteFourierTransform::performDFT(const bool acquireImage) {
             );
   Mat resultImage = frequencyImage;
   if (false) {
-    imwrite(masterproject::prjdir + imagePath + "-DFT.png",
+    imwrite(masterproject::cwd + imagePath + "-DFT.png",
             resultImage);  // save as grey image
   }
 

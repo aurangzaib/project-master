@@ -1,22 +1,7 @@
 #include "header.h"
 #include "stdafx.h"
 
-void performBottleCapDetection(Mat frame, const unsigned radiusMin,
-                               const unsigned radiusMax) {
-  // array for images
-  Mat img[12];
-  img[0] = frame;
-  // frame and min, max radii
-  bottleCapDetection(img, radiusMin, radiusMax);
-}
-
-void performBottlePositionDetection(Mat frame) {
-  BottleDetection detect(frame);
-  detect.computeResults();
-}
-
-unsigned videoFrames(const string videoPath, const bool which,
-                     const unsigned radiusMin, const unsigned radiusMax) {
+unsigned videoFrames(const string videoPath) {
   // open the video file for reading
   VideoCapture cap(videoPath);
   // if not success, exit program
@@ -43,26 +28,16 @@ unsigned videoFrames(const string videoPath, const bool which,
       cout << "Cannot read the frame from video file" << endl;
       break;
     }
+    Mat capFrame, blobFrame;
+    frame.copyTo(capFrame);
+    frame.copyTo(blobFrame);
+    BottleDetection detectBlob(blobFrame);
+    CapDetection detect(capFrame, 30, 40);
 
-    if (which == true)
-      // find position of the bottle (horizontal/vertical)
-      performBottlePositionDetection(frame);
-
-    else if (which == false)
-      // find position of the cap
-      performBottleCapDetection(frame, radiusMin, radiusMax);
-
-    // perform DFT on the frame
-
-    discreteFourierTransform obj(frame);
-    obj.performDFT(false);
-
-    // wait for 'esc' key press for 30 ms. If 'esc' key
-    // is pressed, break loop
-    if (waitKey(30) == 27) {
-      cout << "esc key is pressed by user" << endl;
-      break;
-    }
+    detect.applyHoughCircleTransform();
+    // detectBlob.performBlobDetection();
+      
+      waitKey(1);
   }
   return 0;
 }

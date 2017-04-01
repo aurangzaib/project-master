@@ -1,61 +1,23 @@
 #include <typeinfo>
 #include "header.h"
 #include "stdafx.h"
-
-void removeNumber(vector<int> numbers, int idx) {
-  int size = sizeof(numbers) / sizeof(numbers[0]);
-  for (size_t loop = idx; loop < size - 1; loop++) {
-    numbers.at(loop) = numbers[loop + 1];
-  }
-  size--;
-}
-
-void removeDuplicate(vector<int> numbers) {
-  int i, j;
-  int number;
-  int size = sizeof(numbers) / sizeof(numbers[0]);
-  for (i = 0; i < size; i++) {
-    number = numbers[i];
-    for (j = i + 1; j < size; j++) {
-      if (number == numbers[j]) {
-        removeNumber(numbers, j);
-        j--;
-      }
-    }
-  }
-}
-
 // helper function to save
 // image with appending the path
-void saveImage(const string imagePath, const Mat image) {
+void saveImage(string imagePath, const Mat image) {
   time_t timev;
   time(&timev);
   size_t position = imagePath.find('.');
-  cout << "position: " << position << endl;
-  string resultPath = imagePath;
   string toReplace = "-" + to_string(time(&timev));
-  resultPath.replace(position, 0, toReplace);
-  imwrite(resultPath, image);
+  imagePath.replace(position, 0, toReplace);
+  imwrite(imagePath, image);
 }
 
 struct region {
-  static const int x = 100;
-  static const int y = 70;
+  static const int x = 30;
+  static const int y = 30;
   static const int width = 200;
   static const int height = 350;
 } roi;
-
-Mat getRegionOfInterest(const Mat referenceImage, const int x, const int y,
-                        const int width, const int height) {
-  // rectangular mask
-  Rect Rec(x,      // x coordinate
-           y,      // y coordinate
-           width,  // width
-           height  // height
-           );
-  // region of interest
-  return referenceImage(Rec);
-}
 
 class BottleDetection {
  private:
@@ -73,7 +35,10 @@ class BottleDetection {
   void computeResults();
   void applyHoughTransform(const Mat);
   void applyProbabilisticHoughTransform(const Mat);
-  void getPSNR(const Mat&, const Mat&);
+  void getPSNR(Mat&, Mat&);
+  void performBlobDetection();
+  void reduceImageDensity(Mat&, const bool, const int, const int);
+  void getRegionOfInterest(Mat&, const int, const int, const int, const int);
 };
 
 // default ctor
@@ -206,10 +171,9 @@ void BottleDetection::applyProbabilisticHoughTransform(const Mat thresh) {
               10   // max gap b/w 2 points to be consider as 1 line.
               );
 
-  Mat inputImageMask =
-      getRegionOfInterest(inputImage, roi.x, roi.y, roi.width, roi.height);
+  getRegionOfInterest(inputImage, roi.x, roi.y, roi.width, roi.height);
   // save a copy of inputImage in outputImage
-  inputImageMask.copyTo(outputImage);
+  inputImage.copyTo(outputImage);
   vector<int> lineCoordinates;
 
   for (size_t i = 0; i < lines.size(); i++) {
@@ -256,49 +220,17 @@ void BottleDetection::findLineUniquePoints() {
   lineUniquePoints = condensedArray;
 }
 
-void BottleDetection::computeResults() {
-  Mat thresh = applyFilters(inputImage);
-  applyProbabilisticHoughTransform(thresh);
+void BottleDetection::getPSNR(Mat& I1, Mat& I2) {
+  getRegionOfInterest(I1, roi.x, roi.y, roi.width, roi.height);
+  getRegionOfInterest(I2, roi.x, roi.y + 10, roi.width, roi.height);
 
-  // find unique points
-  findLineUniquePoints();
-  // cout << endl << endl << "values selected are: " << endl;
-  // for (const auto &point : linePoints) cout << point << endl;
+  threshold(I1, I1, 150, 255, THRESH_BINARY);
+  threshold(I2, I2, 150, 255, THRESH_BINARY);
+  saveImage(masterproject::cwd + "/image-1.bmp", I1);
+  saveImage(masterproject::cwd + "/image-2.bmp", I2);
 
-  if (lineUniquePoints.size() > 1) {
-    int width = abs(lineUniquePoints.front() - lineUniquePoints.at(1));
-    //    cout << endl << endl << "width is found: " << width << endl;
-
-    if (width < 5) {
-      cout << "there is no bottle" << endl;
-    } else if (width > 5 && width < 80) {
-      cout << "bottle is horizontal" << endl;
-    } else if (width >= 80 && width < 255) {
-      cout << "bottle is vertical" << endl;
-    } else {
-      cout << "system could not found the situation" << endl;
-    }
-  }
-
-  else {
-    cout << "there is no bottle" << endl;
-  }
-
-  imshow("6-hough line transform ", outputImage);
-  waitKey();
-}
-
-void BottleDetection::getPSNR(const Mat& I1, const Mat& I2) {
-  Mat im1 = getRegionOfInterest(I1, roi.x, roi.y, roi.width, roi.height);
-  Mat im2 = getRegionOfInterest(I2, roi.x, roi.y + 10, roi.width, roi.height);
-  threshold(im1, im1, 150, 255, THRESH_BINARY);
-  threshold(im2, im2, 150, 255, THRESH_BINARY);
-  saveImage(masterproject::prjdir + "/image-1.bmp", im1);
-  saveImage(masterproject::prjdir + "/image-2.bmp", im2);
-  imshow("1st", im1);
-  imshow("2nd", im2);
   Mat s1;
-  absdiff(im1, im2, s1);     // |I1 - I2|
+  absdiff(I1, I2, s1);       // |I1 - I2|
   s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits
   s1 = s1.mul(s1);           // |I1 - I2|^2
   Scalar s = sum(s1);        // sum elements per channel
@@ -308,9 +240,107 @@ void BottleDetection::getPSNR(const Mat& I1, const Mat& I2) {
   if (sse <= 1e-10) {
     cout << "sse: " << sse << endl;
   } else {
-    double mse = sse / (double)(im1.channels() * im1.total());
+    double mse = sse / (double)(I1.channels() * I1.total());
     double psnr = 10.0 * log10((255 * 255) / mse);
     cout << "SNR: " << psnr << endl;
   }
   waitKey(0);
+}
+
+void BottleDetection::getRegionOfInterest(Mat& referenceImage, const int x,
+                                          const int y, const int width,
+                                          const int height) {
+  // rectangular mask
+  Rect Rec(x,      // x coordinate
+           y,      // y coordinate
+           width,  // width
+           height  // height
+           );
+  // region of interest
+  referenceImage = referenceImage(Rec);
+  referenceImage.copyTo(inputImage);
+}
+
+void BottleDetection::reduceImageDensity(Mat& inputImage,
+                                         const bool APPLY_FILTERS,
+                                         const int minThreshValue,
+                                         const int filterKernelSize) {
+  Size s1 = inputImage.size();
+  Mat median;
+  
+  if (APPLY_FILTERS == true) {
+    medianBlur(inputImage,       // source
+               median,           // destination
+               filterKernelSize  // aperture size (odd and >1)
+               );
+
+    threshold(median, inputImage, minThreshValue, 255, CV_THRESH_BINARY);
+  }
+
+  getRegionOfInterest(inputImage,      // image
+                      s1.width / 20,   // remove 1/5.2th from left
+                      s1.height / 10,  // remove 1/10th from top
+                      s1.width - (2 * s1.width / 20),
+                      s1.height - s1.height / 5);
+}
+
+// get the blob of white colors
+// in our case, these are the areas from
+// where the light is coming out of chain
+// we get the blobs align with their pose and size
+// when the size is more than a threshold value ...
+// ... (say average of the blobs sizes) it means
+// something is present their besides only the chain
+void BottleDetection::performBlobDetection() {
+  reduceImageDensity(inputImage, true, 170, 7);
+
+  SimpleBlobDetector::Params params;
+  params.filterByArea = false;
+  params.filterByCircularity = false;
+  params.filterByConvexity = false;
+  params.filterByColor = true;
+  params.blobColor = 255;
+
+  // Set up the detector with default parameters.
+  SimpleBlobDetector detector(params);
+  vector<KeyPoint> keypoints;
+  detector.detect(inputImage, keypoints);
+  //  float totalArea = 0;
+  const float avgArea = 9.1;
+  vector<KeyPoint> unqiue_keypoints;
+  for (const auto& point : keypoints)
+    if (point.size > avgArea) unqiue_keypoints.push_back(point);
+
+  // find the average area from the teach image
+  // for (const auto& point : keypoints) totalArea += point.size;
+  // totalArea /= keypoints.size();
+  // cout << "avg. area: " << totalArea << endl;
+
+  // cout << "x: " << std::setw(3) << std::setfill('0') << int(point.pt.x)
+  //      << "   |    y: " << std::setw(3) << std::setfill('0')
+  //      << int(point.pt.y) << "   |    size: " << std::setw(3)
+  //      << std::setfill('0') << float(point.size) << endl;
+
+  // Draw detected blobs as red circles.
+  // DrawMatchesFlags::DRAW_RICH_KEYPOINTS flag ensures the size of the circle
+  // corresponds to the size of blob
+  drawKeypoints(inputImage,         // input image
+                unqiue_keypoints,   // keypoints found using blob detection
+                inputImage,         // output image
+                Scalar(0, 0, 255),  // colour for the points
+                DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+  // Show blobs
+  if (false) {
+    saveImage(
+        masterproject::cwd + "/meeting-11/blob-detection-result/result.bmp",
+        inputImage);
+  }
+  imshow("keypoints", inputImage);
+}
+
+void BottleDetection::computeResults() {
+  Mat thresh = applyFilters(inputImage);
+  applyProbabilisticHoughTransform(thresh);
+  imshow("6-hough line transform ", outputImage);
+  waitKey();
 }

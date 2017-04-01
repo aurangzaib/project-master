@@ -1,7 +1,7 @@
 #ifndef header_h
 #define header_h
 #include "stdafx.h"
-#define WINDOWS
+//#define WINDOWS
 #ifdef WINDOWS
 #include <direct.h>
 #define GetCurrentDir _getcwd
@@ -14,6 +14,7 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <iomanip>
 #include <string>
 // opencv
 #include <opencv2/core/core.hpp>
@@ -21,7 +22,6 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>
-
 // namespace
 using namespace std;
 using namespace cv;
@@ -29,10 +29,8 @@ using namespace cv;
 void playWithArrays(void);
 void playWithPointerToPointer(void);
 void sobelCannyThreshold(void);
-void bottleCapDetection(Mat [], const unsigned, const unsigned);
 // namespace
 namespace masterproject {
-    extern string prjdir;
+    extern string cwd;
 }
-
 #endif /* header_h */
