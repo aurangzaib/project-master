@@ -1,79 +1,105 @@
-#include "stdafx.h"
+#include "bottle-horiz-vert-detection.cpp"
 #include "header.h"
+#include "stdafx.h"
+class CapDetection {
+ private:
+  string imagePath;
+  unsigned minRadius, maxRadius;
 
-void bottleCapDetection(void) {
+ public:
+  Mat inputImage, outputImage;
+  CapDetection();
+  CapDetection(const string, unsigned, unsigned);
+  CapDetection(Mat &, unsigned, unsigned);
+  void reduceImageDensity();
+  void applyHoughCircleTransform();
+  void getCapsCircles();
+  void getBottlesCircles();
+};
 
-	// array for images
-	Mat img[5];
+CapDetection::CapDetection() {
+  string imagePath = masterproject::cwd + "meeting-5/cap-teach-5.bmp";
+  inputImage = imread(imagePath);
+  minRadius = 30;
+  maxRadius = 40;
+}
 
-	int arraySize = sizeof(img) / sizeof(*img); // img/img[0]
+CapDetection::CapDetection(const string imagePath, unsigned minRadius,
+                           unsigned maxRadius)
+    : imagePath(imagePath), minRadius(minRadius), maxRadius(maxRadius) {
+  inputImage = imread(imagePath);
+}
 
-	// reference the images in array
-	for (int loopVar = 0; loopVar < arraySize; loopVar++) {
-		*(img + loopVar) = imread(masterproject::prjdir + "/Meeting-4/sequence-" + to_string(loopVar) + ".bmp", CV_LOAD_IMAGE_COLOR);
-	}
+CapDetection::CapDetection(Mat &inputImage, unsigned minRadius,
+                           unsigned maxRadius)
+    : inputImage(inputImage), minRadius(minRadius), maxRadius(maxRadius) {
+  imagePath = "";
+}
 
-	// apply medianBlur, thresholding and houghcircle on each image
-	for (int loopVar = 0; loopVar < arraySize; loopVar++) {
+void CapDetection::reduceImageDensity() {
+  inputImage.copyTo(outputImage);
+  // convert to single channel -- gray
+  cvtColor(outputImage, outputImage, CV_BGR2GRAY);
 
-		// gray scale conversion
-		Mat gray;
-		cvtColor(*(img + loopVar), gray, COLOR_BGR2GRAY);
+  unsigned minThreshValue = 35;
+  unsigned filterKernelSize = 27;
+  outputImage = ::reduceImageDensity(outputImage, minThreshValue, filterKernelSize);
+}
 
-		// median filter to reduce noise
-		medianBlur(gray, gray, 5);
+void CapDetection::applyHoughCircleTransform() {
+  reduceImageDensity();
+  getCapsCircles();
+}
 
-		// threshold to make image binary
-		// ! will not work in each scenario !
-		threshold(gray, gray, 20, 255, THRESH_BINARY); // --> diable for cap.jpg
+void CapDetection::getCapsCircles() {
+  // hough circle to determine bottle caps
+  vector<Vec3f> bottleCaps;
+  // hough circle gives us [0]->x, [1]->y, [2]->radius
+  HoughCircles(outputImage, bottleCaps, CV_HOUGH_GRADIENT, 1,
+               outputImage.rows / 5,
+               // canny parameters
+               200, 10,
+               // min_radius & max_radius
+               minRadius, maxRadius);
+  // draw the caps
+  for (size_t i = 0; i < bottleCaps.size(); i++) {  // just two caps at a time
+    Vec3i cap = bottleCaps[i];
+    circle(inputImage,             // image
+           Point(cap[0], cap[1]),  // x, y of circle (to be drawn)
+           cap[2],                 // radius of the circle (to be drawn)
+           Scalar(0, 0, 255),      // red color
+           3,                      // thickness of the point
+           8, 0);
+    // draw the center of bottle cap
+    circle(inputImage, Point(cap[0], cap[1]), 1, Scalar(255, 255, 255), 3, 8,
+           0);
+  }
+}
 
-		// hough circles
-		vector<Vec3f> circles;
-		HoughCircles(gray, circles, CV_HOUGH_GRADIENT, 1,
-			// change this value to detect circles with different distances to each other
-			gray.rows / 8,
-			// canny parameters
-			200, 10,
-			// min_radius & max_radius
-			20, 40
-		);
-
-		/* radius params:
-		 multicolor-bottle-caps.jpeg -- 40, 45
-		 blob.jpg -- 30, 32
-		 cap.jpg -- gray.rows/4, 82, 90
-		 3-light-vertical.jpg -- gray.rows/8, 20, 40
-		 4-light-angled.bmp -- 15, 25
-		 transparent-glass-bottle.jpg -- gray.rows/4, 50, 60
-		 glass-bottle.jpg -- 70, 75
-		 cap-top-view.jpg -- threshold(gray, gray, 200, 255, THRESH_BINARY_INV); 30, 50
-		 Wine-bottle.jpg -- threshold(gray, gray, 50, 255, THRESH_BINARY); 30, 40
-		 */
-
-		 // draw the caps
-
-		for (size_t i = 0; i < circles.size(); i++) {
-			Vec3i c = circles[i];
-			circle(
-				*(img + loopVar),					// image
-				Point(c[0], c[1]),					// x, y of circle (to be drawn)
-				c[2],								// radius of the circle (to be drawn)
-				Scalar(0, 0, 255),					// red color
-				3,									// thickness of the point
-				8, 0
-			);
-
-			circle(*(img + loopVar), Point(c[0], c[1]), 2, Scalar(0, 255, 0), 3, 8, 0);
-		}
-	}
-
-	for (int loopVar = 0; loopVar < arraySize; loopVar++) {
-
-		// save the detected images
-		imwrite(masterproject::prjdir + "/Meeting-4/detected-sequence-" + to_string(loopVar + 1) + ".bmp", *(img + loopVar));
-		// show the detected images
-		imshow("detected circles - " + to_string(loopVar), *(img + loopVar));
-	}
-
-	waitKey();
+void CapDetection::getBottlesCircles() {
+  // hough circle to determine bottle radius
+  vector<Vec3f> bottleRadius;
+  // find the bottle
+  HoughCircles(outputImage, bottleRadius, CV_HOUGH_GRADIENT, 1,
+               // change this value to detect circles with different distances
+               // to each other
+               outputImage.rows / 4,
+               // canny parameters
+               200, 10,
+               // min_radius & max_radius
+               70, 100);
+  // draw the bottles
+  for (size_t i = 0; i < bottleRadius.size(); i++) {
+    Vec3i bottle = bottleRadius[i];
+    // draw the circle for bottle
+    circle(inputImage,                   // image
+           Point(bottle[0], bottle[1]),  // x, y of circle (to be drawn)
+           bottle[2],                    // radius of the circle (to be drawn)
+           Scalar(255, 255, 255),        // red color
+           3,                            // thickness of the point
+           8, 0);
+    // draw the center of bottle cap
+    circle(inputImage, Point(bottle[0], bottle[1]), 1, Scalar(255, 255, 255), 3,
+           8, 0);
+  }
 }
