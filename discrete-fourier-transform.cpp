@@ -154,10 +154,6 @@ void discreteFourierTransform::performDFT(const bool acquireImage) {
     imwrite(masterproject::cwd + imagePath + "-DFT.png",
             resultImage);  // save as grey image
   }
-
-  namedWindow(imagePath, WINDOW_NORMAL);
-  imshow(imagePath, resultImage);
-  //  waitKey();  // wait till key press to dismiss the window
 }
 
 void discreteFourierTransform::showDFTResult() {

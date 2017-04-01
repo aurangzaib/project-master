@@ -12,17 +12,14 @@ void saveImage(string imagePath, const Mat image) {
   imwrite(imagePath, image);
 }
 
-Mat reduceImageDensity(Mat reduceDensityImage,
-                                        const int minThreshValue,
-                                        const int filterKernelSize) {
+Mat reduceImageDensity(Mat reduceDensityImage, const int minThreshValue,
+                       const int filterKernelSize) {
   Mat median;
   medianBlur(reduceDensityImage,  // source
              median,              // destination
              filterKernelSize     // aperture size (odd and >1)
              );
   threshold(median, reduceDensityImage, minThreshValue, 255, CV_THRESH_BINARY);
-  imshow("median filter result", median);
-  imshow("thresh result", reduceDensityImage);
   return reduceDensityImage;
 }
 
@@ -74,15 +71,12 @@ const Mat BottleDetection::applyFilters(const Mat image) {
            gray,           // destination
            COLOR_BGR2GRAY  // src, output, option
            );
-  imshow("gray: ", gray);
 
   // median blur to reduce the noise
   Mat median;
   medianBlur(gray,    // source
              median,  // destination
-             7        // aperture size (odd and >1)
-             );
-  imshow("median: ", median);
+             7);      // aperture size (odd and >1)
 
   // canny contour detection
   Mat canny;
@@ -96,15 +90,9 @@ const Mat BottleDetection::applyFilters(const Mat image) {
   // thresholding
   Mat thresh;
   threshold(median, thresh, 170, 255, THRESH_BINARY);
-  imshow("thresh", thresh);
   if (false /*!imagePath.empty()*/) {
     saveImage(imagePath, canny);
   }
-
-  // Mat regionOfInterest =
-  //     getRegionOfInterest(thresh, roi.x, roi.y, roi.width, roi.height);
-  // imshow("region of interest", regionOfInterest);
-
   return thresh;
 }
 
@@ -253,7 +241,6 @@ void BottleDetection::getPSNR(Mat& I1, Mat& I2) {
     double psnr = 10.0 * log10((255 * 255) / mse);
     cout << "SNR: " << psnr << endl;
   }
-  waitKey(0);
 }
 
 void BottleDetection::getRegionOfInterest(Mat& referenceImage, const int x,
@@ -280,7 +267,6 @@ void BottleDetection::performBlobDetection() {
   Mat detectionImage;
   inputImage.copyTo(detectionImage);
   detectionImage = reduceImageDensity(detectionImage, 225, 1);
-
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
   params.filterByCircularity = false;
@@ -318,7 +304,7 @@ void BottleDetection::performBlobDetection() {
   // Draw detected blobs as red circles.
   // DrawMatchesFlags::DRAW_RICH_KEYPOINTS flag ensures the size of the circle
   // corresponds to the size of blob
-  drawKeypoints(detectionImage,     // input image
+  drawKeypoints(inputImage,         // input image
                 unqiue_keypoints,   // keypoints found using blob detection
                 inputImage,         // output image
                 Scalar(0, 0, 255),  // colour for the points
@@ -334,6 +320,4 @@ void BottleDetection::performBlobDetection() {
 void BottleDetection::computeResults() {
   Mat thresh = applyFilters(inputImage);
   applyProbabilisticHoughTransform(thresh);
-  imshow("6-hough line transform ", outputImage);
-  waitKey();
 }

@@ -54,7 +54,6 @@ void CapDetection::applyHoughCircleTransform() {
 void CapDetection::getCapsCircles() {
   // hough circle to determine bottle caps
   vector<Vec3f> bottleCaps;
-  imshow("image for hough", outputImage);
   // hough circle gives us [0]->x, [1]->y, [2]->radius
   HoughCircles(outputImage, bottleCaps, CV_HOUGH_GRADIENT, 1,
                outputImage.rows / 5,

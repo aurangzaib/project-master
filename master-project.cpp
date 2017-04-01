@@ -26,15 +26,13 @@ int main() {
     Size s1 = inputImage.size();
 
     BottleDetection detectBottles(inputImage);
-
-    // remove the edges of the image before applying the algorithms
-    detectBottles.getRegionOfInterest(
-        inputImage,      // image
-        s1.width / 20,   // remove 1/5.2th from left
-        s1.height / 10,  // remove 1/10th from top
-        s1.width - (2 * s1.width / 20), s1.height - s1.height / 5);
-
     CapDetection detectCaps(inputImage, 40, 55);
+    // remove the edges of the image before applying the algorithms
+    detectBottles.getRegionOfInterest(inputImage,      // image
+                               s1.width / 20,   // remove 1/5.2th from left
+                               s1.height / 10,  // remove 1/10th from top
+                               s1.width - (2 * s1.width / 20),
+                               s1.height - s1.height / 5);
 
     // detect caps of the bottle
     detectCaps.applyHoughCircleTransform();
