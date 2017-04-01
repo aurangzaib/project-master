@@ -1,0 +1,49 @@
+
+
+
+  /* radius params:
+multicolor-bottle-caps.jpeg -- 40, 45
+blob.jpg -- 30, 32
+cap.jpg -- gray.rows/4, 82, 90
+3-light-vertical.jpg -- gray.rows/8, 20, 40
+4-light-angled.bmp -- 15, 25
+transparent-glass-bottle.jpg -- gray.rows/4, 50, 60
+glass-bottle.jpg -- 70, 75
+cap-top-view.jpg -- threshold(gray, gray, 200, 255, THRESH_BINARY_INV); 30,
+50
+Wine-bottle.jpg -- threshold(gray, gray, 50, 255, THRESH_BINARY); 30, 40
+*/
+ 
+ find peak signal to noise ratio
+ Mat image1 = imread(masterproject::cwd + "meeting-11/misc/1.bmp");
+ Mat image2 = imread(masterproject::cwd +
+ "meeting-11/horizontal-perpendicular/9.bmp");
+ detectInstance.getPSNR(image1, image2);
+
+detectInstance2.computeResults();
+ videoFrames(masterproject::cwd + "meeting-10/meeting-10.mp4", true, 0, 0);
+
+Mat img1 = imread(masterproject::cwd+"/meeting-9/without-label/projector/with-bottle-1-DFT.png");
+Mat img2 = imread(masterproject::cwd+"/meeting-9/without-label/projector/no-bottle-2-DFT.png");
+Mat diff;
+resize(img1, img1, Size(60, 900), 0,0, INTER_LINEAR);
+resize(img2, img2, Size(60, 900), 0,0, INTER_LINEAR);
+threshold(img1, img1, 25, 255, THRESH_BINARY);
+threshold(img2, img2, 25, 255, THRESH_BINARY);
+absdiff(img1, img2, diff);
+
+ imshow("difference: ", img1);
+ imshow("difference2: ", img2);
+ imshow("difference_1: ", diff);
+ videoFrames(masterproject::cwd + "/meeting-8/hh/hh-teach-video.mp4", true, 35, 40);
+ videoFrames(masterproject::cwd + "/meeting-5/cap-teach-video.mp4", false, 30, 35);
+
+Mat capImage[2];
+capImage[0] = imread(masterproject::cwd + "/meeting-12/upper/97.bmp");
+bottleCapDetection(capImage, 35, 40);
+waitKey(0);
+BottleDetection detectInstance(masterproject::cwd + "/meeting-12/lower/1.bmp");
+detectInstance.performBlobDetection();
+waitKey();
+videoFrames(masterproject::cwd + "/meeting-12/meeting-12-teach.mp4", true, 35,
+40);
