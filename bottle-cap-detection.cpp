@@ -5,12 +5,12 @@ class CapDetection {
  private:
   string imagePath;
   unsigned minRadius, maxRadius;
-  Mat inputImage, outputImage;
 
  public:
+  Mat inputImage, outputImage;
   CapDetection();
-  CapDetection(const string);
-  CapDetection(const Mat, unsigned, unsigned);
+  CapDetection(const string, unsigned, unsigned);
+  CapDetection(Mat &, unsigned, unsigned);
   void reduceImageDensity();
   void applyHoughCircleTransform();
   void getCapsCircles();
@@ -24,31 +24,26 @@ CapDetection::CapDetection() {
   maxRadius = 40;
 }
 
-CapDetection::CapDetection(const string imagePath) : imagePath(imagePath) {
+CapDetection::CapDetection(const string imagePath, unsigned minRadius,
+                           unsigned maxRadius)
+    : imagePath(imagePath), minRadius(minRadius), maxRadius(maxRadius) {
   inputImage = imread(imagePath);
-  minRadius = 30;
-  maxRadius = 40;
 }
 
-CapDetection::CapDetection(const Mat inputImage, unsigned minRadius,
+CapDetection::CapDetection(Mat &inputImage, unsigned minRadius,
                            unsigned maxRadius)
     : inputImage(inputImage), minRadius(minRadius), maxRadius(maxRadius) {
   imagePath = "";
 }
 
 void CapDetection::reduceImageDensity() {
-  BottleDetection detectInstance;
   inputImage.copyTo(outputImage);
-  // convert to single channel -- gray 
+  // convert to single channel -- gray
   cvtColor(outputImage, outputImage, CV_BGR2GRAY);
-  detectInstance.reduceImageDensity(inputImage, false,
-                                    0,  // min threshold value
-                                    0   // filter kernel size
-                                    );
-  detectInstance.reduceImageDensity(outputImage, true,
-                                    28,  // min threshold value
-                                    15   // filter kernel size
-                                    );
+
+  unsigned minThreshValue = 35;
+  unsigned filterKernelSize = 27;
+  outputImage = ::reduceImageDensity(outputImage, minThreshValue, filterKernelSize);
 }
 
 void CapDetection::applyHoughCircleTransform() {
@@ -62,7 +57,7 @@ void CapDetection::getCapsCircles() {
   imshow("image for hough", outputImage);
   // hough circle gives us [0]->x, [1]->y, [2]->radius
   HoughCircles(outputImage, bottleCaps, CV_HOUGH_GRADIENT, 1,
-               outputImage.rows / 6,
+               outputImage.rows / 5,
                // canny parameters
                200, 10,
                // min_radius & max_radius
@@ -80,7 +75,6 @@ void CapDetection::getCapsCircles() {
     circle(inputImage, Point(cap[0], cap[1]), 1, Scalar(255, 255, 255), 3, 8,
            0);
   }
-  imshow("caps", inputImage);
 }
 
 void CapDetection::getBottlesCircles() {

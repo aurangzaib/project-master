@@ -12,6 +12,20 @@ void saveImage(string imagePath, const Mat image) {
   imwrite(imagePath, image);
 }
 
+Mat reduceImageDensity(Mat reduceDensityImage,
+                                        const int minThreshValue,
+                                        const int filterKernelSize) {
+  Mat median;
+  medianBlur(reduceDensityImage,  // source
+             median,              // destination
+             filterKernelSize     // aperture size (odd and >1)
+             );
+  threshold(median, reduceDensityImage, minThreshValue, 255, CV_THRESH_BINARY);
+  imshow("median filter result", median);
+  imshow("thresh result", reduceDensityImage);
+  return reduceDensityImage;
+}
+
 struct region {
   static const int x = 30;
   static const int y = 30;
@@ -22,14 +36,14 @@ struct region {
 class BottleDetection {
  private:
   string imagePath;
-  Mat inputImage, outputImage;
   vector<int> linePoints;
   vector<int> lineUniquePoints;
 
  public:
+  Mat inputImage, outputImage;
   BottleDetection();
   BottleDetection(const string);
-  BottleDetection(const Mat);
+  BottleDetection(Mat&);
   const Mat applyFilters(const Mat);
   void findLineUniquePoints();
   void computeResults();
@@ -37,7 +51,6 @@ class BottleDetection {
   void applyProbabilisticHoughTransform(const Mat);
   void getPSNR(Mat&, Mat&);
   void performBlobDetection();
-  void reduceImageDensity(Mat&, const bool, const int, const int);
   void getRegionOfInterest(Mat&, const int, const int, const int, const int);
 };
 
@@ -47,13 +60,11 @@ BottleDetection::BottleDetection() { imagePath = "/Meeting-7/original-1.bmp"; }
 // ctor with image path as string
 BottleDetection::BottleDetection(const string imagePath)
     : imagePath(imagePath) {
-  cout << "image path: " << imagePath << endl;
   inputImage = imread(imagePath);
 }
 
 // ctor with image as matrix
-BottleDetection::BottleDetection(const Mat inputImage)
-    : inputImage(inputImage) {}
+BottleDetection::BottleDetection(Mat& inputImage) : inputImage(inputImage) {}
 
 // find the hough line
 const Mat BottleDetection::applyFilters(const Mat image) {
@@ -116,6 +127,7 @@ void BottleDetection::applyHoughTransform(const Mat thresh) {
              );
 
   vector<int> lineCoordinates;
+
   for (int loopVar = 0; loopVar < lines.size(); loopVar++) {
     // hough coordinates [rho, theta]
     float rho = lines[loopVar][0];    // first row
@@ -137,8 +149,6 @@ void BottleDetection::applyHoughTransform(const Mat thresh) {
     // point 2
     pt2.x = cvRound(x0 - inputImage.rows * (-b));
     pt2.y = cvRound(y0 - inputImage.rows * (a));
-
-    //    cout << "x: " << x0 << endl;
 
     // save x coordinates
     lineCoordinates.push_back(x0);  // push point1 x coords
@@ -206,7 +216,6 @@ void BottleDetection::findLineUniquePoints() {
     condensedArray = linePoints;
   } else {
     size_t valueRange = linePoints.at(0) - linePoints.at(linePoints.size() - 1);
-    cout << "range is: " << valueRange << endl;
     condensedArray.push_back(linePoints.at(0));
     for (int loopVar = 0; loopVar < linePoints.size() - 1; loopVar++) {
       //      cout << endl
@@ -258,30 +267,6 @@ void BottleDetection::getRegionOfInterest(Mat& referenceImage, const int x,
            );
   // region of interest
   referenceImage = referenceImage(Rec);
-  referenceImage.copyTo(inputImage);
-}
-
-void BottleDetection::reduceImageDensity(Mat& inputImage,
-                                         const bool APPLY_FILTERS,
-                                         const int minThreshValue,
-                                         const int filterKernelSize) {
-  Size s1 = inputImage.size();
-  Mat median;
-  
-  if (APPLY_FILTERS == true) {
-    medianBlur(inputImage,       // source
-               median,           // destination
-               filterKernelSize  // aperture size (odd and >1)
-               );
-
-    threshold(median, inputImage, minThreshValue, 255, CV_THRESH_BINARY);
-  }
-
-  getRegionOfInterest(inputImage,      // image
-                      s1.width / 20,   // remove 1/5.2th from left
-                      s1.height / 10,  // remove 1/10th from top
-                      s1.width - (2 * s1.width / 20),
-                      s1.height - s1.height / 5);
 }
 
 // get the blob of white colors
@@ -292,7 +277,9 @@ void BottleDetection::reduceImageDensity(Mat& inputImage,
 // ... (say average of the blobs sizes) it means
 // something is present their besides only the chain
 void BottleDetection::performBlobDetection() {
-  reduceImageDensity(inputImage, true, 170, 7);
+  Mat detectionImage;
+  inputImage.copyTo(detectionImage);
+  detectionImage = reduceImageDensity(detectionImage, 225, 1);
 
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
@@ -304,18 +291,25 @@ void BottleDetection::performBlobDetection() {
   // Set up the detector with default parameters.
   SimpleBlobDetector detector(params);
   vector<KeyPoint> keypoints;
-  detector.detect(inputImage, keypoints);
-  //  float totalArea = 0;
-  const float avgArea = 9.1;
+  detector.detect(detectionImage, keypoints);
+
+  float totalArea = 0;
+  const float avgArea = 9.5;
+
   vector<KeyPoint> unqiue_keypoints;
-  for (const auto& point : keypoints)
+
+  for (const auto& point : keypoints) {
     if (point.size > avgArea) unqiue_keypoints.push_back(point);
+  }
 
-  // find the average area from the teach image
-  // for (const auto& point : keypoints) totalArea += point.size;
-  // totalArea /= keypoints.size();
-  // cout << "avg. area: " << totalArea << endl;
-
+  if (false) {
+    // find the average area from the teach image
+    for (const auto& point : keypoints) {
+      totalArea += point.size;
+    }
+    totalArea /= keypoints.size();
+    cout << "avg. area: " << totalArea << endl;
+  }
   // cout << "x: " << std::setw(3) << std::setfill('0') << int(point.pt.x)
   //      << "   |    y: " << std::setw(3) << std::setfill('0')
   //      << int(point.pt.y) << "   |    size: " << std::setw(3)
@@ -324,7 +318,7 @@ void BottleDetection::performBlobDetection() {
   // Draw detected blobs as red circles.
   // DrawMatchesFlags::DRAW_RICH_KEYPOINTS flag ensures the size of the circle
   // corresponds to the size of blob
-  drawKeypoints(inputImage,         // input image
+  drawKeypoints(detectionImage,     // input image
                 unqiue_keypoints,   // keypoints found using blob detection
                 inputImage,         // output image
                 Scalar(0, 0, 255),  // colour for the points
@@ -335,7 +329,6 @@ void BottleDetection::performBlobDetection() {
         masterproject::cwd + "/meeting-11/blob-detection-result/result.bmp",
         inputImage);
   }
-  imshow("keypoints", inputImage);
 }
 
 void BottleDetection::computeResults() {
