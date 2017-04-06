@@ -1,7 +1,7 @@
 
 
 
-  /* radius params:
+/* radius params:
 multicolor-bottle-caps.jpeg -- 40, 45
 blob.jpg -- 30, 32
 cap.jpg -- gray.rows/4, 82, 90
@@ -47,3 +47,12 @@ detectInstance.performBlobDetection();
 waitKey();
 videoFrames(masterproject::cwd + "/meeting-12/meeting-12-teach.mp4", true, 35,
 40);
+
+Draw detected blobs as red circles.
+DrawMatchesFlags::DRAW_RICH_KEYPOINTS flag ensures the size of the circle
+corresponds to the size of blob
+drawKeypoints(inputImage, // input image
+              unqiue_keypoints, // keypoints found using blob detection
+              inputImage, // output image
+              Scalar(0, 0, 255),// colour for the points
+              DrawMatchesFlags::DRAW_RICH_KEYPOINTS);

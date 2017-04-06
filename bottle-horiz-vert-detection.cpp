@@ -12,8 +12,9 @@ void saveImage(string imagePath, const Mat image) {
   imwrite(imagePath, image);
 }
 
-Mat reduceImageDensity(Mat reduceDensityImage, const int minThreshValue,
-                       const int filterKernelSize) {
+Mat reduceImageDensity(Mat reduceDensityImage, const unsigned minThreshValue,
+    const unsigned filterKernelSize) {
+  
   Mat median;
   medianBlur(reduceDensityImage,  // source
              median,              // destination
@@ -266,9 +267,16 @@ void BottleDetection::getRegionOfInterest(Mat& referenceImage, const int x,
 void BottleDetection::performBlobDetection() {
   Mat detectionImage;
   inputImage.copyTo(detectionImage);
-  detectionImage = reduceImageDensity(detectionImage, 225, 1);
+  const unsigned minThreshValue = 30;
+  const unsigned filterKernelSize = 1;
+  detectionImage = reduceImageDensity(detectionImage,   // image
+                                      minThreshValue,   // threshold
+                                      filterKernelSize  // filter size
+                                      );
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
+  // params.minArea = 2;
+  // params.minArea = 200;
   params.filterByCircularity = false;
   params.filterByConvexity = false;
   params.filterByColor = true;
@@ -282,10 +290,11 @@ void BottleDetection::performBlobDetection() {
   float totalArea = 0;
   const float avgArea = 9.5;
 
-  vector<KeyPoint> unqiue_keypoints;
-
+  vector<KeyPoint> unqiue_keypoints;  // = keypoints;
   for (const auto& point : keypoints) {
-    if (point.size > avgArea) unqiue_keypoints.push_back(point);
+    // cout << endl << point.pt << endl;
+    // if (point.size > avgArea) unqiue_keypoints.push_back(point);
+    unqiue_keypoints.push_back(point);
   }
 
   if (false) {
@@ -296,19 +305,15 @@ void BottleDetection::performBlobDetection() {
     totalArea /= keypoints.size();
     cout << "avg. area: " << totalArea << endl;
   }
-  // cout << "x: " << std::setw(3) << std::setfill('0') << int(point.pt.x)
-  //      << "   |    y: " << std::setw(3) << std::setfill('0')
-  //      << int(point.pt.y) << "   |    size: " << std::setw(3)
-  //      << std::setfill('0') << float(point.size) << endl;
 
-  // Draw detected blobs as red circles.
-  // DrawMatchesFlags::DRAW_RICH_KEYPOINTS flag ensures the size of the circle
-  // corresponds to the size of blob
-  drawKeypoints(inputImage,         // input image
-                unqiue_keypoints,   // keypoints found using blob detection
-                inputImage,         // output image
-                Scalar(0, 0, 255),  // colour for the points
-                DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+  for (const auto& p: keypoints) {
+      cv::drawMarker(
+        inputImage, 
+        cv::Point(p.pt.x, p.pt.y), 
+        cv::Scalar(0, 0, 255),
+        MARKER_CROSS, 10, 1
+      );
+  }
   // Show blobs
   if (false) {
     saveImage(

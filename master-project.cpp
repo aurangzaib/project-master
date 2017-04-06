@@ -18,32 +18,45 @@ string GetCWD(void) {
 
 string masterproject::cwd =
     "/Users/siddiqui/Documents/Projects/master-project/meetings/";
-int main() {
-  for (int loop = 1; loop <= 31; loop++) {
-    // get image in sequence
-    Mat inputImage =
-        imread(masterproject::cwd + "meeting-12-2/" + to_string(loop) + ".bmp");
-    Size s1 = inputImage.size();
 
-    BottleDetection detectBottles(inputImage);
-    CapDetection detectCaps(inputImage, 40, 55);
+void fetchImagesFromFolder(vector<Mat>& data, const string path) {
+  vector<String> fn;
+  glob(path, fn, true);  // recurse
+  for (size_t k = 0; k < fn.size(); ++k) {
+    cv::Mat im = cv::imread(fn[k]);
+    if (im.empty()) continue;  // only proceed if sucsessful
+    data.push_back(im);
+  }
+}
+
+int main() {
+  vector<Mat> images;
+  fetchImagesFromFolder(images, masterproject::cwd + "meeting-13/*.bmp");
+  for (auto& inputImage : images) {
+    Size s1 = inputImage.size();
+    BottleDetection regionOfInterest(inputImage);
     // remove the edges of the image before applying the algorithms
-    detectBottles.getRegionOfInterest(inputImage,      // image
-                               s1.width / 20,   // remove 1/5.2th from left
-                               s1.height / 10,  // remove 1/10th from top
-                               s1.width - (2 * s1.width / 20),
-                               s1.height - s1.height / 5);
+    regionOfInterest.getRegionOfInterest(
+        inputImage,      // image
+        s1.width / 20,   // remove 1/5.2th from left
+        s1.height / 10,  // remove 1/10th from top
+        s1.width - (2 * s1.width / 20), s1.height - s1.height / 5);
+    Mat capData, bobData;
+    inputImage.copyTo(capData);
+    inputImage.copyTo(bobData);
+
+    CapDetection detectCaps(capData, 45, 65);
+    BottleDetection detectBottles(bobData);
 
     // detect caps of the bottle
     detectCaps.applyHoughCircleTransform();
-
     // detect presence of the bottle
     detectBottles.performBlobDetection();
 
-    imshow("result", inputImage);
-    waitKey(1.5 * 1000);
+    imshow("horizontal bottles", bobData);
+    imshow("vertical bottles", capData);
+    waitKey();
   }
 
-  // videoFrames(masterproject::cwd + "/meeting-5/cap-teach-video.mp4");
   return 0;
 }
