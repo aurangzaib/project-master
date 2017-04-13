@@ -40,10 +40,11 @@ void CapDetection::reduceImageDensity() {
   inputImage.copyTo(outputImage);
   // convert to single channel -- gray
   cvtColor(outputImage, outputImage, CV_BGR2GRAY);
-
+  Mat canny;
   unsigned minThreshValue = 35;
   unsigned filterKernelSize = 27;
   outputImage = ::reduceImageDensity(outputImage, minThreshValue, filterKernelSize);
+  Canny(outputImage, canny, 50,200, 7);
 }
 
 void CapDetection::applyHoughCircleTransform() {
@@ -55,10 +56,12 @@ void CapDetection::getCapsCircles() {
   // hough circle to determine bottle caps
   vector<Vec3f> bottleCaps;
   // hough circle gives us [0]->x, [1]->y, [2]->radius
-  HoughCircles(outputImage, bottleCaps, CV_HOUGH_GRADIENT, 1,
-               outputImage.rows / 5,
+  HoughCircles(outputImage, bottleCaps, 
+              CV_HOUGH_GRADIENT, 
+              1,
+               outputImage.rows / 2,
                // canny parameters
-               200, 10,
+               20, 10,
                // min_radius & max_radius
                minRadius, maxRadius);
   // draw the caps

@@ -1,0 +1,22 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "ostream": "cpp",
+        "functional": "cpp",
+        "cstdlib": "cpp",
+        "exception": "cpp",
+        "new": "cpp",
+        "cctype": "cpp",
+        "cmath": "cpp",
+        "complex": "cpp",
+        "cstdint": "cpp",
+        "cstdio": "cpp",
+        "cwchar": "cpp",
+        "cwctype": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "typeinfo": "cpp",
+        "string": "cpp"
+    }
+}
