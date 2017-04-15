@@ -41,20 +41,20 @@ int main() {
         s1.width / 20,   // remove 1/5.2th from left
         s1.height / 10,  // remove 1/10th from top
         s1.width - (2 * s1.width / 20), s1.height - s1.height / 5);
-    Mat capData, bobData;
+    Mat capData, blobData;
     inputImage.copyTo(capData);
-    inputImage.copyTo(bobData);
+    inputImage.copyTo(blobData);
 
     CapDetection detectCaps(capData, 45, 65);
-    BottleDetection detectBottles(bobData);
+    BottleDetection detectBottles(blobData);
 
     // detect caps of the bottle
     detectCaps.applyHoughCircleTransform();
     // detect presence of the bottle
     detectBottles.performBlobDetection();
-    imshow("horizontal bottles", bobData);
+    imshow("horizontal bottles", blobData);
     imshow("vertical bottles", capData);
-    waitKey();
+    waitKey(1100);
   }
 
   return 0;

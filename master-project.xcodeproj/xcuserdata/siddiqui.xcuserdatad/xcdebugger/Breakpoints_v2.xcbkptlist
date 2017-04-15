@@ -72,7 +72,7 @@
                   moduleName = "master-project"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/siddiqui/Documents/Projects/master-project/classes-operator-overload.cpp"
-                  timestampString = "513945494.304664"
+                  timestampString = "513951129.98716"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "15"
@@ -87,7 +87,7 @@
                   moduleName = "master-project"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/siddiqui/Documents/Projects/master-project/classes-operator-overload.cpp"
-                  timestampString = "513945494.30779"
+                  timestampString = "513951129.989774"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "15"
@@ -243,94 +243,46 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "bottle-horiz-vert-detection.cpp"
-            timestampString = "513187277.520065"
+            filePath = "bottle-cap-detection.cpp"
+            timestampString = "513948862.140119"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "303"
-            endingLineNumber = "303"
-            landmarkName = "BottleDetection::performBlobDetection()"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "CapDetection::getCapsUsingBlobs()"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "BottleDetection::performBlobDetection()"
+                  symbolName = "CapDetection::applyHoughCircleTransform()"
                   moduleName = "master-project"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/siddiqui/Documents/Projects/master-project/bottle-horiz-vert-detection.cpp"
-                  timestampString = "512653631.822244"
+                  urlString = "file:///Users/siddiqui/Documents/Projects/master-project/bottle-cap-detection.cpp"
+                  timestampString = "513948891.387116"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "304"
-                  endingLineNumber = "304"
-                  offsetFromSymbolStart = "651">
+                  startingLineNumber = "85"
+                  endingLineNumber = "85"
+                  offsetFromSymbolStart = "493">
                </Location>
                <Location
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "BottleDetection::performBlobDetection()"
+                  symbolName = "CapDetection::applyHoughCircleTransform()"
                   moduleName = "master-project"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/siddiqui/Documents/Projects/master-project/bottle-horiz-vert-detection.cpp"
-                  timestampString = "512653631.826063"
+                  urlString = "file:///Users/siddiqui/Documents/Projects/master-project/bottle-cap-detection.cpp"
+                  timestampString = "513948891.390465"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "304"
-                  endingLineNumber = "304"
-                  offsetFromSymbolStart = "1062">
+                  startingLineNumber = "85"
+                  endingLineNumber = "85"
+                  offsetFromSymbolStart = "830">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "bottle-horiz-vert-detection.cpp"
-            timestampString = "513187277.520065"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "275"
-            endingLineNumber = "275"
-            landmarkName = "BottleDetection::performBlobDetection()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "bottle-horiz-vert-detection.cpp"
-            timestampString = "513187277.520065"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "289"
-            endingLineNumber = "289"
-            landmarkName = "BottleDetection::performBlobDetection()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "bottle-horiz-vert-detection.cpp"
-            timestampString = "513187277.520065"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "273"
-            endingLineNumber = "273"
-            landmarkName = "BottleDetection::performBlobDetection()"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

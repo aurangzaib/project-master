@@ -10,11 +10,13 @@ class CapDetection {
   Mat inputImage, outputImage;
   CapDetection();
   CapDetection(const string, unsigned, unsigned);
-  CapDetection(Mat &, unsigned, unsigned);
+  CapDetection(Mat&, unsigned, unsigned);
   void reduceImageDensity();
   void applyHoughCircleTransform();
-  void getCapsCircles();
+  // helper methods
   void getBottlesCircles();
+  void getCapsUsingHough();
+  void getCapsUsingBlobs();
 };
 
 CapDetection::CapDetection() {
@@ -24,15 +26,21 @@ CapDetection::CapDetection() {
   maxRadius = 35;
 }
 
-CapDetection::CapDetection(const string imagePath, unsigned minRadius,
-                           unsigned maxRadius)
-    : imagePath(imagePath), minRadius(minRadius), maxRadius(maxRadius) {
+CapDetection::CapDetection(const string imagePath,  // path to the image
+                           unsigned minRadius,      // min radius for circle
+                           unsigned maxRadius)      // max radius for circle
+    : imagePath(imagePath),
+      minRadius(minRadius),
+      maxRadius(maxRadius) {
   inputImage = imread(imagePath);
 }
 
-CapDetection::CapDetection(Mat &inputImage, unsigned minRadius,
-                           unsigned maxRadius)
-    : inputImage(inputImage), minRadius(minRadius), maxRadius(maxRadius) {
+CapDetection::CapDetection(Mat& inputImage,     // image as reference
+                           unsigned minRadius,  // min radius for circle
+                           unsigned maxRadius)  // max radius for circle
+    : inputImage(inputImage),
+      minRadius(minRadius),
+      maxRadius(maxRadius) {
   imagePath = "";
 }
 
@@ -42,8 +50,9 @@ void CapDetection::reduceImageDensity() {
   cvtColor(outputImage, outputImage, CV_BGR2GRAY);
   Mat canny;
   unsigned minThreshValue = 5;
-  unsigned filterKernelSize = 91;
-  outputImage = ::reduceImageDensity(outputImage, minThreshValue, filterKernelSize);
+  unsigned filterKernelSize = 49;
+  outputImage =
+      ::reduceImageDensity(outputImage, minThreshValue, filterKernelSize);
   Canny(outputImage, canny, 50, 200, 7);
   imshow("after thresh - cap: ", outputImage);
   imshow("canny: ", canny);
@@ -51,14 +60,59 @@ void CapDetection::reduceImageDensity() {
 
 void CapDetection::applyHoughCircleTransform() {
   reduceImageDensity();
-  getCapsCircles();
+  getCapsUsingBlobs();
+  if (false) {
+    getCapsUsingHough();
+  }
   // save blobs results
   if (false) {
-    ::saveImage(masterproject::cwd + "/meeting-13/results/result.bmp",inputImage);
+    ::saveImage(masterproject::cwd + "/meeting-13/results/result.bmp",
+                inputImage);
   }
 }
+void CapDetection::getCapsUsingBlobs() {
+  SimpleBlobDetector::Params params;
 
-void CapDetection::getCapsCircles() {
+  params.filterByArea = false;
+  params.filterByCircularity = false;
+  // high convexity i.e. no breakage in the shape
+  // near to the circle
+  params.filterByConvexity = true;
+  params.minConvexity = 0.95;
+  params.maxConvexity = 1.0;
+  // high intertia i.e. blob should not be
+  // elongated but it should be near circle shape
+  params.filterByInertia = true;
+  params.minInertiaRatio = 0.6;
+  params.maxInertiaRatio = 1;
+  // filter blob based on black colors
+  // threshold is applied in a way
+  // that it makes caps as black (0,0,0)
+  params.filterByColor = true;
+  params.blobColor = 0;
+
+  // Set up the detector with default parameters.
+  SimpleBlobDetector detector(params);
+  vector<KeyPoint> keypoints;
+  detector.detect(outputImage, keypoints);
+
+  const float minArea = 30.0;
+  const float maxArea = 100.0;
+  vector<KeyPoint> unqiue_keypoints;  // = keypoints;
+  for (const auto& point : keypoints) {
+    if (point.size > minArea && point.size < maxArea) {
+      // save caps points
+      unqiue_keypoints.push_back(point);
+      // debug caps points
+      cout << "size: " << point.size << "   x: " << point.pt.x
+           << "   y: " << point.pt.y << endl;
+      // draw caps points
+      cv::drawMarker(inputImage, cv::Point(point.pt.x, point.pt.y),
+                     cv::Scalar(0, 0, 255), MARKER_CROSS, 10, 1);
+    }
+  }
+}
+void CapDetection::getCapsUsingHough() {
   // hough circle to determine bottle caps
   vector<Vec3f> bottleCaps;
   // hough circle gives us [0]->x, [1]->y, [2]->radius
@@ -82,7 +136,6 @@ void CapDetection::getCapsCircles() {
            0);
   }
 }
-
 void CapDetection::getBottlesCircles() {
   // hough circle to determine bottle radius
   vector<Vec3f> bottleRadius;
