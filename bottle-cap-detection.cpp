@@ -95,10 +95,13 @@ void CapDetection::getCapsUsingBlobs() {
   SimpleBlobDetector detector(params);
   vector<KeyPoint> keypoints;
   detector.detect(outputImage, keypoints);
-
+  // usually bottle caps are within
+  // below range. providing boundary condition
+  // reduces noise.
   const float minArea = 30.0;
   const float maxArea = 100.0;
-  vector<KeyPoint> unqiue_keypoints;  // = keypoints;
+
+  vector<KeyPoint> unqiue_keypoints;
   for (const auto& point : keypoints) {
     if (point.size > minArea && point.size < maxArea) {
       // save caps points
@@ -109,18 +112,18 @@ void CapDetection::getCapsUsingBlobs() {
       // draw caps points -- cross
       drawMarker(inputImage,                         // image on which to draw
                  cv::Point(point.pt.x, point.pt.y),  // coordinates
-                 cv::Scalar(255, 255, 255),              // color -- red
+                 cv::Scalar(255, 255, 255),          // color -- red
                  MARKER_CROSS,                       // cross sign
                  10,                                 //
                  1);                                 // size of the cross
-      // draw caps points -- circle        
-      drawKeypoints(inputImage,         // input image
-                    unqiue_keypoints,   // keypoints found using blob detection
-                    inputImage,         // output image
-                    Scalar(255, 255, 255),  // colour for the points
-                    DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
     }
   }
+  // draw caps points -- circle
+  drawKeypoints(inputImage,             // input image
+                unqiue_keypoints,       // keypoints found using blob detection
+                inputImage,             // output image
+                Scalar(255, 255, 255),  // colour for the points
+                DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 }
 void CapDetection::getCapsUsingHough() {
   // hough circle to determine bottle caps
