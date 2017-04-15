@@ -35,12 +35,7 @@ unsigned videoFrames(const string videoPath) {
     CapDetection detect(capFrame, 30, 40);
 
     detect.applyHoughCircleTransform();
-    // detectBlob.performBlobDetection();
-<<<<<<< HEAD
-=======
-      
-      waitKey(1);
->>>>>>> master
+    detectBlob.performBlobDetection();
   }
   return 0;
 }

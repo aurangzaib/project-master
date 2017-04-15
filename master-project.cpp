@@ -31,7 +31,7 @@ void fetchImagesFromFolder(vector<Mat>& data, const string path) {
 
 int main() {
   vector<Mat> images;
-  fetchImagesFromFolder(images, masterproject::cwd + "meeting-13/*.bmp");
+  fetchImagesFromFolder(images, masterproject::cwd + "meeting-14/*.bmp");
   for (auto& inputImage : images) {
     Size s1 = inputImage.size();
     BottleDetection regionOfInterest(inputImage);
@@ -52,7 +52,6 @@ int main() {
     detectCaps.applyHoughCircleTransform();
     // detect presence of the bottle
     detectBottles.performBlobDetection();
-
     imshow("horizontal bottles", bobData);
     imshow("vertical bottles", capData);
     waitKey();
