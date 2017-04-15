@@ -106,9 +106,19 @@ void CapDetection::getCapsUsingBlobs() {
       // debug caps points
       cout << "size: " << point.size << "   x: " << point.pt.x
            << "   y: " << point.pt.y << endl;
-      // draw caps points
-      cv::drawMarker(inputImage, cv::Point(point.pt.x, point.pt.y),
-                     cv::Scalar(0, 0, 255), MARKER_CROSS, 10, 1);
+      // draw caps points -- cross
+      drawMarker(inputImage,                         // image on which to draw
+                 cv::Point(point.pt.x, point.pt.y),  // coordinates
+                 cv::Scalar(255, 255, 255),              // color -- red
+                 MARKER_CROSS,                       // cross sign
+                 10,                                 //
+                 1);                                 // size of the cross
+      // draw caps points -- circle        
+      drawKeypoints(inputImage,         // input image
+                    unqiue_keypoints,   // keypoints found using blob detection
+                    inputImage,         // output image
+                    Scalar(255, 255, 255),  // colour for the points
+                    DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
     }
   }
 }
