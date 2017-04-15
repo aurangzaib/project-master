@@ -19,7 +19,7 @@ Mat reduceImageDensity(Mat reduceDensityImage, const unsigned minThreshValue,
              median,              // destination
              filterKernelSize     // aperture size (odd and >1)
              );
-  imshow("after median: ", median);
+
   threshold(median, reduceDensityImage, minThreshValue, 255, CV_THRESH_BINARY);
   return reduceDensityImage;
 }
@@ -273,7 +273,6 @@ void BottleDetection::performBlobDetection() {
                                       minThreshValue,   // threshold
                                       filterKernelSize  // filter size
                                       );
-  imshow("after thresh - blob: ", detectionImage);
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
   // params.minArea = 2;
@@ -304,7 +303,6 @@ void BottleDetection::performBlobDetection() {
       totalArea += point.size;
     }
     totalArea /= keypoints.size();
-    cout << "avg. area: " << totalArea << endl;
   }
 
   for (const auto& p : keypoints) {

@@ -52,8 +52,10 @@ int main() {
     detectCaps.applyHoughCircleTransform();
     // detect presence of the bottle
     detectBottles.performBlobDetection();
-    imshow("horizontal bottles", blobData);
-    imshow("vertical bottles", capData);
+    Mat result;
+    vconcat(blobData, capData, result);
+    hconcat(blobData, capData, result);
+    imshow("results: ", result);
     waitKey(1100);
   }
 

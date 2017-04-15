@@ -54,8 +54,6 @@ void CapDetection::reduceImageDensity() {
   outputImage =
       ::reduceImageDensity(outputImage, minThreshValue, filterKernelSize);
   Canny(outputImage, canny, 50, 200, 7);
-  imshow("after thresh - cap: ", outputImage);
-  imshow("canny: ", canny);
 }
 
 void CapDetection::applyHoughCircleTransform() {
@@ -107,7 +105,8 @@ void CapDetection::getCapsUsingBlobs() {
       // save caps points
       unqiue_keypoints.push_back(point);
       // debug caps points
-      cout << "size: " << point.size << "   x: " << point.pt.x
+      cout << "size: " << point.size 
+           << "   x: " << point.pt.x
            << "   y: " << point.pt.y << endl;
       // draw caps points -- cross
       drawMarker(inputImage,                         // image on which to draw
