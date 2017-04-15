@@ -306,7 +306,12 @@ void BottleDetection::performBlobDetection() {
   }
 
   for (const auto& p : keypoints) {
-    cv::drawMarker(inputImage, cv::Point(p.pt.x, p.pt.y), cv::Scalar(0, 0, 255), MARKER_CROSS, 10, 1);
+    cv::drawMarker(inputImage, 
+                   cv::Point(p.pt.x, p.pt.y), 
+                   cv::Scalar(0, 0, 255), 
+                   MARKER_CROSS, 
+                   10, 
+                   1);
   }
   // save blobs results
   if (false) {

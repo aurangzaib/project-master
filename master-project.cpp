@@ -30,6 +30,7 @@ void fetchImagesFromFolder(vector<Mat>& data, const string path) {
 }
 
 int main() {
+  bool BY_REFERENCE = true;
   vector<Mat> images;
   fetchImagesFromFolder(images, masterproject::cwd + "meeting-14/*.bmp");
   for (auto& inputImage : images) {
@@ -42,8 +43,13 @@ int main() {
         s1.height / 10,  // remove 1/10th from top
         s1.width - (2 * s1.width / 20), s1.height - s1.height / 5);
     Mat capData, blobData;
-    inputImage.copyTo(capData);
-    inputImage.copyTo(blobData);
+    if (BY_REFERENCE) {
+      capData = inputImage;
+      blobData = inputImage;
+    } else {
+      inputImage.copyTo(capData);
+      inputImage.copyTo(blobData);
+    }
 
     CapDetection detectCaps(capData, 45, 65);
     BottleDetection detectBottles(blobData);
@@ -52,11 +58,18 @@ int main() {
     detectCaps.applyHoughCircleTransform();
     // detect presence of the bottle
     detectBottles.performBlobDetection();
-    Mat result;
-    vconcat(blobData, capData, result);
-    hconcat(blobData, capData, result);
-    imshow("results: ", result);
-    waitKey(1100);
+
+    if (BY_REFERENCE) {
+      imshow("results: ", inputImage);
+      if (false) ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp", inputImage);
+    } else {
+      Mat result;
+      vconcat(blobData, capData, result);
+      hconcat(blobData, capData, result);
+      ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp", result);
+      imshow("results: ", result);
+    }
+    waitKey(1500);
   }
 
   return 0;
