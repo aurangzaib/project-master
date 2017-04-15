@@ -13,13 +13,13 @@ void saveImage(string imagePath, const Mat image) {
 }
 
 Mat reduceImageDensity(Mat reduceDensityImage, const unsigned minThreshValue,
-    const unsigned filterKernelSize) {
-  
+                       const unsigned filterKernelSize) {
   Mat median;
   medianBlur(reduceDensityImage,  // source
              median,              // destination
              filterKernelSize     // aperture size (odd and >1)
              );
+  imshow("after median: ", median);
   threshold(median, reduceDensityImage, minThreshValue, 255, CV_THRESH_BINARY);
   return reduceDensityImage;
 }
@@ -91,7 +91,7 @@ const Mat BottleDetection::applyFilters(const Mat image) {
   // thresholding
   Mat thresh;
   threshold(median, thresh, 170, 255, THRESH_BINARY);
-  if (false /*!imagePath.empty()*/) {
+  if (false) {
     saveImage(imagePath, canny);
   }
   return thresh;
@@ -273,6 +273,7 @@ void BottleDetection::performBlobDetection() {
                                       minThreshValue,   // threshold
                                       filterKernelSize  // filter size
                                       );
+  imshow("after thresh - blob: ", detectionImage);
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
   // params.minArea = 2;
@@ -306,19 +307,14 @@ void BottleDetection::performBlobDetection() {
     cout << "avg. area: " << totalArea << endl;
   }
 
-  for (const auto& p: keypoints) {
-      cv::drawMarker(
-        inputImage, 
-        cv::Point(p.pt.x, p.pt.y), 
-        cv::Scalar(0, 0, 255),
-        MARKER_CROSS, 10, 1
-      );
+  for (const auto& p : keypoints) {
+    cv::drawMarker(inputImage, cv::Point(p.pt.x, p.pt.y), cv::Scalar(0, 0, 255),
+                   MARKER_CROSS, 10, 1);
   }
-  // Show blobs
+  // save blobs results
   if (false) {
-    saveImage(
-        masterproject::cwd + "/meeting-11/blob-detection-result/result.bmp",
-        inputImage);
+    saveImage(masterproject::cwd + "/meeting-14/results-filter/result.bmp",
+              inputImage);
   }
 }
 

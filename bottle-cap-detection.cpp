@@ -20,8 +20,8 @@ class CapDetection {
 CapDetection::CapDetection() {
   string imagePath = masterproject::cwd + "meeting-5/cap-teach-5.bmp";
   inputImage = imread(imagePath);
-  minRadius = 30;
-  maxRadius = 40;
+  minRadius = 15;
+  maxRadius = 35;
 }
 
 CapDetection::CapDetection(const string imagePath, unsigned minRadius,
@@ -41,24 +41,28 @@ void CapDetection::reduceImageDensity() {
   // convert to single channel -- gray
   cvtColor(outputImage, outputImage, CV_BGR2GRAY);
   Mat canny;
-  unsigned minThreshValue = 35;
-  unsigned filterKernelSize = 27;
+  unsigned minThreshValue = 5;
+  unsigned filterKernelSize = 91;
   outputImage = ::reduceImageDensity(outputImage, minThreshValue, filterKernelSize);
-  Canny(outputImage, canny, 50,200, 7);
+  Canny(outputImage, canny, 50, 200, 7);
+  imshow("after thresh - cap: ", outputImage);
+  imshow("canny: ", canny);
 }
 
 void CapDetection::applyHoughCircleTransform() {
   reduceImageDensity();
   getCapsCircles();
+  // save blobs results
+  if (false) {
+    ::saveImage(masterproject::cwd + "/meeting-13/results/result.bmp",inputImage);
+  }
 }
 
 void CapDetection::getCapsCircles() {
   // hough circle to determine bottle caps
   vector<Vec3f> bottleCaps;
   // hough circle gives us [0]->x, [1]->y, [2]->radius
-  HoughCircles(outputImage, bottleCaps, 
-              CV_HOUGH_GRADIENT, 
-              1,
+  HoughCircles(outputImage, bottleCaps, CV_HOUGH_GRADIENT, 1,
                outputImage.rows / 2,
                // canny parameters
                20, 10,
