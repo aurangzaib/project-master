@@ -17,7 +17,7 @@ string GetCWD(void) {
 }
 
 string masterproject::cwd =
-    "/Users/siddiqui/Documents/Projects/master-project/meetings/";
+    "/Users/Umair/Desktop/master-project/meetings/";
 
 void fetchImagesFromFolder(vector<Mat>& data, const string path) {
   vector<String> fn;
