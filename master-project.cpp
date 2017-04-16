@@ -9,15 +9,9 @@
 #include "sobel-canny-threshold.cpp"
 #include "stdafx.h"
 #include "video-frames.cpp"
-string GetCWD(void) {
-  char buff[FILENAME_MAX];
-  GetCurrentDir(buff, FILENAME_MAX);
-  string cwd(buff);
-  return cwd;
-}
 
 string masterproject::cwd =
-    "/Users/Umair/Desktop/master-project/meetings/";
+    "/Users/siddiqui/Documents/Projects/master-project/meetings/";
 
 void fetchImagesFromFolder(vector<Mat>& data, const string path) {
   vector<String> fn;
@@ -31,6 +25,7 @@ void fetchImagesFromFolder(vector<Mat>& data, const string path) {
 
 int main() {
   bool BY_REFERENCE = true;
+  bool SAVE_RESULTS = false;
   vector<Mat> images;
   fetchImagesFromFolder(images, masterproject::cwd + "meeting-14/*.bmp");
   for (auto& inputImage : images) {
@@ -61,12 +56,12 @@ int main() {
 
     if (BY_REFERENCE) {
       imshow("results: ", inputImage);
-      if (false) ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp", inputImage);
+      if (SAVE_RESULTS) ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp", inputImage);
     } else {
       Mat result;
       vconcat(blobData, capData, result);
       hconcat(blobData, capData, result);
-      ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp", result);
+      if (SAVE_RESULTS) ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp", result);
       imshow("results: ", result);
     }
     waitKey(1500);

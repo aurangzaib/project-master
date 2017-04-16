@@ -3,7 +3,6 @@
 #include "stdafx.h"
 //#define WINDOWS
 #ifdef WINDOWS
-#include <direct.h>
 #define GetCurrentDir _getcwd
 #else
 #include <unistd.h>

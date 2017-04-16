@@ -256,7 +256,6 @@ void BottleDetection::getRegionOfInterest(Mat& referenceImage, const int x,
   // region of interest
   referenceImage = referenceImage(Rec);
 }
-
 // get the blob of white colors
 // in our case, these are the areas from
 // where the light is coming out of chain

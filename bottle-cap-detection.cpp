@@ -53,7 +53,6 @@ void CapDetection::reduceImageDensity() {
   unsigned filterKernelSize = 49;
   outputImage =
       ::reduceImageDensity(outputImage, minThreshValue, filterKernelSize);
-  Canny(outputImage, canny, 50, 200, 7);
 }
 
 void CapDetection::applyHoughCircleTransform() {
