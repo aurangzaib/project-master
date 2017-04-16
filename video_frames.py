@@ -1,4 +1,4 @@
-from bottle_cap_detection import BottleDetection
+from cap_detection import BottleDetection
 import cv2 as cv
 
 

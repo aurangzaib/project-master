@@ -1,7 +1,35 @@
 import cv2 as cv
-from video_frames import VideoFrames
-prj_dir = "/Users/siddiqui/Documents/Projects/master-project/meetings/"
-input_image = cv.imread(prj_dir + "meeting-10/horizontal-perpendicular/52.bmp")
+import os
+from bottle_detection import BottleDetection
+from cap_detection import CapDetection
 
-VideoFrames.operation_on_video_frames(prj_dir + "meeting-10/meeting-10.mp4", True, 0, 0)
-cv.waitKey()
+cwd = "/Users/siddiqui/Documents/Projects/master-project/meetings/"
+
+
+def fetch_images_from_folder(folder):
+    _images = []
+    for filename in os.listdir(folder):
+        img = cv.imread(os.path.join(folder, filename))
+        if img is not None:
+            _images.append(img)
+    return _images
+
+
+images = fetch_images_from_folder(cwd + "meeting-14/")
+for image in images:
+    height, width, channels = image.shape
+    image = BottleDetection.get_region_of_interest(image,
+                                                   width / 20,  # x
+                                                   height / 20,  # y
+                                                   # width
+                                                   width - (2 * width / 20),
+                                                   height - height / 5)  # height
+    detect_cap = CapDetection(image)
+    detect_bottle = BottleDetection(image)
+    detect_cap.cap_detection()
+    detect_bottle.bottle_detection()
+
+    cv.imshow("result", image)
+    cv.waitKey(500)
+
+cv.destroyAllWindows()
