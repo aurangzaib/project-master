@@ -38,7 +38,7 @@ struct BottleNoFilter {
 } bottleNoFilterVariable;
 
 struct BottleWithFilter {
-  const float averageBlobArea = 9.5;
+  const float averageBlobArea = 2.0;
   const int minThresholdValue = 30;
   const int filterKernelSize = 1;
   const int markerSize = 1;
