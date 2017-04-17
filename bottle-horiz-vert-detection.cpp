@@ -19,17 +19,30 @@ Mat reduceImageDensity(Mat reduceDensityImage, const unsigned minThreshValue,
              median,              // destination
              filterKernelSize     // aperture size (odd and >1)
              );
-
   threshold(median, reduceDensityImage, minThreshValue, 255, CV_THRESH_BINARY);
   return reduceDensityImage;
 }
 
 struct region {
-  static const int x = 30;
-  static const int y = 30;
-  static const int width = 200;
-  static const int height = 350;
+  const int x = 30;
+  const int y = 30;
+  const int width = 200;
+  const int height = 350;
 } roi;
+
+struct BottleNoFilter {
+  const float averageBlobArea = 10.0;
+  const int minThresholdValue = 220;
+  const int filterKernelSize = 1;
+  const int markerSize = 3;
+} bottleNoFilterVariable;
+
+struct BottleWithFilter {
+  const float averageBlobArea = 9.5;
+  const int minThresholdValue = 30;
+  const int filterKernelSize = 1;
+  const int markerSize = 1;
+} bottleWithFilterVariable;
 
 class BottleDetection {
  private:
@@ -266,16 +279,13 @@ void BottleDetection::getRegionOfInterest(Mat& referenceImage, const int x,
 void BottleDetection::performBlobDetection() {
   Mat detectionImage;
   inputImage.copyTo(detectionImage);
-  const unsigned minThreshValue = 30;
-  const unsigned filterKernelSize = 1;
-  detectionImage = reduceImageDensity(detectionImage,   // image
-                                      minThreshValue,   // threshold
-                                      filterKernelSize  // filter size
-                                      );
+  detectionImage =
+      reduceImageDensity(detectionImage,                       // image
+                         bottleNoFilterVariable.minThresholdValue,  // threshold
+                         bottleNoFilterVariable.filterKernelSize    // filter size
+                         );
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
-  // params.minArea = 2;
-  // params.minArea = 200;
   params.filterByCircularity = false;
   params.filterByConvexity = false;
   params.filterByColor = true;
@@ -287,13 +297,12 @@ void BottleDetection::performBlobDetection() {
   detector.detect(detectionImage, keypoints);
 
   float totalArea = 0;
-  const float avgArea = 9.5;
+  const float avgArea = 10.0;
 
-  vector<KeyPoint> unqiue_keypoints;  // = keypoints;
+  vector<KeyPoint> unqiue_keypoints;
   for (const auto& point : keypoints) {
-    // cout << endl << point.pt << endl;
-    // if (point.size > avgArea) unqiue_keypoints.push_back(point);
-    unqiue_keypoints.push_back(point);
+    if (point.size > bottleNoFilterVariable.averageBlobArea)
+      unqiue_keypoints.push_back(point);
   }
 
   if (false) {
@@ -304,13 +313,9 @@ void BottleDetection::performBlobDetection() {
     totalArea /= keypoints.size();
   }
 
-  for (const auto& p : keypoints) {
-    cv::drawMarker(inputImage, 
-                   cv::Point(p.pt.x, p.pt.y), 
-                   cv::Scalar(0, 0, 255), 
-                   MARKER_CROSS, 
-                   10, 
-                   1);
+  for (const auto& p : unqiue_keypoints) {
+    cv::drawMarker(inputImage, cv::Point(p.pt.x, p.pt.y), cv::Scalar(0, 0, 255),
+                   MARKER_CROSS, 10, bottleNoFilterVariable.markerSize);
   }
   // save blobs results
   if (false) {

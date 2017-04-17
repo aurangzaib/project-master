@@ -1,7 +1,24 @@
 #include "bottle-horiz-vert-detection.cpp"
 #include "header.h"
 #include "stdafx.h"
+
+
+struct CapNoFilter {
+  const float minConvex = 0.65;
+  const int minThresholdValue = 10;
+  const int filterKernelSize = 3;
+  const int markerSize = 1;
+} capNoFilterVariables;
+
+struct CapWithFilter {
+  const float minConvex = 0.90;
+  const int minThresholdValue = 5;
+  const int filterKernelSize = 49;
+  const int markerSize = 1;
+} capWithFilterVariables;
+
 class CapDetection {
+    
  private:
   string imagePath;
   unsigned minRadius, maxRadius;
@@ -49,10 +66,8 @@ void CapDetection::reduceImageDensity() {
   // convert to single channel -- gray
   cvtColor(outputImage, outputImage, CV_BGR2GRAY);
   Mat canny;
-  unsigned minThreshValue = 5;
-  unsigned filterKernelSize = 49;
   outputImage =
-      ::reduceImageDensity(outputImage, minThreshValue, filterKernelSize);
+      ::reduceImageDensity(outputImage, capNoFilterVariables.minThresholdValue, capNoFilterVariables.filterKernelSize);
 }
 
 void CapDetection::applyHoughCircleTransform() {
@@ -75,7 +90,7 @@ void CapDetection::getCapsUsingBlobs() {
   // high convexity i.e. no breakage in the shape
   // near to the circle
   params.filterByConvexity = true;
-  params.minConvexity = 0.95;
+  params.minConvexity = capNoFilterVariables.minConvex;
   params.maxConvexity = 1.0;
   // high intertia i.e. blob should not be
   // elongated but it should be near circle shape
@@ -113,7 +128,7 @@ void CapDetection::getCapsUsingBlobs() {
                  cv::Scalar(255, 255, 255),          // color -- red
                  MARKER_CROSS,                       // cross sign
                  10,                                 //
-                 1);                                 // size of the cross
+                 capNoFilterVariables.markerSize);                                 // size of the cross
     }
   }
   // draw caps points -- circle

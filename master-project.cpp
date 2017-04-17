@@ -23,21 +23,21 @@ int main() {
   bool BY_REFERENCE = true;
   bool SAVE_RESULTS = false;
   vector<Mat> images;
-  fetchImagesFromFolder(images, masterproject::cwd + "meeting-14/*.bmp");
+  fetchImagesFromFolder(images, masterproject::cwd + "meeting-12/lower/");
   for (auto& inputImage : images) {
     Size s1 = inputImage.size();
     BottleDetection regionOfInterest(inputImage);
     // remove the edges of the image before applying the algorithms
     regionOfInterest.getRegionOfInterest(
         inputImage,      // image
-        s1.width / 20,   // remove 1/5.2th from left
+        s1.width / 10,   // remove 1/5.2th from left
         s1.height / 10,  // remove 1/10th from top
-        s1.width - (2 * s1.width / 20), s1.height - s1.height / 5);
+        s1.width - (2 * s1.width / 10), s1.height - s1.height / 5);
     Mat capData, blobData;
-    if (BY_REFERENCE) {
+    if (BY_REFERENCE == true) {
       capData = inputImage;
       blobData = inputImage;
-    } else {
+    } else if(BY_REFERENCE == false) {
       inputImage.copyTo(capData);
       inputImage.copyTo(blobData);
     }
@@ -49,18 +49,17 @@ int main() {
     detectCaps.applyHoughCircleTransform();
     // detect presence of the bottle
     detectBottles.performBlobDetection();
-
-    if (BY_REFERENCE) {
+    if (BY_REFERENCE == true) {
       imshow("results: ", inputImage);
       if (SAVE_RESULTS) ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp", inputImage);
-    } else {
+    } else if (BY_REFERENCE == false) {
       Mat result;
       vconcat(blobData, capData, result);
       hconcat(blobData, capData, result);
       if (SAVE_RESULTS) ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp", result);
       imshow("results: ", result);
     }
-    waitKey(1500);
+    waitKey();
   }
 
   return 0;

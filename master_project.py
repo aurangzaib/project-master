@@ -15,7 +15,7 @@ def fetch_images_from_folder(folder):
     return _images
 
 
-images = fetch_images_from_folder(cwd + "meeting-14/")
+images = fetch_images_from_folder(cwd + "meeting-13/")
 for image in images:
     height, width, channels = image.shape
     image = BottleDetection.get_region_of_interest(image,
@@ -26,7 +26,7 @@ for image in images:
                                                    height - height / 5)  # height
     detect_cap = CapDetection(image)
     detect_bottle = BottleDetection(image)
-    detect_cap.cap_detection()
+    # detect_cap.cap_detection()
     detect_bottle.bottle_detection()
 
     cv.imshow("result", image)
