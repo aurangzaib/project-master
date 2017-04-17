@@ -68,8 +68,7 @@ class BottleDetection(object):
                     cv.waitKey(1)
 
     def apply_probabilistic_hough_transform(self, thresh, with_wait_key):
-        hough_lines = cv.HoughLinesP(
-            thresh, 1, 180 * (np.pi / 180), 10, 10, 10)
+        hough_lines = cv.HoughLinesP(thresh, 1, 180 * (np.pi / 180), 10, 10, 10)
         self.output_image = self.input_image.copy()
         for hough_line in hough_lines:
             for x1, y1, x2, y2 in hough_line:
@@ -113,19 +112,21 @@ class BottleDetection(object):
                                                       filter_kernel_size)
         self.get_bottles_using_blobs()
 
+
+    def compute_results(self, _with_wait_key=True):
+        thresh = self.apply_filters(self.input_image)
+        self.apply_probabilistic_hough_transform(thresh, _with_wait_key)
+
+
     @staticmethod
     def get_region_of_interest(reference_image, x, y, width, height):
         mask = np.zeros(reference_image.shape, np.uint8)
         mask[y:y + height, x:x + width] = reference_image[y:y + height, x:x + width]
         return mask
 
-    def compute_results(self, _with_wait_key=True):
-        thresh = self.apply_filters(self.input_image)
-        self.apply_probabilistic_hough_transform(thresh, _with_wait_key)
 
     @staticmethod
     def reduce_image_density(_image, _min_thresh_value, _filter_kernel_size):
-        median = cv.medianBlur(_image, _filter_kernel_size)
-        ret, _image = cv.threshold(
-            median, _min_thresh_value, 255, cv.THRESH_BINARY)
+        _image = cv.medianBlur(_image, _filter_kernel_size)
+        ret, _image = cv.threshold(_image, _min_thresh_value, 255, cv.THRESH_BINARY)
         return _image

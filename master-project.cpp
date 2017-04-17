@@ -1,12 +1,8 @@
 #include "basic.cpp"
 #include "bottle-cap-detection.cpp"
 #include "classes-operator-overload.cpp"
-#include "classes-pointers.cpp"
-#include "classes.cpp"
 #include "discrete-fourier-transform.cpp"
 #include "header.h"
-#include "pointers.cpp"
-#include "sobel-canny-threshold.cpp"
 #include "stdafx.h"
 #include "video-frames.cpp"
 

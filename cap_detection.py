@@ -34,14 +34,13 @@ class CapDetection(object):
         detector = cv.SimpleBlobDetector_create(params)
         key_points = detector.detect(self.output_image)
 
-        min_area = 30.0
-        max_area = 150.0
+        min_area = 30
+        max_area = 150
 
         unique_key_points = []
 
         for point in key_points:
-            area_boundary = point.size > min_area and point.size < max_area
-            if area_boundary:
+            if min_area < point.size < max_area:
                 unique_key_points.append(point)
                 self.input_image = cv.drawMarker(self.input_image,
                                                  (int(point.pt[0]),
