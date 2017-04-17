@@ -128,7 +128,7 @@ void CapDetection::getCapsUsingBlobs() {
                  cv::Scalar(255, 255, 255),          // color -- red
                  MARKER_CROSS,                       // cross sign
                  10,                                 //
-                 capNoFilterVariables.markerSize);                                 // size of the cross
+                 capNoFilterVariables.markerSize);   // size of the cross
     }
   }
   // draw caps points -- circle

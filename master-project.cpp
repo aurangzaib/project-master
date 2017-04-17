@@ -6,8 +6,10 @@
 #include "stdafx.h"
 #include "video-frames.cpp"
 
-string masterproject::cwd =
-    "/Users/siddiqui/Documents/Projects/master-project/meetings/";
+string masterproject::siddiqui = "/Users/siddiqui/Documents/Projects/master-project/meetings/";
+string masterproject::umair = "/Users/Umair/Desktop/master-project/meetings/";
+string masterproject::rizwan = "Undefined (No User Found)";
+string masterproject::cwd = masterproject::siddiqui;
 
 void fetchImagesFromFolder(vector<Mat>& data, const string path) {
   vector<String> fn;
@@ -37,7 +39,7 @@ int main() {
     if (BY_REFERENCE == true) {
       capData = inputImage;
       blobData = inputImage;
-    } else if(BY_REFERENCE == false) {
+    } else if (BY_REFERENCE == false) {
       inputImage.copyTo(capData);
       inputImage.copyTo(blobData);
     }
@@ -51,12 +53,16 @@ int main() {
     detectBottles.performBlobDetection();
     if (BY_REFERENCE == true) {
       imshow("results: ", inputImage);
-      if (SAVE_RESULTS) ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp", inputImage);
+      if (SAVE_RESULTS)
+        ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp",
+                    inputImage);
     } else if (BY_REFERENCE == false) {
       Mat result;
       vconcat(blobData, capData, result);
       hconcat(blobData, capData, result);
-      if (SAVE_RESULTS) ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp", result);
+      if (SAVE_RESULTS)
+        ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp",
+                    result);
       imshow("results: ", result);
     }
     waitKey();

@@ -31,5 +31,8 @@ void sobelCannyThreshold(void);
 // namespace
 namespace masterproject {
     extern string cwd;
+    extern string siddiqui;
+    extern string umair;
+    extern string rizwan;
 }
 #endif /* header_h */
