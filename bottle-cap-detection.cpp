@@ -17,6 +17,7 @@ struct CapWithFilter {
   const int markerSize = 1;
 } capWithFilterVariables;
 
+auto cap_flag = capWithFilterVariables;
 class CapDetection {
     
  private:
@@ -65,9 +66,9 @@ void CapDetection::reduceImageDensity() {
   inputImage.copyTo(outputImage);
   // convert to single channel -- gray
   cvtColor(outputImage, outputImage, CV_BGR2GRAY);
-  Mat canny;
   outputImage =
-      ::reduceImageDensity(outputImage, capNoFilterVariables.minThresholdValue, capNoFilterVariables.filterKernelSize);
+      ::reduceImageDensity(outputImage, cap_flag.minThresholdValue, cap_flag.filterKernelSize);
+  imshow ("before detection - cap", outputImage);
 }
 
 void CapDetection::applyHoughCircleTransform() {
@@ -90,7 +91,7 @@ void CapDetection::getCapsUsingBlobs() {
   // high convexity i.e. no breakage in the shape
   // near to the circle
   params.filterByConvexity = true;
-  params.minConvexity = capNoFilterVariables.minConvex;
+  params.minConvexity = cap_flag.minConvex;
   params.maxConvexity = 1.0;
   // high intertia i.e. blob should not be
   // elongated but it should be near circle shape
@@ -128,7 +129,7 @@ void CapDetection::getCapsUsingBlobs() {
                  cv::Scalar(255, 255, 255),          // color -- red
                  MARKER_CROSS,                       // cross sign
                  10,                                 //
-                 capNoFilterVariables.markerSize);   // size of the cross
+                 cap_flag.markerSize);   // size of the cross
     }
   }
   // draw caps points -- circle

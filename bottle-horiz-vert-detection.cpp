@@ -44,6 +44,8 @@ struct BottleWithFilter {
   const int markerSize = 1;
 } bottleWithFilterVariable;
 
+auto bottle_flag = bottleNoFilterVariable;
+
 class BottleDetection {
  private:
   string imagePath;
@@ -281,9 +283,10 @@ void BottleDetection::performBlobDetection() {
   inputImage.copyTo(detectionImage);
   detectionImage =
       reduceImageDensity(detectionImage,                       // image
-                         bottleNoFilterVariable.minThresholdValue,  // threshold
-                         bottleNoFilterVariable.filterKernelSize    // filter size
+                         bottle_flag.minThresholdValue,  // threshold
+                         bottle_flag.filterKernelSize    // filter size
                          );
+  imshow ("before detection - bottle", detectionImage);
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
   params.filterByCircularity = false;
@@ -301,7 +304,7 @@ void BottleDetection::performBlobDetection() {
 
   vector<KeyPoint> unqiue_keypoints;
   for (const auto& point : keypoints) {
-    if (point.size > bottleNoFilterVariable.averageBlobArea)
+    if (point.size > bottle_flag.averageBlobArea)
       unqiue_keypoints.push_back(point);
   }
 
@@ -315,7 +318,7 @@ void BottleDetection::performBlobDetection() {
 
   for (const auto& p : unqiue_keypoints) {
     cv::drawMarker(inputImage, cv::Point(p.pt.x, p.pt.y), cv::Scalar(0, 0, 255),
-                   MARKER_CROSS, 10, bottleNoFilterVariable.markerSize);
+                   MARKER_CROSS, 10, bottle_flag.markerSize);
   }
   // save blobs results
   if (false) {
