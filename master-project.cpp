@@ -1,12 +1,9 @@
-#include "basic.cpp"
-#include "bottle-cap-detection.cpp"
-#include "classes-operator-overload.cpp"
-#include "discrete-fourier-transform.cpp"
+#include "cap_detection.cpp"
 #include "header.h"
-#include "stdafx.h"
 #include "video-frames.cpp"
 
-string masterproject::siddiqui = "/Users/siddiqui/Documents/Projects/master-project/meetings/";
+string masterproject::siddiqui =
+    "/Users/siddiqui/Documents/Projects/master-project/meetings/";
 string masterproject::umair = "/Users/Umair/Desktop/master-project/meetings/";
 string masterproject::rizwan = "Undefined (No User Found)";
 string masterproject::cwd = masterproject::siddiqui;
@@ -23,7 +20,7 @@ void fetchImagesFromFolder(vector<Mat>& data, const string path) {
 
 int main() {
   bool BY_REFERENCE = true;
-  bool SAVE_RESULTS = false;
+  bool SAVE_RESULTS = true;
   vector<Mat> images;
   fetchImagesFromFolder(images, masterproject::cwd + "meeting-12/lower/");
   for (auto& inputImage : images) {
@@ -32,9 +29,9 @@ int main() {
     // remove the edges of the image before applying the algorithms
     regionOfInterest.getRegionOfInterest(
         inputImage,      // image
-        s1.width / 10,   // remove 1/5.2th from left
+        s1.width / 7,    // remove 1/7th from left
         s1.height / 10,  // remove 1/10th from top
-        s1.width - (2 * s1.width / 10), s1.height - s1.height / 5);
+        s1.width - (2 * s1.width / 7), s1.height - s1.height / 10);
     Mat capData, blobData;
     if (BY_REFERENCE == true) {
       capData = inputImage;
@@ -48,24 +45,27 @@ int main() {
     BottleDetection detectBottles(blobData);
 
     // detect caps of the bottle
-    detectCaps.applyHoughCircleTransform();
+    detectCaps.getCaps();
     // detect presence of the bottle
-    detectBottles.performBlobDetection();
+    detectBottles.getBottles();
+    // detect dark bottles
+    detectBottles.getDarkBottles();
+
     if (BY_REFERENCE == true) {
-      imshow("results: ", inputImage);
+        imshow("results: ", inputImage);
       if (SAVE_RESULTS)
-        ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp",
+        ::saveImage(masterproject::cwd + "/meeting-12/results/result.bmp",
                     inputImage);
     } else if (BY_REFERENCE == false) {
       Mat result;
       vconcat(blobData, capData, result);
       hconcat(blobData, capData, result);
       if (SAVE_RESULTS)
-        ::saveImage(masterproject::cwd + "/meeting-14/results/result.bmp",
+        ::saveImage(masterproject::cwd + "/meeting-12/results/result.bmp",
                     result);
       imshow("results: ", result);
     }
-    waitKey();
+    waitKey(500);
   }
 
   return 0;

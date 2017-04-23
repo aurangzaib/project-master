@@ -13,10 +13,10 @@
 		741CE36E1DE237C200DA4A31 /* pointers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 741CE36D1DE237C200DA4A31 /* pointers.cpp */; };
 		741CE3701DE239E100DA4A31 /* classes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 741CE36F1DE239E100DA4A31 /* classes.cpp */; };
 		745B488F1DEB62A00085FFAC /* discrete-fourier-transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 745B488E1DEB62A00085FFAC /* discrete-fourier-transform.cpp */; };
-		746200761DE7542700A687D2 /* bottle-cap-detection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 746200751DE7542700A687D2 /* bottle-cap-detection.cpp */; };
 		746200781DE7547D00A687D2 /* sobel-canny-threshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */; };
 		748A7CF01DF05CD400DDFE20 /* master-project.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 748A7CEF1DF05CD400DDFE20 /* master-project.cpp */; };
-		74F7BA331DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74F7BA321DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp */; };
+		7B1AA1031EA91D6900042CE4 /* bottle_detection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B1AA1021EA91D6900042CE4 /* bottle_detection.cpp */; };
+		7B1AA1051EA91D7E00042CE4 /* cap_detection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B1AA1041EA91D7E00042CE4 /* cap_detection.cpp */; };
 		7B322FDB1E84102400E17C3C /* template-matching.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B322FDA1E84102400E17C3C /* template-matching.cpp */; };
 		7B43B37B1E727FB20065B525 /* video-frames.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B43B37A1E727FB20065B525 /* video-frames.cpp */; };
 		7BB0AEDE1E0A72950029CC78 /* libopencv_calib3d.2.4.13.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB0AEDD1E0A72950029CC78 /* libopencv_calib3d.2.4.13.dylib */; };
@@ -60,11 +60,11 @@
 		741CE36D1DE237C200DA4A31 /* pointers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = pointers.cpp; sourceTree = "<group>"; };
 		741CE36F1DE239E100DA4A31 /* classes.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = classes.cpp; sourceTree = "<group>"; };
 		745B488E1DEB62A00085FFAC /* discrete-fourier-transform.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "discrete-fourier-transform.cpp"; sourceTree = "<group>"; };
-		746200751DE7542700A687D2 /* bottle-cap-detection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "bottle-cap-detection.cpp"; sourceTree = "<group>"; };
 		746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "sobel-canny-threshold.cpp"; sourceTree = "<group>"; };
 		748A7CEF1DF05CD400DDFE20 /* master-project.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "master-project.cpp"; sourceTree = SOURCE_ROOT; };
 		748A7CF11DF05E2100DDFE20 /* header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = header.h; sourceTree = SOURCE_ROOT; };
-		74F7BA321DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "bottle-horiz-vert-detection.cpp"; sourceTree = "<group>"; };
+		7B1AA1021EA91D6900042CE4 /* bottle_detection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = bottle_detection.cpp; sourceTree = SOURCE_ROOT; };
+		7B1AA1041EA91D7E00042CE4 /* cap_detection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = cap_detection.cpp; sourceTree = SOURCE_ROOT; };
 		7B322FDA1E84102400E17C3C /* template-matching.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "template-matching.cpp"; sourceTree = SOURCE_ROOT; };
 		7B43B37A1E727FB20065B525 /* video-frames.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "video-frames.cpp"; sourceTree = SOURCE_ROOT; };
 		7BB0AEDD1E0A72950029CC78 /* libopencv_calib3d.2.4.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.2.4.13.dylib; path = "../../../../../usr/local/Cellar/opencv/HEAD-6ed571b/lib/libopencv_calib3d.2.4.13.dylib"; sourceTree = "<group>"; };
@@ -187,9 +187,9 @@
 		745B48931DEB6E280085FFAC /* algorithms */ = {
 			isa = PBXGroup;
 			children = (
-				746200751DE7542700A687D2 /* bottle-cap-detection.cpp */,
+				7B1AA1021EA91D6900042CE4 /* bottle_detection.cpp */,
 				746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */,
-				74F7BA321DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp */,
+				7B1AA1041EA91D7E00042CE4 /* cap_detection.cpp */,
 				745B488E1DEB62A00085FFAC /* discrete-fourier-transform.cpp */,
 				7B43B37A1E727FB20065B525 /* video-frames.cpp */,
 				7B322FDA1E84102400E17C3C /* template-matching.cpp */,
@@ -254,17 +254,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B322FDB1E84102400E17C3C /* template-matching.cpp in Sources */,
+				7B1AA1051EA91D7E00042CE4 /* cap_detection.cpp in Sources */,
 				7BB0AF021E0A76DB0029CC78 /* parse-file.cpp in Sources */,
 				741CE36E1DE237C200DA4A31 /* pointers.cpp in Sources */,
 				741CE36C1DE2373C00DA4A31 /* basic.cpp in Sources */,
 				745B488F1DEB62A00085FFAC /* discrete-fourier-transform.cpp in Sources */,
+				7B1AA1031EA91D6900042CE4 /* bottle_detection.cpp in Sources */,
 				74078F011DE619F900E77921 /* classes-operator-overload.cpp in Sources */,
 				741CE3701DE239E100DA4A31 /* classes.cpp in Sources */,
 				748A7CF01DF05CD400DDFE20 /* master-project.cpp in Sources */,
 				7B43B37B1E727FB20065B525 /* video-frames.cpp in Sources */,
 				74078EFF1DE6128200E77921 /* classes-pointers.cpp in Sources */,
-				74F7BA331DE9FC8D002BC046 /* bottle-horiz-vert-detection.cpp in Sources */,
-				746200761DE7542700A687D2 /* bottle-cap-detection.cpp in Sources */,
 				746200781DE7547D00A687D2 /* sobel-canny-threshold.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

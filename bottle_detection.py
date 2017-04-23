@@ -1,7 +1,6 @@
 import numpy as np
 import cv2 as cv
 
-
 class BottleDetection(object):
     def __init__(self, _image):
         """

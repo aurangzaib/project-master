@@ -34,8 +34,8 @@ unsigned videoFrames(const string videoPath) {
     BottleDetection detectBlob(blobFrame);
     CapDetection detect(capFrame, 30, 40);
 
-    detect.applyHoughCircleTransform();
-    detectBlob.performBlobDetection();
+    detect.getCaps();
+    detectBlob.getBottles();
   }
   return 0;
 }
