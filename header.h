@@ -35,4 +35,5 @@ namespace masterproject {
     extern string umair;
     extern string rizwan;
 }
+const bool SHOW_IMAGE = false;
 #endif /* header_h */

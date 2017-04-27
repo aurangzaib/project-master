@@ -33,7 +33,8 @@ def get_stream_from_ip():
             jpg = bytes[a:b + 2]
             bytes = bytes[b + 2:]
             # Decoding the byte stream to cv2 readable matrix format
-            i = cv.imdecode(np.fromstring(jpg, dtype=np.uint8), 0)
+            i = cv.imdecode(np.fromstring(jpg, dtype=np.uint8),  # image type
+                            -1)  # >0 3-channel, =0 grayscale, <0 as is it
             perform_algorithm(i)
             if cv.waitKey(1) & 0xFF == ord('q'):
                 cv.destroyAllWindows()
@@ -48,7 +49,7 @@ def perform_detection():
 
 
 def perform_algorithm(image):
-    height, width = image.shape
+    height, width, channel = image.shape
     image = BottleDetection.get_region_of_interest(image,
                                                    width / 20,  # x
                                                    height / 20,  # y

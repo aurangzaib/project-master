@@ -94,12 +94,12 @@ class BottleDetection(object):
 
         detector = cv.SimpleBlobDetector(params)
         key_points = detector.detect(self.output_image)
-        height, width = self.output_image.shape
+        height, width, channel = self.output_image.shape
         _size = 0
         unique_key_points = []
         for point in key_points:
             if point.size > 5.5:
-                if point.pt[0] > 1 and abs(point.pt[0] - width) > 1:
+                if point.pt[0] > 20 and abs(point.pt[0] - width) > 20:
                     unique_key_points.append(point)
                     _size += point.size
                 cv.drawMarker(self.input_image,
@@ -136,5 +136,5 @@ class BottleDetection(object):
         # _image = cv.medianBlur(_image, _filter_kernel_size)
         ret, _image = cv.threshold(
             _image, _min_thresh_value, 255, cv.THRESH_BINARY)
-        cv.imshow("reduces--bottle", _image)
+        # cv.imshow("reduces--bottle", _image)
         return _image

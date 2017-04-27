@@ -20,9 +20,9 @@ void fetchImagesFromFolder(vector<Mat>& data, const string path) {
 
 int main() {
   bool BY_REFERENCE = true;
-  bool SAVE_RESULTS = true;
+  bool SAVE_RESULTS = false;
   vector<Mat> images;
-  fetchImagesFromFolder(images, masterproject::cwd + "meeting-12/lower/");
+  fetchImagesFromFolder(images, masterproject::cwd + "meeting-12/");
   for (auto& inputImage : images) {
     Size s1 = inputImage.size();
     BottleDetection regionOfInterest(inputImage);
@@ -31,7 +31,7 @@ int main() {
         inputImage,      // image
         s1.width / 7,    // remove 1/7th from left
         s1.height / 10,  // remove 1/10th from top
-        s1.width - (2 * s1.width / 7), s1.height - s1.height / 10);
+        s1.width - (2 * s1.width / 7), s1.height - s1.height / 4);
     Mat capData, blobData;
     if (BY_REFERENCE == true) {
       capData = inputImage;
@@ -47,9 +47,9 @@ int main() {
     // detect caps of the bottle
     detectCaps.getCaps();
     // detect presence of the bottle
-    detectBottles.getBottles();
+     detectBottles.getBottles();
     // detect dark bottles
-    detectBottles.getDarkBottles();
+     detectBottles.getDarkBottles();
 
     if (BY_REFERENCE == true) {
         imshow("results: ", inputImage);
@@ -65,8 +65,7 @@ int main() {
                     result);
       imshow("results: ", result);
     }
-    waitKey(1);
+    waitKey(200);
   }
-
   return 0;
 }

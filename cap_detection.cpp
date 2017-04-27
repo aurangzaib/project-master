@@ -4,10 +4,10 @@
 
 struct CapNoFilter {
   const float minConvex = 0.75;
-  const float minInertiaRatio = 0.75;
-  const int minThresholdValue = 10;
-  const int filterKernelSize = 3;
-  const int markerSize = 1;
+  const float minInertiaRatio = 0.55;
+  const int minThresholdValue = 15;
+  const int filterKernelSize = 7;
+  const int markerSize = 5;
 } capNoFilterVariables;
 
 struct CapWithFilter {
@@ -69,6 +69,7 @@ void CapDetection::reduceImageDensity() {
   outputImage =
       ::reduceImageDensity(outputImage, cap_flag.minThresholdValue,
                            CV_THRESH_BINARY, cap_flag.filterKernelSize);
+   if (SHOW_IMAGE) imshow("threshold cap", outputImage);
 }
 
 void CapDetection::getCaps() {
@@ -111,7 +112,7 @@ void CapDetection::getCapsUsingBlobs() {
   // usually bottle caps are within
   // below range. providing boundary condition
   // reduces noise.
-  const float minArea = 40.0;
+  const float minArea = 30.0;
   const float maxArea = 100.0;
 
   vector<KeyPoint> unqiue_keypoints;
@@ -132,7 +133,7 @@ void CapDetection::getCapsUsingBlobs() {
   drawKeypoints(inputImage,             // input image
                 unqiue_keypoints,       // keypoints found using blob detection
                 inputImage,             // output image
-                Scalar(255, 255, 255),  // colour for the points
+                Scalar(0, 255, 0),      // colour for the points
                 DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 }
 void CapDetection::getCapsUsingHough() {
@@ -151,7 +152,7 @@ void CapDetection::getCapsUsingHough() {
     circle(inputImage,             // image
            Point(cap[0], cap[1]),  // x, y of circle (to be drawn)
            cap[2],                 // radius of the circle (to be drawn)
-           Scalar(0, 0, 255),      // red color
+           Scalar(0, 255, 0),      // green color
            3,                      // thickness of the point
            8, 0);
     // draw the center of bottle cap

@@ -37,14 +37,14 @@ struct BottleNoFilter {
   const float averageBlobArea = 11.5;
   const int minThresholdValue = 150;
   const int filterKernelSize = 1;
-  const int markerSize = 2;
+  const int markerSize = 5;
 } bottleNoFilterVariable;
 
 struct BottleWithFilter {
   const float averageBlobArea = 2.0;
   const int minThresholdValue = 30;
   const int filterKernelSize = 1;
-  const int markerSize = 1;
+  const int markerSize = 2;
 } bottleWithFilterVariable;
 
 auto bottle_flag = bottleNoFilterVariable;
@@ -288,6 +288,7 @@ void BottleDetection::getBottles() {
                          CV_THRESH_BINARY,
                          bottle_flag.filterKernelSize  // filter size
                          );
+  if (SHOW_IMAGE) imshow ("laying threshold", detectionImage);
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
   params.filterByInertia = false;
@@ -340,7 +341,7 @@ void BottleDetection::getBottles() {
 }
 
 void BottleDetection::getDarkBottles() {
-  unsigned minThresholdValue = 150;
+  unsigned minThresholdValue = 80;
   unsigned filterKernelSize = 1;
   Mat detectionImage;
   inputImage.copyTo(detectionImage);
@@ -349,6 +350,7 @@ void BottleDetection::getDarkBottles() {
                                       CV_THRESH_BINARY_INV,
                                       filterKernelSize  // filter size
                                       );
+  if (SHOW_IMAGE) imshow ("dark threshold", detectionImage);
   // Create a structuring element (SE)
   int morph_size = 2;
   Mat element = getStructuringElement(
@@ -365,7 +367,7 @@ void BottleDetection::getDarkBottles() {
                  Point(-1, -1),   // center
                  5);              //
   }
-        imshow("opening", detectionImage);
+   if (SHOW_IMAGE) imshow("opening", detectionImage);
   ::saveImage(masterproject::cwd + "/meeting-12/lower/morphological_opening/result.bmp", detectionImage);
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
@@ -389,12 +391,14 @@ void BottleDetection::getDarkBottles() {
     if (size >= minArea && size <= maxArea) {
       // points should not be on the edges of the images
       // this is to make sure to ignore noise results
-      if (p.pt.x < imageSize.width - 10 && p.pt.x > 10) {
+      if (p.pt.x < imageSize.width - 20 && p.pt.x > 20) {
         unqiue_keypoints.push_back(p);
         cv::drawMarker(inputImage,             // image
                        Point(p.pt.x, p.pt.y),  // coordinates
-                       Scalar(0, 0, 255),      // color
-                       MARKER_CROSS, 10, 2);   // options
+                       Scalar(255, 0, 0),      // color
+                       MARKER_CROSS,
+                       10,
+                       bottle_flag.markerSize);   // options
       }
     }
   }
