@@ -65,7 +65,7 @@ int main() {
                     result);
       imshow("results: ", result);
     }
-    waitKey(500);
+    waitKey(1);
   }
 
   return 0;

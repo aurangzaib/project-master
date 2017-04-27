@@ -11,12 +11,13 @@ class CapDetection(object):
         self.max_radius = max_radius
 
     def reduce_image_density(self):
-        self.output_image = cv.cvtColor(self.output_image, cv.COLOR_BGR2GRAY)
-        min_thresh_value = 10
+        # self.output_image = cv.cvtColor(self.output_image, cv.COLOR_BGR2GRAY)
+        min_thresh_value = 30
         filter_kernel_size = 3
         self.output_image = BottleDetection.reduce_image_density(self.output_image,
                                                                  min_thresh_value,
                                                                  filter_kernel_size)
+        cv.imshow("reduces--cap", self.output_image)
 
     def get_caps_using_blobs(self):
         params = cv.SimpleBlobDetector_Params()
@@ -25,12 +26,12 @@ class CapDetection(object):
         # high convexity i.e. no breakage in the shape
         # near to the circle
         params.filterByConvexity = True
-        params.minConvexity = 0.75
+        params.minConvexity = 0.65
         params.maxConvexity = 1.0
         # high intertia i.e. blob should not be
         # elongated but it should be near circle shape
         params.filterByInertia = True
-        params.minInertiaRatio = 0.75
+        params.minInertiaRatio = 0.65
         params.maxInertiaRatio = 1
         # filter blob based on black colors
         # threshold is applied in a way
@@ -41,8 +42,8 @@ class CapDetection(object):
         detector = cv.SimpleBlobDetector(params)
         key_points = detector.detect(self.output_image)
 
-        min_area = 40
-        max_area = 100
+        min_area = 30
+        max_area = 120
 
         unique_key_points = []
 
@@ -56,7 +57,7 @@ class CapDetection(object):
                               cv.MARKER_CROSS,
                               10,
                               3)
-                # draw caps points -- circle
+        # draw caps points -- circle
         cv.drawKeypoints(self.input_image,  # input image
                          unique_key_points,  # keypoints found using blob detection
                          self.input_image,  # output image

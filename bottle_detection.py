@@ -94,20 +94,24 @@ class BottleDetection(object):
 
         detector = cv.SimpleBlobDetector(params)
         key_points = detector.detect(self.output_image)
-        height, width, channels = self.output_image.shape
-        print "image width: ", width
-        print ("keypoints: ", len(key_points))
+        height, width = self.output_image.shape
+        _size = 0
+        unique_key_points = []
         for point in key_points:
-            if point.size > 10:
-                if point.pt[0] > 10 and abs(point.pt[0] - width) > 10:
-                    print ("selected keypoint: ", point.pt[0], ", ", point.pt[1])
-                    cv.drawMarker(self.input_image,
-                                  (int(point.pt[0]),
-                                   int(point.pt[1])),
-                                  (0, 0, 255),
-                                  cv.MARKER_CROSS,
-                                  10,
-                                  3)
+            if point.size > 5.5:
+                if point.pt[0] > 1 and abs(point.pt[0] - width) > 1:
+                    unique_key_points.append(point)
+                    _size += point.size
+                cv.drawMarker(self.input_image,
+                              (int(point.pt[0]),
+                               int(point.pt[1])),
+                              (0, 0, 255),
+                              cv.MARKER_CROSS,
+                              10,
+                              3)
+        _length = len(unique_key_points) if len(unique_key_points) > 0 else 1
+        _size /= _length
+        print "avg size: ", _size
 
     def bottle_detection(self):
         min_thresh_value = 150
@@ -129,7 +133,8 @@ class BottleDetection(object):
 
     @staticmethod
     def reduce_image_density(_image, _min_thresh_value, _filter_kernel_size):
-        _image = cv.medianBlur(_image, _filter_kernel_size)
+        # _image = cv.medianBlur(_image, _filter_kernel_size)
         ret, _image = cv.threshold(
             _image, _min_thresh_value, 255, cv.THRESH_BINARY)
+        cv.imshow("reduces--bottle", _image)
         return _image
