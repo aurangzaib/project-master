@@ -1,6 +1,7 @@
 import numpy as np
 import cv2 as cv
 
+
 class BottleDetection(object):
     def __init__(self, _image):
         """
@@ -62,12 +63,12 @@ class BottleDetection(object):
                         (0, 0, 255),
                         2)
 
-                cv.imshow("result", self.output_image)
                 if with_wait_key:
                     cv.waitKey(1)
 
     def apply_probabilistic_hough_transform(self, thresh, with_wait_key):
-        hough_lines = cv.HoughLinesP(thresh, 1, 180 * (np.pi / 180), 10, 10, 10)
+        hough_lines = cv.HoughLinesP(
+            thresh, 1, 180 * (np.pi / 180), 10, 10, 10)
         self.output_image = self.input_image.copy()
         for hough_line in hough_lines:
             for x1, y1, x2, y2 in hough_line:
@@ -79,7 +80,6 @@ class BottleDetection(object):
                     1
                 )
 
-        cv.imshow("result", self.output_image)
         if with_wait_key:
             cv.waitKey(1)
 
@@ -88,34 +88,38 @@ class BottleDetection(object):
         params.filterByCircularity = False
         params.filterByConvexity = False
         params.filterByArea = False
+        params.filterByInertia = False
         params.filterByColor = True
         params.blobColor = 255
 
-        detector = cv.SimpleBlobDetector_create(params)
+        detector = cv.SimpleBlobDetector(params)
         key_points = detector.detect(self.output_image)
-
+        height, width, channels = self.output_image.shape
+        print "image width: ", width
+        print ("keypoints: ", len(key_points))
         for point in key_points:
-            self.input_image = cv.drawMarker(self.input_image,
-                                             (int(point.pt[0]),
-                                              int(point.pt[1])),
-                                             (0, 0, 255),
-                                             cv.MARKER_CROSS,
-                                             10,
-                                             1)
+            if point.size > 10:
+                if point.pt[0] > 10 and abs(point.pt[0] - width) > 10:
+                    print ("selected keypoint: ", point.pt[0], ", ", point.pt[1])
+                    cv.drawMarker(self.input_image,
+                                  (int(point.pt[0]),
+                                   int(point.pt[1])),
+                                  (0, 0, 255),
+                                  cv.MARKER_CROSS,
+                                  10,
+                                  3)
 
     def bottle_detection(self):
-        min_thresh_value = 30
+        min_thresh_value = 150
         filter_kernel_size = 1
         self.output_image = self.reduce_image_density(self.output_image,
                                                       min_thresh_value,
                                                       filter_kernel_size)
         self.get_bottles_using_blobs()
 
-
     def compute_results(self, _with_wait_key=True):
         thresh = self.apply_filters(self.input_image)
         self.apply_probabilistic_hough_transform(thresh, _with_wait_key)
-
 
     @staticmethod
     def get_region_of_interest(reference_image, x, y, width, height):
@@ -123,9 +127,9 @@ class BottleDetection(object):
         mask[y:y + height, x:x + width] = reference_image[y:y + height, x:x + width]
         return mask
 
-
     @staticmethod
     def reduce_image_density(_image, _min_thresh_value, _filter_kernel_size):
         _image = cv.medianBlur(_image, _filter_kernel_size)
-        ret, _image = cv.threshold(_image, _min_thresh_value, 255, cv.THRESH_BINARY)
+        ret, _image = cv.threshold(
+            _image, _min_thresh_value, 255, cv.THRESH_BINARY)
         return _image

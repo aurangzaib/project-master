@@ -4,7 +4,6 @@
 // helper function to save
 // image with appending the path
 void saveImage(string imagePath, const Mat image) {
-  cout << "path: " << imagePath << endl;
   time_t timev;
   time(&timev);
   size_t position = imagePath.find('.');
@@ -289,7 +288,6 @@ void BottleDetection::getBottles() {
                          CV_THRESH_BINARY,
                          bottle_flag.filterKernelSize  // filter size
                          );
-  imshow("bottle threshold", detectionImage);
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
   params.filterByInertia = false;
@@ -303,9 +301,9 @@ void BottleDetection::getBottles() {
   vector<KeyPoint> keypoints;
   detector.detect(detectionImage, keypoints);
 
-  float totalArea = 0;
-  const float avgArea = 10.0;
-
+  // TODO: improve perforamce,
+  // dont need to save in unique_keypoints
+  // show the results instead of saving in array
   vector<KeyPoint> unqiue_keypoints;
   auto imageWidth = detectionImage.size().width;
   for (const auto& point : keypoints) {
@@ -319,6 +317,7 @@ void BottleDetection::getBottles() {
   }
 
   if (false) {
+    float totalArea = 0;
     // find the average area from the teach image
     for (const auto& point : keypoints) {
       totalArea += point.size;
@@ -327,8 +326,11 @@ void BottleDetection::getBottles() {
   }
 
   for (const auto& p : unqiue_keypoints) {
-    cv::drawMarker(inputImage, cv::Point(p.pt.x, p.pt.y), cv::Scalar(0, 0, 255),
-                   MARKER_CROSS, 10, bottle_flag.markerSize);
+      drawMarker(inputImage, 
+                   Point(p.pt.x, p.pt.y),
+                   Scalar(0, 0, 255),
+                   MARKER_CROSS, 10, 
+                   bottle_flag.markerSize);
   }
   // save blobs results
   if (false) {
@@ -347,7 +349,6 @@ void BottleDetection::getDarkBottles() {
                                       CV_THRESH_BINARY_INV,
                                       filterKernelSize  // filter size
                                       );
-
   // Create a structuring element (SE)
   int morph_size = 2;
   Mat element = getStructuringElement(
@@ -364,7 +365,7 @@ void BottleDetection::getDarkBottles() {
                  Point(-1, -1),   // center
                  5);              //
   }
-  imshow("morphology", detectionImage);
+        imshow("opening", detectionImage);
   ::saveImage(masterproject::cwd + "/meeting-12/lower/morphological_opening/result.bmp", detectionImage);
   SimpleBlobDetector::Params params;
   params.filterByArea = false;

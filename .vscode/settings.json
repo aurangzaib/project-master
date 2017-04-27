@@ -18,6 +18,9 @@
         "utility": "cpp",
         "typeinfo": "cpp",
         "string": "cpp",
-        "hashtable": "cpp"
+        "hashtable": "cpp",
+        "*.tcc": "cpp",
+        "istream": "cpp",
+        "memory": "cpp"
     }
 }
