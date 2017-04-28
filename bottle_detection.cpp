@@ -240,8 +240,8 @@ void BottleDetection::getPSNR(Mat& I1, Mat& I2) {
 
   threshold(I1, I1, 150, 255, THRESH_BINARY);
   threshold(I2, I2, 150, 255, THRESH_BINARY);
-  saveImage(masterproject::cwd + "/image-1.bmp", I1);
-  saveImage(masterproject::cwd + "/image-2.bmp", I2);
+  saveImage(prj::cwd + "/image-1.bmp", I1);
+  saveImage(prj::cwd + "/image-2.bmp", I2);
 
   Mat s1;
   absdiff(I1, I2, s1);       // |I1 - I2|
@@ -288,7 +288,8 @@ void BottleDetection::getBottles() {
                          CV_THRESH_BINARY,
                          bottle_flag.filterKernelSize  // filter size
                          );
-  if (SHOW_IMAGE) imshow ("laying threshold", detectionImage);
+
+  if (SHOW_IMAGE) imshow("laying threshold", detectionImage);
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
   params.filterByInertia = false;
@@ -327,21 +328,18 @@ void BottleDetection::getBottles() {
   }
 
   for (const auto& p : unqiue_keypoints) {
-      drawMarker(inputImage, 
-                   Point(p.pt.x, p.pt.y),
-                   Scalar(0, 0, 255),
-                   MARKER_CROSS, 10, 
-                   bottle_flag.markerSize);
+    drawMarker(inputImage, Point(p.pt.x, p.pt.y), Scalar(0, 0, 255),
+               MARKER_CROSS, 10, bottle_flag.markerSize);
   }
   // save blobs results
   if (false) {
-    ::saveImage(masterproject::cwd + "/meeting-14/results-filter/result.bmp",
+    ::saveImage(prj::cwd + "/meeting-14/results-filter/result.bmp",
                 inputImage);
   }
 }
 
 void BottleDetection::getDarkBottles() {
-  unsigned minThresholdValue = 80;
+  unsigned minThresholdValue = 60;
   unsigned filterKernelSize = 1;
   Mat detectionImage;
   inputImage.copyTo(detectionImage);
@@ -350,16 +348,16 @@ void BottleDetection::getDarkBottles() {
                                       CV_THRESH_BINARY_INV,
                                       filterKernelSize  // filter size
                                       );
-  if (SHOW_IMAGE) imshow ("dark threshold", detectionImage);
+  if (SHOW_IMAGE) imshow("dark threshold", detectionImage);
   // Create a structuring element (SE)
-  int morph_size = 2;
+  int morph_size = 5;
   Mat element = getStructuringElement(
-      MORPH_RECT, Size(2 * morph_size + 1, 4 * morph_size + 1),
+      MORPH_RECT, Size(1 * morph_size + 1, 1 * morph_size + 1),
       Point(morph_size, morph_size));
 
   // Apply the specified morphology operation
 
-  for (unsigned loop = 0; loop < 10; loop++) {
+  for (unsigned loop = 0; loop < 5; loop++) {
     morphologyEx(detectionImage,  // source
                  detectionImage,  // destination
                  MORPH_OPEN,      // morphology operation
@@ -367,8 +365,10 @@ void BottleDetection::getDarkBottles() {
                  Point(-1, -1),   // center
                  5);              //
   }
-   if (SHOW_IMAGE) imshow("opening", detectionImage);
-  ::saveImage(masterproject::cwd + "/meeting-12/lower/morphological_opening/result.bmp", detectionImage);
+  if (SHOW_IMAGE) imshow("opening", detectionImage);
+  ::saveImage(
+      prj::cwd + "/meeting-12/lower/morphological_opening/result.bmp",
+      detectionImage);
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
   params.filterByCircularity = false;
@@ -381,7 +381,6 @@ void BottleDetection::getDarkBottles() {
   vector<KeyPoint> keypoints;
   detector.detect(detectionImage, keypoints);
 
-  vector<KeyPoint> unqiue_keypoints;
   auto minArea = 80, maxArea = 200;
 
   for (const auto& p : keypoints) {
@@ -391,14 +390,14 @@ void BottleDetection::getDarkBottles() {
     if (size >= minArea && size <= maxArea) {
       // points should not be on the edges of the images
       // this is to make sure to ignore noise results
-      if (p.pt.x < imageSize.width - 20 && p.pt.x > 20) {
-        unqiue_keypoints.push_back(p);
+      const bool xBoundary = p.pt.x < imageSize.width - 40 && p.pt.x > 40;
+      const bool yBoundary = p.pt.y < imageSize.height - 40 && p.pt.y > 40;
+      if (xBoundary && yBoundary) {
         cv::drawMarker(inputImage,             // image
                        Point(p.pt.x, p.pt.y),  // coordinates
                        Scalar(255, 0, 0),      // color
-                       MARKER_CROSS,
-                       10,
-                       bottle_flag.markerSize);   // options
+                       MARKER_CROSS, 10,
+                       bottle_flag.markerSize);  // options
       }
     }
   }

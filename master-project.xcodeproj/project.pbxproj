@@ -62,7 +62,7 @@
 		745B488E1DEB62A00085FFAC /* discrete-fourier-transform.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "discrete-fourier-transform.cpp"; sourceTree = "<group>"; };
 		746200771DE7547D00A687D2 /* sobel-canny-threshold.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = "sobel-canny-threshold.cpp"; sourceTree = "<group>"; };
 		748A7CEF1DF05CD400DDFE20 /* master-project.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "master-project.cpp"; sourceTree = SOURCE_ROOT; };
-		748A7CF11DF05E2100DDFE20 /* header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = header.h; sourceTree = SOURCE_ROOT; };
+		748A7CF11DF05E2100DDFE20 /* header.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = header.h; sourceTree = SOURCE_ROOT; };
 		7B1AA1021EA91D6900042CE4 /* bottle_detection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = bottle_detection.cpp; sourceTree = SOURCE_ROOT; };
 		7B1AA1041EA91D7E00042CE4 /* cap_detection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = cap_detection.cpp; sourceTree = SOURCE_ROOT; };
 		7B322FDA1E84102400E17C3C /* template-matching.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "template-matching.cpp"; sourceTree = SOURCE_ROOT; };

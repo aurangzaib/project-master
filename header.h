@@ -29,11 +29,11 @@ void playWithArrays(void);
 void playWithPointerToPointer(void);
 void sobelCannyThreshold(void);
 // namespace
-namespace masterproject {
+namespace prj {
     extern string cwd;
     extern string siddiqui;
     extern string umair;
     extern string rizwan;
 }
-const bool SHOW_IMAGE = false;
+const bool SHOW_IMAGE = true;
 #endif /* header_h */

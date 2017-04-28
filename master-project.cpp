@@ -2,11 +2,10 @@
 #include "header.h"
 #include "video-frames.cpp"
 
-string masterproject::siddiqui =
-    "/Users/siddiqui/Documents/Projects/master-project/meetings/";
-string masterproject::umair = "/Users/Umair/Desktop/master-project/meetings/";
-string masterproject::rizwan = "Undefined (No User Found)";
-string masterproject::cwd = masterproject::siddiqui;
+string prj::siddiqui = "/Users/siddiqui/Documents/Projects/master-project/meetings/";
+string prj::umair = "/Users/Umair/Desktop/master-project/meetings/";
+string prj::rizwan = "Undefined (No User Found)";
+string prj::cwd = prj::siddiqui;
 
 void fetchImagesFromFolder(vector<Mat>& data, const string path) {
   vector<String> fn;
@@ -22,7 +21,8 @@ int main() {
   bool BY_REFERENCE = true;
   bool SAVE_RESULTS = false;
   vector<Mat> images;
-  fetchImagesFromFolder(images, masterproject::cwd + "meeting-12/");
+  fetchImagesFromFolder(images,
+                        prj::cwd + "meeting-15/");
   for (auto& inputImage : images) {
     Size s1 = inputImage.size();
     BottleDetection regionOfInterest(inputImage);
@@ -45,27 +45,27 @@ int main() {
     BottleDetection detectBottles(blobData);
 
     // detect caps of the bottle
-    detectCaps.getCaps();
+//    detectCaps.getCaps();
     // detect presence of the bottle
-     detectBottles.getBottles();
+//    detectBottles.getBottles();
     // detect dark bottles
-     detectBottles.getDarkBottles();
+    detectBottles.getDarkBottles();
 
     if (BY_REFERENCE == true) {
-        imshow("results: ", inputImage);
+      imshow("results: ", inputImage);
       if (SAVE_RESULTS)
-        ::saveImage(masterproject::cwd + "/meeting-12/results/result.bmp",
+        ::saveImage(prj::cwd + "/meeting-12/results/result.bmp",
                     inputImage);
     } else if (BY_REFERENCE == false) {
       Mat result;
       vconcat(blobData, capData, result);
       hconcat(blobData, capData, result);
       if (SAVE_RESULTS)
-        ::saveImage(masterproject::cwd + "/meeting-12/results/result.bmp",
+        ::saveImage(prj::cwd + "/meeting-12/results/result.bmp",
                     result);
       imshow("results: ", result);
     }
-    waitKey(200);
+    waitKey(300);
   }
   return 0;
 }

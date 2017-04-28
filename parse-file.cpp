@@ -10,7 +10,7 @@ class ParseFile {
       : inputFilePath(i), outputFilePath(o){};
   void parseFile() {
     string line;
-    ifstream localInputFile(masterproject::cwd +
+    ifstream localInputFile(prj::cwd +
                             "/Meeting-7/teach-1-maxima.txt");
     ofstream localOutputFile(
            + "/Meeting-7/teach-1-maxima-parsed-cpp.txt",

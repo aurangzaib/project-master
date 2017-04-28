@@ -4,7 +4,7 @@
 
 void textDetection() {
 
-	Mat large = imread(masterproject::cwd + "/Meeting-6/rec1.jpg", CV_LOAD_IMAGE_COLOR);
+	Mat large = imread(prj::cwd + "/Meeting-6/rec1.jpg", CV_LOAD_IMAGE_COLOR);
 	Mat rgb;
 	// downsample and use it for processing
 	pyrDown(large, rgb);
@@ -58,6 +58,6 @@ void textDetection() {
 		}
 	}
 	imshow("umair", rgb);
-	imwrite(masterproject::cwd + "/Meeting-6/1-dark-grey.bmp", rgb);
-	imwrite(masterproject::cwd + "/Meeting-6/1-dark-grey1.bmp", bw);
+	imwrite(prj::cwd + "/Meeting-6/1-dark-grey.bmp", rgb);
+	imwrite(prj::cwd + "/Meeting-6/1-dark-grey1.bmp", bw);
 }

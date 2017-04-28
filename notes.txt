@@ -15,16 +15,16 @@ Wine-bottle.jpg -- threshold(gray, gray, 50, 255, THRESH_BINARY); 30, 40
 */
  
  find peak signal to noise ratio
- Mat image1 = imread(masterproject::cwd + "meeting-11/misc/1.bmp");
- Mat image2 = imread(masterproject::cwd +
+ Mat image1 = imread(prj::cwd + "meeting-11/misc/1.bmp");
+ Mat image2 = imread(prj::cwd +
  "meeting-11/horizontal-perpendicular/9.bmp");
  detectInstance.getPSNR(image1, image2);
 
 detectInstance2.computeResults();
- videoFrames(masterproject::cwd + "meeting-10/meeting-10.mp4", true, 0, 0);
+ videoFrames(prj::cwd + "meeting-10/meeting-10.mp4", true, 0, 0);
 
-Mat img1 = imread(masterproject::cwd+"/meeting-9/without-label/projector/with-bottle-1-DFT.png");
-Mat img2 = imread(masterproject::cwd+"/meeting-9/without-label/projector/no-bottle-2-DFT.png");
+Mat img1 = imread(prj::cwd+"/meeting-9/without-label/projector/with-bottle-1-DFT.png");
+Mat img2 = imread(prj::cwd+"/meeting-9/without-label/projector/no-bottle-2-DFT.png");
 Mat diff;
 resize(img1, img1, Size(60, 900), 0,0, INTER_LINEAR);
 resize(img2, img2, Size(60, 900), 0,0, INTER_LINEAR);
@@ -35,17 +35,17 @@ absdiff(img1, img2, diff);
  imshow("difference: ", img1);
  imshow("difference2: ", img2);
  imshow("difference_1: ", diff);
- videoFrames(masterproject::cwd + "/meeting-8/hh/hh-teach-video.mp4", true, 35, 40);
- videoFrames(masterproject::cwd + "/meeting-5/cap-teach-video.mp4", false, 30, 35);
+ videoFrames(prj::cwd + "/meeting-8/hh/hh-teach-video.mp4", true, 35, 40);
+ videoFrames(prj::cwd + "/meeting-5/cap-teach-video.mp4", false, 30, 35);
 
 Mat capImage[2];
-capImage[0] = imread(masterproject::cwd + "/meeting-12/upper/97.bmp");
+capImage[0] = imread(prj::cwd + "/meeting-12/upper/97.bmp");
 bottleCapDetection(capImage, 35, 40);
 waitKey(0);
-BottleDetection detectInstance(masterproject::cwd + "/meeting-12/lower/1.bmp");
+BottleDetection detectInstance(prj::cwd + "/meeting-12/lower/1.bmp");
 detectInstance.performBlobDetection();
 waitKey();
-videoFrames(masterproject::cwd + "/meeting-12/meeting-12-teach.mp4", true, 35,
+videoFrames(prj::cwd + "/meeting-12/meeting-12-teach.mp4", true, 35,
 40);
 
 Draw detected blobs as red circles.

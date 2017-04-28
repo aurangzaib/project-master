@@ -38,7 +38,7 @@ class CapDetection {
 };
 
 CapDetection::CapDetection() {
-  string imagePath = masterproject::cwd + "meeting-5/cap-teach-5.bmp";
+  string imagePath = prj::cwd + "meeting-5/cap-teach-5.bmp";
   inputImage = imread(imagePath);
   minRadius = 15;
   maxRadius = 35;
@@ -69,7 +69,7 @@ void CapDetection::reduceImageDensity() {
   outputImage =
       ::reduceImageDensity(outputImage, cap_flag.minThresholdValue,
                            CV_THRESH_BINARY, cap_flag.filterKernelSize);
-   if (SHOW_IMAGE) imshow("threshold cap", outputImage);
+  if (SHOW_IMAGE) imshow("threshold cap", outputImage);
 }
 
 void CapDetection::getCaps() {
@@ -80,7 +80,7 @@ void CapDetection::getCaps() {
   }
   // save blobs results
   if (false) {
-    ::saveImage(masterproject::cwd + "/meeting-13/results/result.bmp",
+    ::saveImage(prj::cwd + "/meeting-13/results/result.bmp",
                 inputImage);
   }
 }
@@ -130,10 +130,10 @@ void CapDetection::getCapsUsingBlobs() {
     }
   }
   // draw caps points -- circle
-  drawKeypoints(inputImage,             // input image
-                unqiue_keypoints,       // keypoints found using blob detection
-                inputImage,             // output image
-                Scalar(0, 255, 0),      // colour for the points
+  drawKeypoints(inputImage,         // input image
+                unqiue_keypoints,   // keypoints found using blob detection
+                inputImage,         // output image
+                Scalar(0, 255, 0),  // colour for the points
                 DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 }
 void CapDetection::getCapsUsingHough() {
