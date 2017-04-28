@@ -42,7 +42,7 @@ def get_stream_from_ip():
 
 
 def perform_detection():
-    images = fetch_images_from_folder(cwd + "meeting-12/lower/")
+    images = fetch_images_from_folder(cwd + "meeting-15/transparent/")
     for image in images:
         perform_algorithm(image)
         cv.destroyAllWindows()
@@ -61,6 +61,7 @@ def perform_algorithm(image):
     detect_cap.cap_detection()
     detect_bottle.bottle_detection()
     cv.imshow("result", image)
+    cv.waitKey(100)
 
 
-get_stream_from_ip()
+perform_detection()

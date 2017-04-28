@@ -41,6 +41,7 @@ struct BottleNoFilter {
   const int filterKernelSize = 5;
   const int markerSize = 15;
   const int markerThickness = 3;
+  const int boundaryThreshold = 40;
 } bottleNoFilterVariable;
 // common parameters when
 // (analyzer and polarizer) filter is used
@@ -50,6 +51,7 @@ struct BottleWithFilter {
   const int filterKernelSize = 1;
   const int markerSize = 15;
   const int markerThickness = 3;
+  const int boundaryThreshold = 40;
 } bottleWithFilterVariable;
 // placeholder for the parameter
 auto bottle_flag = bottleNoFilterVariable;
@@ -394,8 +396,8 @@ void BottleDetection::getDarkBottles() {
     if (size >= minArea && size <= maxArea) {
       // points should not be on the edges of the images
       // this is to make sure to ignore noise results
-      const bool xBoundary = p.pt.x < imageSize.width - 40 && p.pt.x > 40;
-      const bool yBoundary = p.pt.y < imageSize.height - 40 && p.pt.y > 40;
+      const bool xBoundary = p.pt.x < imageSize.width - bottle_flag.boundaryThreshold && p.pt.x > bottle_flag.boundaryThreshold;
+      const bool yBoundary = p.pt.y < imageSize.height - bottle_flag.boundaryThreshold && p.pt.y > bottle_flag.boundaryThreshold;
       if (xBoundary && yBoundary) {
         // draw the marker in the found regions
         cv::drawMarker(inputImage,              // image

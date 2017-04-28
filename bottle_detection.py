@@ -1,6 +1,29 @@
 import numpy as np
 import cv2 as cv
 
+# common parameters when
+# no filter is used
+bottle_no_filter = {
+    "average_blob_area": 11.5,
+    "min_threshold_value": 130,
+    "filter_kernel_size": 5,
+    "marker_size": 15,
+    "marker_thickness": 3,
+    "tolerance": 40
+}
+# common parameters when
+# (analyzer and polarizer) filter is used
+bottle_with_filter = {
+    "average_blob_area": 2.0,
+    "min_threshold_value": 30,
+    "filter_kernel_size": 1,
+    "marker_size": 15,
+    "marker_thickness": 3,
+    "tolerance": 40
+}
+# placeholder for the parameter
+bottle_flag = bottle_no_filter
+
 
 class BottleDetection(object):
     def __init__(self, _image):
@@ -23,7 +46,10 @@ class BottleDetection(object):
         median = cv.medianBlur(gray, 7)
 
         canny = cv.Canny(median, 120, 200, 3)
-        ret, thresh = cv.threshold(median, 170, 255, cv.THRESH_BINARY)
+        ret, thresh = cv.threshold(median,
+                                   bottle_flag["min_threshold_value"],
+                                   255,
+                                   cv.THRESH_BINARY)
 
         return thresh
 
@@ -98,20 +124,22 @@ class BottleDetection(object):
         _size = 0
         unique_key_points = []
         for point in key_points:
-            if point.size > 5.5:
-                if point.pt[0] > 20 and abs(point.pt[0] - width) > 20:
+            if point.size > bottle_flag["average_blob_area"]:
+                x = point.pt[0]
+                y = point.pt[1]
+                x_boundary = x > bottle_flag["tolerance"] and abs(x - width) > bottle_flag["tolerance"]
+                y_boundary = y > bottle_flag["tolerance"] and abs(y - width) > bottle_flag["tolerance"]
+                if x_boundary and y_boundary:
                     unique_key_points.append(point)
                     _size += point.size
                 cv.drawMarker(self.input_image,
-                              (int(point.pt[0]),
-                               int(point.pt[1])),
+                              (int(x), int(y)),
                               (0, 0, 255),
                               cv.MARKER_CROSS,
-                              10,
-                              3)
+                              bottle_flag["marker_size"],
+                              bottle_flag["marker_thickness"])
         _length = len(unique_key_points) if len(unique_key_points) > 0 else 1
         _size /= _length
-        print "avg size: ", _size
 
     def bottle_detection(self):
         min_thresh_value = 150
