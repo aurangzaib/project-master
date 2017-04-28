@@ -52,6 +52,7 @@ int main() {
     detectBottles.getDarkBottles();
     // use images by address
     if (BY_REFERENCE == true) {
+      resize(inputImage, inputImage, Size(), 2.3, 2.3, INTER_LINEAR);
       imshow("results: ", inputImage);
       if (SAVE_RESULTS)
         ::saveImage(prj::cwd + "/meeting-12/results/result.bmp", inputImage);
@@ -65,8 +66,8 @@ int main() {
         ::saveImage(prj::cwd + "/meeting-12/results/result.bmp", result);
       imshow("results: ", result);
     }
-    // keep images showing 
-    waitKey(200);
+    // keep images showing
+    waitKey(1);
   }
   return 0;
 }
