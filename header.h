@@ -35,5 +35,5 @@ namespace prj {
     extern string umair;
     extern string rizwan;
 }
-const bool SHOW_IMAGE = true;
+const bool SHOW_IMAGE = false;
 #endif /* header_h */

@@ -2,7 +2,8 @@
 #include "header.h"
 #include "video-frames.cpp"
 
-string prj::siddiqui = "/Users/siddiqui/Documents/Projects/master-project/meetings/";
+string prj::siddiqui =
+    "/Users/siddiqui/Documents/Projects/master-project/meetings/";
 string prj::umair = "/Users/Umair/Desktop/master-project/meetings/";
 string prj::rizwan = "Undefined (No User Found)";
 string prj::cwd = prj::siddiqui;
@@ -21,8 +22,7 @@ int main() {
   bool BY_REFERENCE = true;
   bool SAVE_RESULTS = false;
   vector<Mat> images;
-  fetchImagesFromFolder(images,
-                        prj::cwd + "meeting-15/");
+  fetchImagesFromFolder(images, prj::cwd + "meeting-15/");
   for (auto& inputImage : images) {
     Size s1 = inputImage.size();
     BottleDetection regionOfInterest(inputImage);
@@ -40,32 +40,33 @@ int main() {
       inputImage.copyTo(capData);
       inputImage.copyTo(blobData);
     }
-
+    // instance of cap detection class
     CapDetection detectCaps(capData, 45, 65);
+    // instance of bottle detection class
     BottleDetection detectBottles(blobData);
-
     // detect caps of the bottle
-//    detectCaps.getCaps();
+    detectCaps.getCaps();
     // detect presence of the bottle
-//    detectBottles.getBottles();
+    detectBottles.getBottles();
     // detect dark bottles
     detectBottles.getDarkBottles();
-
+    // use images by address
     if (BY_REFERENCE == true) {
       imshow("results: ", inputImage);
       if (SAVE_RESULTS)
-        ::saveImage(prj::cwd + "/meeting-12/results/result.bmp",
-                    inputImage);
-    } else if (BY_REFERENCE == false) {
+        ::saveImage(prj::cwd + "/meeting-12/results/result.bmp", inputImage);
+    }
+    // use images by copy
+    else if (BY_REFERENCE == false) {
       Mat result;
       vconcat(blobData, capData, result);
       hconcat(blobData, capData, result);
       if (SAVE_RESULTS)
-        ::saveImage(prj::cwd + "/meeting-12/results/result.bmp",
-                    result);
+        ::saveImage(prj::cwd + "/meeting-12/results/result.bmp", result);
       imshow("results: ", result);
     }
-    waitKey(300);
+    // keep images showing 
+    waitKey(200);
   }
   return 0;
 }

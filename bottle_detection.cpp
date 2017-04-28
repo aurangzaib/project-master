@@ -25,28 +25,33 @@ Mat reduceImageDensity(
   threshold(median, reduceDensityImage, minThreshValue, 255, method);
   return reduceDensityImage;
 }
-
+// region of interest
+// coordinates and size
 struct region {
   const int x = 30;
   const int y = 30;
   const int width = 200;
   const int height = 350;
 } roi;
-
+// common parameters when
+// no filter is used
 struct BottleNoFilter {
   const float averageBlobArea = 11.5;
-  const int minThresholdValue = 150;
-  const int filterKernelSize = 1;
-  const int markerSize = 5;
+  const int minThresholdValue = 130;
+  const int filterKernelSize = 5;
+  const int markerSize = 15;
+  const int markerThickness = 3;
 } bottleNoFilterVariable;
-
+// common parameters when
+// (analyzer and polarizer) filter is used
 struct BottleWithFilter {
   const float averageBlobArea = 2.0;
   const int minThresholdValue = 30;
   const int filterKernelSize = 1;
-  const int markerSize = 2;
+  const int markerSize = 15;
+  const int markerThickness = 3;
 } bottleWithFilterVariable;
-
+// placeholder for the parameter
 auto bottle_flag = bottleNoFilterVariable;
 
 class BottleDetection {
@@ -82,7 +87,6 @@ BottleDetection::BottleDetection(const string imagePath)
 
 // ctor with image as matrix
 BottleDetection::BottleDetection(Mat& inputImage) : inputImage(inputImage) {}
-
 // find the hough line
 const Mat BottleDetection::applyFilters(const Mat image) {
   // grayscale conversion
@@ -91,13 +95,11 @@ const Mat BottleDetection::applyFilters(const Mat image) {
            gray,           // destination
            COLOR_BGR2GRAY  // src, output, option
            );
-
   // median blur to reduce the noise
   Mat median;
   medianBlur(gray,    // source
              median,  // destination
              7);      // aperture size (odd and >1)
-
   // canny contour detection
   Mat canny;
   Canny(median,  // source
@@ -106,7 +108,6 @@ const Mat BottleDetection::applyFilters(const Mat image) {
         200,     // high threshold
         3        // kernel size 3x3
         );
-
   // thresholding
   Mat thresh;
   threshold(median, thresh, 170, 255, THRESH_BINARY);
@@ -115,7 +116,6 @@ const Mat BottleDetection::applyFilters(const Mat image) {
   }
   return thresh;
 }
-
 // draw a line using results of hough line transform
 void BottleDetection::applyHoughTransform(const Mat thresh) {
   // to save lines from hough transform
@@ -133,9 +133,8 @@ void BottleDetection::applyHoughTransform(const Mat thresh) {
              0,   // min. # of points to form a line
              0    // max gap b/w 2 points to be consider as 1 line.
              );
-
+  // vector for line coordinates
   vector<int> lineCoordinates;
-
   for (int loopVar = 0; loopVar < lines.size(); loopVar++) {
     // hough coordinates [rho, theta]
     float rho = lines[loopVar][0];    // first row
@@ -143,9 +142,10 @@ void BottleDetection::applyHoughTransform(const Mat thresh) {
     Point pt1, pt2;                   // cartesian coordinates [x, y]
 
     double a = cos(theta), b = sin(theta);
-
-    double x0 = rho * a;  // r * cos(theta)
-    double y0 = rho * b;  // r * sin(theta)
+    // r * cos(theta)
+    double x0 = rho * a;
+    // r * sin(theta)
+    double y0 = rho * b;
 
     // rows are used to draw line to cover the whole vertical space for
     // particular x
@@ -282,14 +282,16 @@ void BottleDetection::getRegionOfInterest(Mat& referenceImage, const int x,
 void BottleDetection::getBottles() {
   Mat detectionImage;
   inputImage.copyTo(detectionImage);
-  detectionImage =
-      reduceImageDensity(detectionImage,                 // image
+  // reduce image density using
+  // thresholding and guassian filter
+  detectionImage = reduceImageDensity(detectionImage,    // image
                          bottle_flag.minThresholdValue,  // threshold
                          CV_THRESH_BINARY,
-                         bottle_flag.filterKernelSize  // filter size
+                         bottle_flag.filterKernelSize    // filter size
                          );
-
+  // debug -- image
   if (SHOW_IMAGE) imshow("laying threshold", detectionImage);
+  // set the criteria for the blobs
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
   params.filterByInertia = false;
@@ -297,23 +299,30 @@ void BottleDetection::getBottles() {
   params.filterByConvexity = false;
   params.filterByColor = true;
   params.blobColor = 255;
-
   // Set up the detector with default parameters.
   SimpleBlobDetector detector(params);
   vector<KeyPoint> keypoints;
   detector.detect(detectionImage, keypoints);
-
   // TODO: improve perforamce,
   // dont need to save in unique_keypoints
   // show the results instead of saving in array
   vector<KeyPoint> unqiue_keypoints;
-  auto imageWidth = detectionImage.size().width;
-  for (const auto& point : keypoints) {
-    if (point.size > bottle_flag.averageBlobArea) {
-      // point should not be on the edges of the images
-      // this check reduces noise points
-      if (point.pt.x > 10 && abs(point.pt.x - imageWidth) > 10) {
-        unqiue_keypoints.push_back(point);
+  auto imageSize = detectionImage.size();
+  // iterate keypoints and draw points which
+  // match the conditions
+  for (const auto& p : keypoints) {
+    if (p.size > bottle_flag.averageBlobArea) {
+      // points should not be on the edges of the images
+      // this is to make sure to ignore noise results
+      const bool xBoundary = p.pt.x < imageSize.width - 40 && p.pt.x > 40;
+      const bool yBoundary = p.pt.y < imageSize.height - 40 && p.pt.y > 40;
+      if (xBoundary && yBoundary) {
+        // draw the marker in the found regions
+        drawMarker(inputImage, Point(p.pt.x, p.pt.y),  // coordinates
+                   Scalar(0, 0, 255),                  // red
+                   MARKER_CROSS,                       // marker type
+                   bottle_flag.markerSize,             // size of marker
+                   bottle_flag.markerThickness);
       }
     }
   }
@@ -326,15 +335,9 @@ void BottleDetection::getBottles() {
     }
     totalArea /= keypoints.size();
   }
-
-  for (const auto& p : unqiue_keypoints) {
-    drawMarker(inputImage, Point(p.pt.x, p.pt.y), Scalar(0, 0, 255),
-               MARKER_CROSS, 10, bottle_flag.markerSize);
-  }
   // save blobs results
   if (false) {
-    ::saveImage(prj::cwd + "/meeting-14/results-filter/result.bmp",
-                inputImage);
+    ::saveImage(prj::cwd + "/meeting-14/results-filter/result.bmp", inputImage);
   }
 }
 
@@ -343,6 +346,8 @@ void BottleDetection::getDarkBottles() {
   unsigned filterKernelSize = 1;
   Mat detectionImage;
   inputImage.copyTo(detectionImage);
+  // reduce image density using
+  // thresholding and guassian filter
   detectionImage = reduceImageDensity(detectionImage,     // image
                                       minThresholdValue,  // threshold
                                       CV_THRESH_BINARY_INV,
@@ -354,9 +359,7 @@ void BottleDetection::getDarkBottles() {
   Mat element = getStructuringElement(
       MORPH_RECT, Size(1 * morph_size + 1, 1 * morph_size + 1),
       Point(morph_size, morph_size));
-
   // Apply the specified morphology operation
-
   for (unsigned loop = 0; loop < 5; loop++) {
     morphologyEx(detectionImage,  // source
                  detectionImage,  // destination
@@ -365,10 +368,9 @@ void BottleDetection::getDarkBottles() {
                  Point(-1, -1),   // center
                  5);              //
   }
+  // debug -- image
   if (SHOW_IMAGE) imshow("opening", detectionImage);
-  ::saveImage(
-      prj::cwd + "/meeting-12/lower/morphological_opening/result.bmp",
-      detectionImage);
+  // set the criteria for the blobs
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
   params.filterByCircularity = false;
@@ -377,12 +379,14 @@ void BottleDetection::getDarkBottles() {
   params.filterByColor = true;
   params.blobColor = 255;
   SimpleBlobDetector detector(params);
-
+  // vector of keypoints
   vector<KeyPoint> keypoints;
+  // apply blob detection with the given criteria
   detector.detect(detectionImage, keypoints);
-
+  // area boundary
   auto minArea = 80, maxArea = 200;
-
+  // iterate keypoints and draw points which
+  // match the conditions
   for (const auto& p : keypoints) {
     auto size = p.size;
     auto imageSize = detectionImage.size();
@@ -393,11 +397,13 @@ void BottleDetection::getDarkBottles() {
       const bool xBoundary = p.pt.x < imageSize.width - 40 && p.pt.x > 40;
       const bool yBoundary = p.pt.y < imageSize.height - 40 && p.pt.y > 40;
       if (xBoundary && yBoundary) {
-        cv::drawMarker(inputImage,             // image
-                       Point(p.pt.x, p.pt.y),  // coordinates
-                       Scalar(255, 0, 0),      // color
-                       MARKER_CROSS, 10,
-                       bottle_flag.markerSize);  // options
+        // draw the marker in the found regions
+        cv::drawMarker(inputImage,              // image
+                       Point(p.pt.x, p.pt.y),   // coordinates
+                       Scalar(255, 0, 0),       // color
+                       MARKER_CROSS,            // marker type
+                       bottle_flag.markerSize,  // size of marker
+                       bottle_flag.markerThickness);
       }
     }
   }
