@@ -4,13 +4,14 @@ import cv2 as cv
 # common parameters when
 # no filter is used
 bottle_no_filter = {
-    "average_blob_area": 11.5,
-    "min_threshold_value": 130,
-    "filter_kernel_size": 5,
+    "average_blob_area": 10.,
+    "min_threshold_value": 200,
+    "filter_kernel_size": 1,
     "marker_size": 15,
     "marker_thickness": 3,
     "tolerance": 40
 }
+
 # common parameters when
 # (analyzer and polarizer) filter is used
 bottle_with_filter = {
@@ -23,14 +24,14 @@ bottle_with_filter = {
 }
 
 dark_bottle_filter = {
-    "min_blob_area": 80.0,
+    "min_blob_area": 40.0,
     "max_blob_area": 200.0,
     "min_threshold_value": 60,
     "filter_kernel_size": 1,
     "marker_size": 15,
     "marker_thickness": 3,
     "tolerance": 40,
-    "morph_size": 27
+    "morph_size": 21
 }
 
 # placeholder for the parameter
@@ -149,27 +150,25 @@ class BottleDetection(object):
         detector = cv.SimpleBlobDetector(params)
         key_points = detector.detect(self.output_image)
         height, width, channel = self.output_image.shape
-        _size = 0
-        unique_key_points = []
+
         for point in key_points:
             if point.size > bottle_flag["average_blob_area"]:
                 x = point.pt[0]
                 y = point.pt[1]
-                x_boundary = x > bottle_flag["tolerance"] and abs(
+
+                x_safe = x > bottle_flag["tolerance"] and abs(
                     x - width) > bottle_flag["tolerance"]
-                y_boundary = y > bottle_flag["tolerance"] and abs(
+
+                y_safe = y > bottle_flag["tolerance"] and abs(
                     y - width) > bottle_flag["tolerance"]
-                if x_boundary and y_boundary:
-                    unique_key_points.append(point)
-                    _size += point.size
-                cv.drawMarker(self.input_image,
-                              (int(x), int(y)),
-                              (0, 0, 255),
-                              cv.MARKER_CROSS,
-                              bottle_flag["marker_size"],
-                              bottle_flag["marker_thickness"])
-        _length = len(unique_key_points) if len(unique_key_points) > 0 else 1
-        _size /= _length
+
+                if x_safe and y_safe:
+                    cv.drawMarker(self.input_image,
+                                  (int(x), int(y)),
+                                  (0, 0, 255),
+                                  cv.MARKER_CROSS,
+                                  bottle_flag["marker_size"],
+                                  bottle_flag["marker_thickness"])
 
     def get_dark_bottles(self):
         self.output_image = self.reduce_density(self.output_image,
@@ -184,6 +183,7 @@ class BottleDetection(object):
 
         for index in range(5):
             self.output_image = cv.morphologyEx(self.output_image, cv.MORPH_OPEN, element)
+
         params = cv.SimpleBlobDetector_Params()
         params.filterByCircularity = False
         params.filterByConvexity = False
@@ -196,9 +196,7 @@ class BottleDetection(object):
         # vector of keypoints
         key_points = detector.detect(self.output_image)
         height, width, channel = self.output_image.shape
-        # unique_key_points = []
         for p in key_points:
-            # keypoint_size = p.size
             lower_boundary = p.size > dark_flag["min_blob_area"]
             upper_boundary = p.size < dark_flag["max_blob_area"]
             if lower_boundary and upper_boundary:
@@ -209,16 +207,12 @@ class BottleDetection(object):
                 y_boundary = y > dark_flag["tolerance"] and abs(
                     y - width) > dark_flag["tolerance"]
                 if x_boundary and y_boundary:
-                    # unique_key_points.append(p)
-                    # keypoint_size += p.size
                     cv.drawMarker(self.input_image,
                                   (int(x), int(y)),
                                   (255, 0, 0),
                                   cv.MARKER_CROSS,
                                   dark_flag["marker_size"],
                                   dark_flag["marker_thickness"])
-                    # _length = len(unique_key_points) if len(unique_key_points) > 0 else 1
-                    # _size /= _length
 
     def compute_results(self, _with_wait_key=True):
         thresh = self.apply_filters(self.input_image)

@@ -51,13 +51,14 @@ def perform_detection():
 
 
 def perform_algorithm(image):
+    image = cv.resize(image, None, fx=2, fy=2, interpolation=cv.INTER_LINEAR)
     height, width, channel = image.shape
     image = BottleDetection.get_region_of_interest(image,
                                                    width / 7,  # x
-                                                   height / 10,  # y
+                                                   height / 5,  # y
                                                    # width
-                                                   width - (2 * width / 7),
-                                                   height - height / 4)  # height
+                                                   width - (2 * width / 5),
+                                                   height - height / 3)  # height
     detect_cap = CapDetection(image)
     detect_bottle = BottleDetection(image)
     detect_dark_bottle = BottleDetection(image)
@@ -70,4 +71,4 @@ def perform_algorithm(image):
     cv.waitKey(1)
 
 
-perform_detection()
+get_stream_from_ip()

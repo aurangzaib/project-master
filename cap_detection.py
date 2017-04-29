@@ -5,8 +5,8 @@ from bottle_detection import BottleDetection
 cap_no_filter = {
     "min_convex": 0.75,
     "min_inertia_ratio": 0.55,
-    "min_threshold_value": 15,
-    "filter_kernel_size": 7,
+    "min_threshold_value": 12,
+    "filter_kernel_size": 17,
     "marker_size": 12,
     "marker_width": 2,
     "min_area": 40,
@@ -41,6 +41,7 @@ class CapDetection(object):
                                                            cap_flag["filter_kernel_size"],
                                                            cv.THRESH_BINARY,
                                                            "cap")
+        # cv.imshow("threshold", self.output_image)
 
     def get_caps_using_blobs(self):
         params = cv.SimpleBlobDetector_Params()
