@@ -109,7 +109,39 @@ class BottleDetection(object):
         if with_wait_key:
             cv.waitKey(1)
 
-    def get_bottles_using_blobs(self):
+    def get_bottles(self):
+        params = cv.SimpleBlobDetector_Params()
+        params.filterByCircularity = False
+        params.filterByConvexity = False
+        params.filterByArea = False
+        params.filterByInertia = False
+        params.filterByColor = True
+        params.blobColor = 255
+
+        detector = cv.SimpleBlobDetector(params)
+        key_points = detector.detect(self.output_image)
+        height, width, channel = self.output_image.shape
+        _size = 0
+        unique_key_points = []
+        for point in key_points:
+            if point.size > bottle_flag["average_blob_area"]:
+                x = point.pt[0]
+                y = point.pt[1]
+                x_boundary = x > bottle_flag["tolerance"] and abs(x - width) > bottle_flag["tolerance"]
+                y_boundary = y > bottle_flag["tolerance"] and abs(y - width) > bottle_flag["tolerance"]
+                if x_boundary and y_boundary:
+                    unique_key_points.append(point)
+                    _size += point.size
+                cv.drawMarker(self.input_image,
+                              (int(x), int(y)),
+                              (0, 0, 255),
+                              cv.MARKER_CROSS,
+                              bottle_flag["marker_size"],
+                              bottle_flag["marker_thickness"])
+        _length = len(unique_key_points) if len(unique_key_points) > 0 else 1
+        _size /= _length
+
+    def get_dark_bottles(self):
         params = cv.SimpleBlobDetector_Params()
         params.filterByCircularity = False
         params.filterByConvexity = False
@@ -147,7 +179,7 @@ class BottleDetection(object):
         self.output_image = self.reduce_image_density(self.output_image,
                                                       min_thresh_value,
                                                       filter_kernel_size)
-        self.get_bottles_using_blobs()
+        self.get_bottles()
 
     def compute_results(self, _with_wait_key=True):
         thresh = self.apply_filters(self.input_image)

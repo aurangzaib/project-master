@@ -29,7 +29,7 @@ class CapDetection {
   CapDetection();
   CapDetection(const string, unsigned, unsigned);
   CapDetection(Mat&, unsigned, unsigned);
-  void reduceImageDensity();
+  void reduceDensity();
   void getCaps();
   // helper methods
   void getBottlesCircles();
@@ -62,27 +62,21 @@ CapDetection::CapDetection(Mat& inputImage,     // image as reference
   imagePath = "";
 }
 
-void CapDetection::reduceImageDensity() {
+void CapDetection::reduceDensity() {
   inputImage.copyTo(outputImage);
   // convert to single channel -- gray
   cvtColor(outputImage, outputImage, CV_BGR2GRAY);
-  outputImage =
-      ::reduceImageDensity(outputImage, cap_flag.minThresholdValue,
-                           CV_THRESH_BINARY, cap_flag.filterKernelSize);
+  outputImage = ::reduceDensity(outputImage,                 //
+                                cap_flag.minThresholdValue,  //
+                                CV_THRESH_BINARY,            //
+                                cap_flag.filterKernelSize,   //
+                                "cap");
   if (SHOW_IMAGE) imshow("threshold cap", outputImage);
 }
 
 void CapDetection::getCaps() {
-  reduceImageDensity();
+  reduceDensity();
   getCapsUsingBlobs();
-  if (false) {
-    getCapsUsingHough();
-  }
-  // save blobs results
-  if (false) {
-    ::saveImage(prj::cwd + "/meeting-13/results/result.bmp",
-                inputImage);
-  }
 }
 void CapDetection::getCapsUsingBlobs() {
   SimpleBlobDetector::Params params;
@@ -116,12 +110,21 @@ void CapDetection::getCapsUsingBlobs() {
   const float maxArea = 100.0;
 
   vector<KeyPoint> unqiue_keypoints;
+  Mat debugImage;
+  outputImage.copyTo(debugImage);
   for (const auto& point : keypoints) {
     if (point.size > minArea && point.size < maxArea) {
       // save caps points
       unqiue_keypoints.push_back(point);
       // draw caps points -- cross
       drawMarker(inputImage,                         // image on which to draw
+                 cv::Point(point.pt.x, point.pt.y),  // coordinates
+                 cv::Scalar(255, 255, 255),          // color -- red
+                 MARKER_CROSS,                       // cross sign
+                 10,                                 //
+                 cap_flag.markerSize);               // size of the cross
+      /** DEBUG PURPOSE **/
+      drawMarker(debugImage,                         // image on which to draw
                  cv::Point(point.pt.x, point.pt.y),  // coordinates
                  cv::Scalar(255, 255, 255),          // color -- red
                  MARKER_CROSS,                       // cross sign
@@ -135,6 +138,15 @@ void CapDetection::getCapsUsingBlobs() {
                 inputImage,         // output image
                 Scalar(0, 255, 0),  // colour for the points
                 DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+
+  /* --- DEBUG PURPOSE ONLY  --- */
+  drawKeypoints(debugImage,         // input image
+                unqiue_keypoints,   // keypoints found using blob detection
+                debugImage,         // output image
+                Scalar(0, 255, 0),  // colour for the points
+                DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+  if (SAVE_RESULTS)
+    saveImage(prj::cwd + "/results/cap.bmp", debugImage);
 }
 void CapDetection::getCapsUsingHough() {
   // hough circle to determine bottle caps

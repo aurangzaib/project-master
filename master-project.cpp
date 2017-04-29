@@ -1,6 +1,5 @@
 #include "cap_detection.cpp"
 #include "header.h"
-#include "video-frames.cpp"
 
 string prj::siddiqui =
     "/Users/siddiqui/Documents/Projects/master-project/meetings/";
@@ -19,8 +18,6 @@ void fetchImagesFromFolder(vector<Mat>& data, const string path) {
 }
 
 int main() {
-  bool BY_REFERENCE = true;
-  bool SAVE_RESULTS = false;
   vector<Mat> images;
   fetchImagesFromFolder(images, prj::cwd + "meeting-15/");
   for (auto& inputImage : images) {
@@ -49,25 +46,28 @@ int main() {
     // detect presence of the bottle
     detectBottles.getBottles();
     // detect dark bottles
-    detectBottles.getDarkBottles();
+    if (NO_FILTER) detectBottles.getDarkBottles();
     // use images by address
     if (BY_REFERENCE == true) {
-      resize(inputImage, inputImage, Size(), 2.3, 2.3, INTER_LINEAR);
-      imshow("results: ", inputImage);
+      if (ENLARGE_RESULTS)
+        resize(inputImage, inputImage, Size(), 2.3, 2.3, INTER_LINEAR);
+      if (SHOW_RESULT) imshow("results: ", inputImage);
       if (SAVE_RESULTS)
-        ::saveImage(prj::cwd + "/meeting-12/results/result.bmp", inputImage);
+        ::saveImage(prj::cwd + "/results/result.bmp", inputImage);
     }
     // use images by copy
     else if (BY_REFERENCE == false) {
       Mat result;
       vconcat(blobData, capData, result);
       hconcat(blobData, capData, result);
+      if (ENLARGE_RESULTS)
+        resize(inputImage, inputImage, Size(), 2.3, 2.3, INTER_LINEAR);
       if (SAVE_RESULTS)
-        ::saveImage(prj::cwd + "/meeting-12/results/result.bmp", result);
-      imshow("results: ", result);
+        ::saveImage(prj::cwd + "/meeting-15/results/result.bmp", result);
+      if (SHOW_RESULT) imshow("results: ", result);
     }
     // keep images showing
-    waitKey(1);
+    waitKey(350);
   }
   return 0;
 }
