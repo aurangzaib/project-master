@@ -73,7 +73,7 @@ class CapDetection(object):
                 cv.drawMarker(self.input_image,
                               (int(point.pt[0]),
                                int(point.pt[1])),
-                              (255, 255, 255),
+                              (0, 255, 0),
                               cv.MARKER_CROSS,
                               cap_flag["marker_size"],
                               cap_flag["marker_width"])
@@ -81,7 +81,7 @@ class CapDetection(object):
         cv.drawKeypoints(self.input_image,  # input image
                          unique_key_points,  # keypoints found using blob detection
                          self.input_image,  # output image
-                         (255, 255, 255),  # colour for the points
+                         (0, 255, 0),  # colour for the points
                          cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
     def cap_detection(self):

@@ -19,7 +19,7 @@ void fetchImagesFromFolder(vector<Mat>& data, const string path) {
 
 int main() {
   vector<Mat> images;
-  fetchImagesFromFolder(images, prj::cwd + "meeting-15/dark-bottles");
+  fetchImagesFromFolder(images, prj::cwd + "meeting-15/");
   for (auto& inputImage : images) {
     Size s1 = inputImage.size();
     BottleDetection regionOfInterest(inputImage);
@@ -67,7 +67,7 @@ int main() {
       if (SHOW_RESULT) imshow("results: ", result);
     }
     // keep images showing
-    waitKey(350);
+    waitKey(1);
   }
   return 0;
 }

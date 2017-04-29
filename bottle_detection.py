@@ -184,7 +184,6 @@ class BottleDetection(object):
 
         for index in range(5):
             self.output_image = cv.morphologyEx(self.output_image, cv.MORPH_OPEN, element)
-        cv.imshow("after morphology", self.output_image)
         params = cv.SimpleBlobDetector_Params()
         params.filterByCircularity = False
         params.filterByConvexity = False
@@ -197,7 +196,6 @@ class BottleDetection(object):
         # vector of keypoints
         key_points = detector.detect(self.output_image)
         height, width, channel = self.output_image.shape
-        keypoint_size = 0
         # unique_key_points = []
         for p in key_points:
             # keypoint_size = p.size
@@ -215,7 +213,7 @@ class BottleDetection(object):
                     # keypoint_size += p.size
                     cv.drawMarker(self.input_image,
                                   (int(x), int(y)),
-                                  (0, 0, 255),
+                                  (255, 0, 0),
                                   cv.MARKER_CROSS,
                                   dark_flag["marker_size"],
                                   dark_flag["marker_thickness"])

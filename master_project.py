@@ -1,5 +1,6 @@
 import cv2 as cv
 import os
+import fnmatch
 import urllib
 import numpy as np
 from bottle_detection import BottleDetection
@@ -10,10 +11,11 @@ cwd = "/Users/siddiqui/Documents/Projects/master-project/meetings/"
 
 def fetch_images_from_folder(folder):
     _images = []
-    for filename in os.listdir(folder):
-        img = cv.imread(os.path.join(folder, filename))
-        if img is not None:
-            _images.append(img)
+    for root, dir_names, file_names in os.walk(folder):
+        for filename in fnmatch.filter(file_names, '*.bmp'):
+            img = cv.imread(os.path.join(folder, os.path.join(root, filename)))
+            if img is not None:
+                _images.append(img)
     return _images
 
 
@@ -42,7 +44,7 @@ def get_stream_from_ip():
 
 
 def perform_detection():
-    images = fetch_images_from_folder(cwd + "meeting-15/dark-bottles/")
+    images = fetch_images_from_folder(cwd + "meeting-15/")
     for image in images:
         perform_algorithm(image)
     cv.destroyAllWindows()
@@ -65,7 +67,7 @@ def perform_algorithm(image):
     detect_dark_bottle.get_dark_bottles()
 
     cv.imshow("result", image)
-    cv.waitKey()
+    cv.waitKey(1)
 
 
 perform_detection()
