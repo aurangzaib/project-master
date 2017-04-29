@@ -42,26 +42,30 @@ def get_stream_from_ip():
 
 
 def perform_detection():
-    images = fetch_images_from_folder(cwd + "meeting-15/transparent/")
+    images = fetch_images_from_folder(cwd + "meeting-15/dark-bottles/")
     for image in images:
         perform_algorithm(image)
-        cv.destroyAllWindows()
+    cv.destroyAllWindows()
 
 
 def perform_algorithm(image):
     height, width, channel = image.shape
     image = BottleDetection.get_region_of_interest(image,
-                                                   width / 20,  # x
-                                                   height / 20,  # y
+                                                   width / 7,  # x
+                                                   height / 10,  # y
                                                    # width
-                                                   width - (2 * width / 20),
-                                                   height - height / 3)  # height
+                                                   width - (2 * width / 7),
+                                                   height - height / 4)  # height
     detect_cap = CapDetection(image)
     detect_bottle = BottleDetection(image)
+    detect_dark_bottle = BottleDetection(image)
+
     detect_cap.cap_detection()
-    detect_bottle.bottle_detection()
+    detect_bottle.get_bottles()
+    detect_dark_bottle.get_dark_bottles()
+
     cv.imshow("result", image)
-    cv.waitKey(100)
+    cv.waitKey()
 
 
 perform_detection()

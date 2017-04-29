@@ -34,11 +34,13 @@ class CapDetection(object):
         self.min_radius = min_radius
         self.max_radius = max_radius
 
-    def reduce_image_density(self):
+    def reduce_density(self):
         # self.output_image = cv.cvtColor(self.output_image, cv.COLOR_BGR2GRAY)
-        self.output_image = BottleDetection.reduce_image_density(self.output_image,
-                                                                 cap_flag["min_threshold_value"],
-                                                                 cap_flag["filter_kernel_size"])
+        self.output_image = BottleDetection.reduce_density(self.output_image,
+                                                           cap_flag["min_threshold_value"],
+                                                           cap_flag["filter_kernel_size"],
+                                                           cv.THRESH_BINARY,
+                                                           "cap")
 
     def get_caps_using_blobs(self):
         params = cv.SimpleBlobDetector_Params()
@@ -83,5 +85,5 @@ class CapDetection(object):
                          cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
     def cap_detection(self):
-        self.reduce_image_density()
+        self.reduce_density()
         self.get_caps_using_blobs()
