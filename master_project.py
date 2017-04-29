@@ -22,21 +22,21 @@ def fetch_images_from_folder(folder):
 def get_stream_from_ip():
     # Stream the video link
     stream = urllib.urlopen('http://141.60.168.144:8090/video?x.mjpeg')
-    bytes = ''
+    image_bytes = ''
     while True:
-        bytes += stream.read(1024)
+        image_bytes += stream.read(1024)
         # 0xff 0xd8 is the starting of the jpeg frame
-        a = bytes.find('\xff\xd8')
+        a = image_bytes.find('\xff\xd8')
         # 0xff 0xd9 is the end of the jpeg frame
-        b = bytes.find('\xff\xd9')
+        b = image_bytes.find('\xff\xd9')
         # Taking the jpeg image as byte stream
         if a != -1 and b != -1:
             os.system('clear')
-            jpg = bytes[a:b + 2]
-            bytes = bytes[b + 2:]
+            jpg = image_bytes[a:b + 2]
+            image_bytes = image_bytes[b + 2:]
             # Decoding the byte stream to cv2 readable matrix format
             i = cv.imdecode(np.fromstring(jpg, dtype=np.uint8),  # image type
-                            -1)  # >0 3-channel, =0 grayscale, <0 as is it
+                            -1)  # >0 3-channel, =0 gray scale, <0 as is it
             perform_algorithm(i)
             if cv.waitKey(1) & 0xFF == ord('q'):
                 cv.destroyAllWindows()
