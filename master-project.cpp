@@ -19,7 +19,7 @@ void fetchImagesFromFolder(vector<Mat>& data, const string path) {
 
 int main() {
   vector<Mat> images;
-  fetchImagesFromFolder(images, prj::cwd + "meeting-15/");
+  fetchImagesFromFolder(images, prj::cwd + "teach-data/");
   for (auto& inputImage : images) {
     Size s1 = inputImage.size();
     BottleDetection regionOfInterest(inputImage);

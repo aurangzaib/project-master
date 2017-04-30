@@ -26,7 +26,7 @@
 #define BY_REFERENCE true
 #define SAVE_RESULTS false
 #define SHOW_RESULT true
-#define ENLARGE_RESULTS false
+#define ENLARGE_RESULTS true
 #define ENABLE_DEBUGGER false
 #define NO_FILTER true
 
