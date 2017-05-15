@@ -50,8 +50,8 @@ class BottleDetection(object):
         self.lineUniquePoints = []
 
     @staticmethod
-    def get_region_of_interest(_reference_image, _x, _y, _width, _height):
-        return _reference_image[_y:_y + _height, _x:_x + _width]
+    def get_region_of_interest(_reference_image, _x , _y, _width, _height):
+        return _reference_image[int(_y):int(_y + _height), int(_x):int(_x + _width)]
 
     @staticmethod
     def reduce_density(_image, _min_thresh_value, _filter_kernel_size, _method, caller):
@@ -74,7 +74,6 @@ class BottleDetection(object):
                                    bottle_flag["min_threshold_value"],
                                    255,
                                    cv.THRESH_BINARY)
-
         return thresh
 
     def apply_hough_transform(self, thresh, with_wait_key):
@@ -147,7 +146,7 @@ class BottleDetection(object):
         params.filterByColor = True
         params.blobColor = 255
 
-        detector = cv.SimpleBlobDetector(params)
+        detector = cv.SimpleBlobDetector_create(params)
         key_points = detector.detect(self.output_image)
         height, width, channel = self.output_image.shape
 
@@ -192,7 +191,7 @@ class BottleDetection(object):
         params.filterByColor = True
         params.blobColor = 255
         # apply blob detection with the given criteria
-        detector = cv.SimpleBlobDetector(params)
+        detector = cv.SimpleBlobDetector_create(params)
         # vector of keypoints
         key_points = detector.detect(self.output_image)
         height, width, channel = self.output_image.shape

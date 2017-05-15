@@ -63,7 +63,7 @@ class CapDetection(object):
         params.filterByColor = True
         params.blobColor = 0
 
-        detector = cv.SimpleBlobDetector(params)
+        detector = cv.SimpleBlobDetector_create(params)
         key_points = detector.detect(self.output_image)
 
         unique_key_points = []
