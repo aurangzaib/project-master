@@ -1,7 +1,7 @@
+#include "stdafx.h"
 #include <typeinfo>
 #include "header.h"
-#include "stdafx.h"
-
+#include <string>
 // region of interest
 // coordinates and size
 struct region {
@@ -157,7 +157,7 @@ void BottleDetection::applyHoughTransform(const Mat thresh) {
              );
   // vector for line coordinates
   vector<int> lineCoordinates;
-  for (int loopVar = 0; loopVar < lines.size(); loopVar++) {
+  for (unsigned loopVar = 0; loopVar < lines.size(); loopVar++) {
     // hough coordinates [rho, theta]
     float rho = lines[loopVar][0];    // first row
     float theta = lines[loopVar][1];  // second row
@@ -320,9 +320,9 @@ void BottleDetection::getBottles() {
   params.filterByColor = true;
   params.blobColor = 255;
   // Set up the detector with default parameters.
-  SimpleBlobDetector detector(params);
+  Ptr<SimpleBlobDetector> detector = SimpleBlobDetector::create(params);
   vector<KeyPoint> keypoints;
-  detector.detect(detectionImage, keypoints);
+  detector->detect(detectionImage, keypoints);
   // TODO: improve perforamce,
   // dont need to save in unique_keypoints
   // show the results instead of saving in array
@@ -405,11 +405,11 @@ void BottleDetection::getDarkBottles() {
   params.filterByInertia = false;
   params.filterByColor = true;
   params.blobColor = 255;
-  SimpleBlobDetector detector(params);
+  Ptr<SimpleBlobDetector> detector = SimpleBlobDetector::create(params);
   // vector of keypoints
   vector<KeyPoint> keypoints;
   // apply blob detection with the given criteria
-  detector.detect(detectionImage, keypoints);
+  detector->detect(detectionImage, keypoints);
   // iterate keypoints and draw points which
   // match the conditions
   Mat debugImage;

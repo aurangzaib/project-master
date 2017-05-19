@@ -131,7 +131,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>"C:\opencv\build\install\x86\vc14\lib"</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_core320.lib;opencv_highgui320.lib;opencv_imgcodecs320.lib;opencv_video320.lib;opencv_imgproc320.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_calib3d320.lib;opencv_core320.lib;opencv_features2d320.lib;opencv_flann320.lib;opencv_highgui320.lib;opencv_imgcodecs320.lib;opencv_imgproc320.lib;opencv_ml320.lib;opencv_objdetect320.lib;opencv_shape320.lib;opencv_stitching320.lib;opencv_superres320.lib;opencv_video320.lib;opencv_videoio320.lib;opencv_videostab320.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -162,17 +162,9 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="template-matching.cpp" />
-    <ClInclude Include="basic.cpp" />
-    <ClInclude Include="bottle-cap-detection.cpp" />
-    <ClInclude Include="classes-operator-overload.cpp" />
-    <ClInclude Include="classes-pointers.cpp" />
-    <ClInclude Include="classes.cpp" />
-    <ClInclude Include="discrete-fourier-transform.cpp" />
-    <ClInclude Include="bottle-horiz-vert-detection.cpp" />
+    <ClInclude Include="bottle_detection.cpp" />
+    <ClInclude Include="cap_detection.cpp" />
     <ClCompile Include="master-project.cpp" />
-    <ClInclude Include="pointers.cpp" />
-    <ClInclude Include="sobel-canny-threshold.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

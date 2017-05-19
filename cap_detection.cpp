@@ -25,7 +25,8 @@ class CapDetection {
   unsigned minRadius, maxRadius;
 
  public:
-  Mat inputImage, outputImage;
+  Mat inputImage;
+  Mat outputImage;
   CapDetection();
   CapDetection(const string, unsigned, unsigned);
   CapDetection(Mat&, unsigned, unsigned);
@@ -100,9 +101,9 @@ void CapDetection::getCapsUsingBlobs() {
   params.blobColor = 0;
 
   // Set up the detector with default parameters.
-  SimpleBlobDetector detector(params);
+  Ptr<SimpleBlobDetector>  detector = SimpleBlobDetector::create(params);
   vector<KeyPoint> keypoints;
-  detector.detect(outputImage, keypoints);
+  detector->detect(outputImage, keypoints);
   // usually bottle caps are within
   // below range. providing boundary condition
   // reduces noise.

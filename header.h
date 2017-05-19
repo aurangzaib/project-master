@@ -1,7 +1,7 @@
 #ifndef header_h
 #define header_h
 #include "stdafx.h"
-//#define WINDOWS
+#define WINDOWS
 #ifdef WINDOWS
 #define GetCurrentDir _getcwd
 #else
@@ -33,10 +33,6 @@
 // namespace
 using namespace std;
 using namespace cv;
-// declarations
-void playWithArrays(void);
-void playWithPointerToPointer(void);
-void sobelCannyThreshold(void);
 // namespace
 namespace prj {
 extern string cwd;
