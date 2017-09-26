@@ -1,7 +1,7 @@
-#include "stdafx.h"
+#include <string>
 #include <typeinfo>
 #include "header.h"
-#include <string>
+#include "stdafx.h"
 // region of interest
 // coordinates and size
 struct region {
@@ -13,7 +13,7 @@ struct region {
 // common parameters when
 // no filter is used
 struct BottleNoFilter {
-  const float averageBlobArea = 11.5;
+  const float averageBlobArea = 18;
   const unsigned minThresholdValue = 130;
   const unsigned filterKernelSize = 5;
   const unsigned markerSize = 15;
@@ -35,8 +35,8 @@ struct BottleWithFilter {
 // (analyzer and polarizer) filter is used
 struct DarkBottleFilter {
   const float minBlobArea = 80;
-  const unsigned maxBlobArea = 200;
-  const unsigned minThresholdValue = 60;
+  const unsigned maxBlobArea = 4000;
+  const unsigned minThresholdValue = 90;
   const unsigned filterKernelSize = 1;
   const unsigned markerSize = 15;
   const unsigned markerThickness = 3;
@@ -51,11 +51,11 @@ auto dark_flag = darkBottleVariable;
 // helper function to save
 // image with appending the path
 void saveImage(string imagePath, const Mat image) {
-  time_t timev;
-  time(&timev);
-  size_t position = imagePath.find('.');
-  string toReplace = "-" + to_string(time(&timev));
-  imagePath.replace(position, 0, toReplace);
+//  time_t timev;
+//  time(&timev);
+//  size_t position = imagePath.find('.');
+//  string toReplace = "-" + to_string(time(&timev));
+//  imagePath.replace(position, 0, toReplace);
   imwrite(imagePath, image);
 }
 
@@ -76,6 +76,8 @@ Mat reduceDensity(const Mat algorithmImage,       // image for operation
   threshold(median, resultImage, minThreshValue, 255, method);
   if (SAVE_RESULTS)
     saveImage(prj::cwd + "/results/threshold-" + caller + ".bmp", resultImage);
+    imshow("cap: ", resultImage);
+    waitKey();
   return resultImage;
 }
 
@@ -319,6 +321,7 @@ void BottleDetection::getBottles() {
   params.filterByConvexity = false;
   params.filterByColor = true;
   params.blobColor = 255;
+
   // Set up the detector with default parameters.
   Ptr<SimpleBlobDetector> detector = SimpleBlobDetector::create(params);
   vector<KeyPoint> keypoints;
@@ -341,12 +344,6 @@ void BottleDetection::getBottles() {
       if (xBoundary && yBoundary) {
         // draw the marker in the found regions
         drawMarker(inputImage, Point(p.pt.x, p.pt.y),  // coordinates
-                   Scalar(0, 0, 255),                  // red
-                   MARKER_CROSS,                       // marker type
-                   bottle_flag.markerSize,             // size of marker
-                   bottle_flag.markerThickness);
-        // --- ONLY DEBUG PURPOSE ---
-        drawMarker(debugImage, Point(p.pt.x, p.pt.y),  // coordinates
                    Scalar(0, 0, 255),                  // red
                    MARKER_CROSS,                       // marker type
                    bottle_flag.markerSize,             // size of marker
@@ -392,11 +389,13 @@ void BottleDetection::getDarkBottles() {
                  Point(-1, -1),   // center
                  5);              //
   }
-  // debug -- image
-  if (SHOW_IMAGE) imshow("opening", detectionImage);
   // save blobs results
-  if (SAVE_RESULTS)
-    saveImage(prj::cwd + "/results/opening.bmp", detectionImage);
+   if (SAVE_RESULTS) {
+            saveImage(prj::cwd + "/opening.bmp", detectionImage);
+    }
+//  saveImage(prj::cwd + "/opening.bmp", detectionImage);
+//  imshow("opening", detectionImage);
+//  waitKey();
   // set the criteria for the blobs
   SimpleBlobDetector::Params params;
   params.filterByArea = false;
@@ -419,7 +418,7 @@ void BottleDetection::getDarkBottles() {
   for (const auto& p : keypoints) {
     auto size = p.size;
     // blob area condition
-    bool lowerBoundary = size >= dark_flag.minBlobArea;
+      bool lowerBoundary = true; //size >= dark_flag.minBlobArea;
     bool upperBoundary = size <= dark_flag.maxBlobArea;
     if (lowerBoundary && upperBoundary) {
       // points should not be on the edges of the images

@@ -57,7 +57,6 @@ class BottleDetection(object):
     def reduce_density(_image, _min_thresh_value, _filter_kernel_size, _method, caller):
         _image = cv.medianBlur(_image, _filter_kernel_size)
         ret, _image = cv.threshold(_image, _min_thresh_value, 255, _method)
-        # cv.imshow("reduces--bottle", _image)
         return _image
 
     def apply_filters(self, image):
@@ -91,27 +90,22 @@ class BottleDetection(object):
 
                 a = np.cos(theta)
                 b = np.sin(theta)
-
                 x0 = rho * a
                 y0 = rho * b
-
                 rows, columns, channels = self.input_image.shape
                 pt1 = {
                     "x": int(np.round(x0 + int(rows) * (-b))),
                     "y": int(np.round(y0 + int(rows) * a))
                 }
-
                 pt2 = {
                     "x": int(np.round(x0 - int(rows) * (-b))),
                     "y": int(np.round(x0 - int(rows) * a))
                 }
-
                 cv.line(self.output_image,
                         (pt1['x'], pt1['y']),
                         (pt2['x'], pt2['y']),
                         (0, 0, 255),
                         2)
-
                 if with_wait_key:
                     cv.waitKey(1)
 

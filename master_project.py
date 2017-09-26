@@ -63,4 +63,4 @@ def perform_algorithm(image):
     cv.waitKey(1)
 
 
-get_stream_from_ip()
+perform_detection()

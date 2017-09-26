@@ -39,3 +39,12 @@ unsigned videoFrames(const string videoPath) {
   }
   return 0;
 }
+
+while(1) {
+    // get a frame from the video
+    // crop the frame
+    // pass it to imLow function
+}
+
+
+for (int loopVar = 0; loopVar < frames)

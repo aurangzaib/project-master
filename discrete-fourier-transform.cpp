@@ -58,12 +58,10 @@ void discreteFourierTransform::performDFT(const bool acquireImage) {
   // input image
   if (acquireImage == true)
     spatialImage =
-        imread(prj::cwd + imagePath + ".png", CV_LOAD_IMAGE_COLOR);
-  cout << "original image size: " << spatialImage.size() << endl;
+        imread(imagePath);
 
   Mat gray;
   spatialImage.copyTo(gray);
-
   // reduce the noise
   blur(gray, gray, Size(3, 3));
 

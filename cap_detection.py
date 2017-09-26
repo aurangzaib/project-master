@@ -41,7 +41,6 @@ class CapDetection(object):
                                                            cap_flag["filter_kernel_size"],
                                                            cv.THRESH_BINARY,
                                                            "cap")
-        # cv.imshow("threshold", self.output_image)
 
     def get_caps_using_blobs(self):
         params = cv.SimpleBlobDetector_Params()

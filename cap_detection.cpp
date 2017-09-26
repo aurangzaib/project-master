@@ -3,10 +3,10 @@
 #include "stdafx.h"
 
 struct CapNoFilter {
-  const float minConvex = 0.75;
-  const float minInertiaRatio = 0.55;
-  const int minThresholdValue = 15;
-  const int filterKernelSize = 7;
+  const float minConvex = 0.65;
+  const float minInertiaRatio = 0.45;
+  const int minThresholdValue = 10;
+  const int filterKernelSize = 27;
   const int markerSize = 5;
 } capNoFilterVariables;
 
@@ -101,14 +101,14 @@ void CapDetection::getCapsUsingBlobs() {
   params.blobColor = 0;
 
   // Set up the detector with default parameters.
-  Ptr<SimpleBlobDetector>  detector = SimpleBlobDetector::create(params);
+  Ptr<SimpleBlobDetector> detector = SimpleBlobDetector::create(params);
   vector<KeyPoint> keypoints;
   detector->detect(outputImage, keypoints);
   // usually bottle caps are within
   // below range. providing boundary condition
   // reduces noise.
   const float minArea = 30.0;
-  const float maxArea = 100.0;
+  const float maxArea = 200.0;
 
   vector<KeyPoint> unqiue_keypoints;
   Mat debugImage;
@@ -139,15 +139,8 @@ void CapDetection::getCapsUsingBlobs() {
                 inputImage,         // output image
                 Scalar(0, 255, 0),  // colour for the points
                 DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-
-  /* --- DEBUG PURPOSE ONLY  --- */
-  drawKeypoints(debugImage,         // input image
-                unqiue_keypoints,   // keypoints found using blob detection
-                debugImage,         // output image
-                Scalar(0, 255, 0),  // colour for the points
-                DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-  if (SAVE_RESULTS)
-    saveImage(prj::cwd + "/results/cap.bmp", debugImage);
+//  saveImage(prj::cwd + "cap-blob.bmp", inputImage);
+  if (SAVE_RESULTS) saveImage(prj::cwd + "/results/cap.bmp", debugImage);
 }
 void CapDetection::getCapsUsingHough() {
   // hough circle to determine bottle caps
