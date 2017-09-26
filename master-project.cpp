@@ -2,10 +2,7 @@
 #include "discrete-fourier-transform.cpp"
 #include "header.h"
 #include "stdafx.h"
-string prj::siddiqui =
-    "/Users/siddiqui/Documents/Projects/master-project/algorithms-teach-data";
-string prj::umair = "/Users/Umair/Desktop/master-project/meetings/";
-string prj::rizwan = "Undefined (No User Found)";
+string prj::siddiqui ="/Users/siddiqui/Documents/Projects/master-project/algorithms-teach-data";
 string prj::cwd = prj::siddiqui;
 
 void fetchImagesFromFolder(vector<Mat>& data, const string path) {
